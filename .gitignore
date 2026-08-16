@@ -5,8 +5,7 @@ node_modules
 Outputs/
 outputs/
 
-RAW_INPUT/*.docx 
-RAW_INPUT/*.md
+INPUT/raw 
 
 .agents/
 skills-lock.json
