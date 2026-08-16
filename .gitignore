@@ -2,8 +2,8 @@ node_modules
 .env
 
 .backup/
-Outputs/
-outputs/
+OUTPUTS/
+OUTPUTS/
 
 INPUT/raw 
 
