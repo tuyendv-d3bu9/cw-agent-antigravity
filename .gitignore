@@ -7,3 +7,6 @@ outputs/
 
 RAW_INPUT/*.docx 
 RAW_INPUT/*.md
+
+.agents/
+skills-lock.json
