@@ -36,6 +36,83 @@ Thực hiện tuần tự các bước sau:
 - Với mỗi Viewpoint được cung cấp từ Step 03, sinh các Test Idea bao phủ đầy đủ toàn bộ khía cạnh in-scope của viewpoint đó.
 - Đảm bảo tính bao quát đầy đủ theo chiều sâu nghiệp vụ, không áp đặt chỉ tiêu số lượng cố định.
 - Mỗi Test Idea phải được phát biểu trọn vẹn trong **đúng 01 câu**, nêu rõ hành vi/trường hợp cần kiểm chứng.
+- Bắt buộc lựa chọn và áp dụng chuẩn xác **04 Kỹ thuật Test Design cốt lõi** dựa trên bản chất dữ liệu và logic nghiệp vụ.
+
+---
+
+### 04 Kỹ thuật Test Design cốt lõi
+
+#### Equivalence Partitioning (EP)
+
+**Nguyên tắc:**  
+Chia input thành nhóm tương đương, mỗi nhóm chỉ cần test đại diện.
+
+**Ví dụ:**  
+Phân loại số tiền: Hợp lệ / Dưới hạn mức / Trên hạn mức.
+
+---
+
+#### Boundary Value Analysis (BVA)
+
+**Nguyên tắc:**  
+Lỗi tập trung ở biên — test giá trị tối thiểu, tối đa và lân cận.
+
+**Ví dụ:**  
+Hạn mức 10k - 500tr: Test 9.999 / 10.000 / 10.001...
+
+---
+
+#### Decision Table
+
+**Nguyên tắc:**  
+Xử lý tổ hợp nhiều điều kiện logic để xác định kết quả mong muốn.
+
+**Ví dụ:**  
+Số dư × OTP × Hạn mức ngày → Quyết định giao dịch.
+
+---
+
+#### State Transition
+
+**Nguyên tắc:**  
+Theo dõi dòng đời đối tượng qua các trạng thái khác nhau.
+
+**Ví dụ:**  
+Trạng thái GD: Chờ → Đang xử lý → Thành công / Thất bại.
+
+---
+
+### Quy tắc chọn kỹ thuật Test Design
+
+#### Dữ liệu số có khoảng (Range)
+
+Sử dụng khi field có giá trị tối thiểu và tối đa rõ rệt (Số tiền, ngày, tuổi).
+
+**Kỹ thuật:** BVA + EP
+
+---
+
+#### Nhiều điều kiện kết hợp
+
+Sử dụng cho logic phức tạp (Điều kiện duyệt đơn, phân quyền người dùng).
+
+**Kỹ thuật:** Decision Table
+
+---
+
+#### Vòng đời trạng thái
+
+Sử dụng khi đối tượng thay đổi trạng thái (Đơn hàng, giao dịch, tài khoản).
+
+**Kỹ thuật:** State Transition
+
+---
+
+#### Input rời rạc nhiều giá trị
+
+Sử dụng khi dữ liệu không liên tục (Loại hợp đồng, phương thức thanh toán).
+
+**Kỹ thuật:** Equivalence Partitioning (EP)
 
 ### 2. Sàng lọc (Filter) Test Idea theo Checklist cố định
 Thực hiện đánh giá từng Test Idea theo bộ tiêu chí chuẩn hóa từ `04_test-idea-generation.md`. Lý do filter bắt buộc phải trích xuất chính xác cụm từ từ checklist dưới đây, không diễn giải tự do:
