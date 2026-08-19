@@ -12,15 +12,13 @@
 
 ## 1. TỔNG QUAN DANH MỤC TEST CASE
 
-Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được mở rộng (expand) 100% từ danh sách các Test Idea được gắn nhãn **"Giữ"** tại Step 04. Mọi Test Case tuân thủ cấu trúc chuẩn 8 trường thông tin (FACT & RCTFC Framework), có tính khả thi cao, sẵn sàng cho việc import trực tiếp vào các hệ thống quản lý kiểm thử (Jira Xray, TestRail, Zephyr).
+Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được mở rộng (expand) 100% từ danh sách các Test Idea được gắn nhãn **"Giữ"** tại Step 04. Mọi Test Case tuân thủ nghiêm ngặt cấu trúc chuẩn 8 trường thông tin (FACT & RCTFC Framework), có tính khả thi cao, truy xuất nguồn gốc đầy đủ (Traceability), sẵn sàng cho việc import trực tiếp vào các hệ thống quản lý kiểm thử (Jira Xray, TestRail, Zephyr).
 
 ---
 
-## 2. CHI TIẾT DANH SÁCH TEST CASE (TEST CASE SPECIFICATION)
+## 2. VOUCHER - TEST CASES
 
-### VOUCHER - TEST CASES
-
-#### TC_ID: VOUCHER-001
+### TC_ID: VOUCHER-001
 - **Title**: Verify Khách hàng đăng nhập áp dụng thành công 01 mã giảm giá loại phần trăm (%) còn hạn trên giỏ hàng đủ giá trị tối thiểu
 - **Precondition**: 
   - Tài khoản `customer_happy01@shopgo.vn` đã được khởi tạo và đăng nhập thành công.
@@ -43,7 +41,7 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
 
 ---
 
-#### TC_ID: VOUCHER-002
+### TC_ID: VOUCHER-002
 - **Title**: Verify Khách hàng đăng nhập áp dụng thành công 01 mã giảm giá loại số tiền cố định (VNĐ) còn hạn trên giỏ hàng đủ giá trị tối thiểu
 - **Precondition**: 
   - Tài khoản `customer_happy02@shopgo.vn` đã đăng nhập thành công.
@@ -66,30 +64,31 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
 
 ---
 
-#### TC_ID: VOUCHER-003
-- **Title**: Verify Khách hàng áp dụng đồng thời 02 mã giảm giá hợp lệ trên cùng 01 đơn hàng thành công và tổng chiết khấu được tính toán chính xác
+### TC_ID: VOUCHER-003
+- **Title**: Verify Khách hàng áp dụng đồng thời 02 mã giảm giá hợp lệ khác loại trên cùng 01 đơn hàng thành công và tổng chiết khấu được tính toán chính xác
 - **Precondition**: 
   - Tài khoản `customer_happy03@shopgo.vn` đã đăng nhập thành công.
   - Giỏ hàng có tổng tiền Subtotal = 500.000 VNĐ.
-  - Hệ thống tồn tại mã `PCT10` (Giảm 10% = 50.000 VNĐ) và mã `FIX20` (Giảm 20.000 VNĐ cố định), cả 2 mã đều thỏa mãn điều kiện áp dụng.
+  - Hệ thống tồn tại mã `PCT10` (Giảm 10% đơn hàng = 50.000 VNĐ) và mã `FREESHIP` (Miễn phí vận chuyển = 20.000 VNĐ), cả 2 mã đều thỏa mãn điều kiện áp dụng.
 - **Test Steps**:
   1. Điều hướng đến trang Thanh toán.
   2. Nhập "PCT10" vào ô "Mã giảm giá" và nhấn nút "Áp dụng".
-  3. Nhập tiếp "FIX20" vào ô "Mã giảm giá" và nhấn nút "Áp dụng".
+  3. Nhập tiếp "FREESHIP" vào ô "Mã giảm giá" và nhấn nút "Áp dụng".
 - **Test Data**:
   - Subtotal: 500.000 VNĐ
+  - Phí vận chuyển: 20.000 VNĐ
   - Mã thứ nhất: PCT10
-  - Mã thứ hai: FIX20
+  - Mã thứ hai: FREESHIP
 - **Expected Result**: 
-  - Hệ thống chấp nhận áp dụng cả 2 mã giảm giá trên cùng đơn hàng.
-  - Khu vực tổng quan chiết khấu ghi nhận cả 2 mã: PCT10 (-50.000 VNĐ) và FIX20 (-20.000 VNĐ).
-  - Tổng tiền thanh toán mới cập nhật chuẩn xác: "430.000 VNĐ".
+  - Hệ thống chấp nhận áp dụng cả 2 mã giảm giá khác loại trên cùng đơn hàng.
+  - Khu vực tổng quan chiết khấu ghi nhận cả 2 mã: PCT10 (-50.000 VNĐ) và FREESHIP (-20.000 VNĐ).
+  - Tổng tiền thanh toán mới cập nhật chuẩn xác: "450.000 VNĐ".
 - **Priority**: High
-- **Tags**: Rule#BR-13, Rule#MR-03, Viewpoint#Happy Path, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-03, Rule#MR-03, Viewpoint#Happy Path, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-004
+### TC_ID: VOUCHER-004
 - **Title**: Verify hệ thống tự động loại bỏ khoảng trắng thừa ở đầu và cuối chuỗi mã giảm giá khi người dùng thực hiện nhập mã
 - **Precondition**: 
   - Tài khoản `customer_happy04@shopgo.vn` đã đăng nhập tại trang Thanh toán.
@@ -105,11 +104,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Hệ thống tự động cắt bỏ (trim) các khoảng trắng thừa trước khi gửi request xác thực.
   - Mã `DISCOUNT10` áp dụng thành công, hiển thị đúng chiết khấu và tổng tiền mới không phát sinh lỗi mã không hợp lệ.
 - **Priority**: Medium
-- **Tags**: Rule#BR-11, Viewpoint#Happy Path, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-01, Rule#MR-02, Viewpoint#Happy Path, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-005
+### TC_ID: VOUCHER-005
 - **Title**: Verify hệ thống tự động xử lý mã giảm giá không phân biệt chữ hoa hay chữ thường (case-insensitive) khi áp dụng thành công
 - **Precondition**: 
   - Tài khoản `customer_happy05@shopgo.vn` đã đăng nhập tại trang Thanh toán.
@@ -124,11 +123,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Hệ thống nhận diện mã thành công mà không bắt buộc nhập đúng định dạng HOA/thường.
   - Chiết khấu của mã `SUMMER2026` được áp dụng chuẩn xác vào tổng đơn hàng.
 - **Priority**: Medium
-- **Tags**: Rule#BR-11, Viewpoint#Happy Path, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-01, Rule#MR-02, Viewpoint#Happy Path, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-006
+### TC_ID: VOUCHER-006
 - **Title**: Confirm giao diện trang Thanh toán hiển thị rõ ràng dòng tiền chiết khấu được giảm và tổng tiền thanh toán mới sau khi áp mã thành công
 - **Precondition**: 
   - Tài khoản `customer_happy06@shopgo.vn` đã áp dụng mã `SAVE50K` (Giảm 50.000 VNĐ) thành công trên đơn hàng có Subtotal = 300.000 VNĐ.
@@ -150,7 +149,7 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
 
 ---
 
-#### TC_ID: VOUCHER-007
+### TC_ID: VOUCHER-007
 - **Title**: Verify đơn hàng hoàn tất thanh toán thành công được ghi nhận chính xác và trạng thái mã giảm giá chuyển sang trạng thái đã sử dụng (USED)
 - **Precondition**: 
   - Tài khoản `customer_happy07@shopgo.vn` đã áp dụng mã `ONETIME20` (Giới hạn 1 lượt/tài khoản) tại trang Thanh toán.
@@ -167,11 +166,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Đơn hàng được tạo thành công với mã đơn hàng duy nhất.
   - Trạng thái liên kết của mã `ONETIME20` đối với tài khoản người dùng trong CSDL được cập nhật từ `AVAILABLE` sang `USED`.
 - **Priority**: High
-- **Tags**: Rule#BR-16, Rule#MR-04, Viewpoint#Happy Path, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-05, Rule#MR-04, Viewpoint#Happy Path, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-008
+### TC_ID: VOUCHER-008
 - **Title**: Validate hệ thống từ chối áp dụng và hiển thị thông báo lỗi khi nhập mã không tồn tại hoặc sai ký tự
 - **Precondition**: 
   - Tài khoản `customer_neg01@shopgo.vn` đang ở trang Thanh toán.
@@ -189,7 +188,7 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
 
 ---
 
-#### TC_ID: VOUCHER-009
+### TC_ID: VOUCHER-009
 - **Title**: Validate hệ thống từ chối áp dụng và hiển thị thông báo lỗi khi nhập mã đã quá thời hạn theo múi giờ Việt Nam (UTC+7)
 - **Precondition**: 
   - Tài khoản `customer_neg02@shopgo.vn` đang ở trang Thanh toán.
@@ -204,11 +203,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Chiết khấu bị từ chối áp dụng.
   - Hiển thị thông báo lỗi chuẩn: "Mã giảm giá đã hết hạn sử dụng."
 - **Priority**: High
-- **Tags**: Rule#BR-07, Rule#AF-01, Rule#BR-14, Rule#MR-02, Viewpoint#Negative, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-05, Rule#BR-07, Rule#AF-01, Rule#MR-02, Viewpoint#Negative, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-010
+### TC_ID: VOUCHER-010
 - **Title**: Validate hệ thống từ chối áp dụng và hiển thị thông báo lỗi khi mã đã đạt tới giới hạn tổng số lượt dùng toàn hệ thống
 - **Precondition**: 
   - Mã `LIMITED100` được cấu hình tối đa 100 lượt dùng trên toàn hệ thống.
@@ -223,11 +222,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Hệ thống không áp dụng mã giảm giá.
   - Hiển thị thông báo lỗi chuẩn: "Mã giảm giá đã hết lượt sử dụng."
 - **Priority**: High
-- **Tags**: Rule#BR-16, Rule#MR-02, Viewpoint#Negative, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-07, Rule#MR-01, Rule#MR-02, Viewpoint#Negative, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-011
+### TC_ID: VOUCHER-011
 - **Title**: Validate hệ thống từ chối áp dụng và hiển thị thông báo lỗi khi người dùng đã dùng hết lượt cho phép per-user
 - **Precondition**: 
   - Mã `USERPER1` cấu hình tối đa 01 lượt/tài khoản.
@@ -241,13 +240,13 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Mã giảm giá: USERPER1 (Lượt dùng tài khoản: 1/1)
 - **Expected Result**: 
   - Chiết khấu bị từ chối.
-  - Hiển thị thông báo lỗi chuẩn: "Tài khoản của bạn đã sử dụng hết lượt cho mã giảm giá này."
+  - Hiển thị thông báo lỗi chuẩn: "Bạn đã sử dụng hết số lần cho phép của mã giảm giá này."
 - **Priority**: High
-- **Tags**: Rule#MR-01, Rule#MR-02, Viewpoint#Negative, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-07, Rule#MR-01, Rule#MR-02, Viewpoint#Negative, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-012
+### TC_ID: VOUCHER-012
 - **Title**: Validate hệ thống không áp dụng chiết khấu và hiển thị thông báo lỗi khi tổng tiền giỏ hàng nhỏ hơn Min Order Value
 - **Precondition**: 
   - Tài khoản `customer_neg05@shopgo.vn` có giỏ hàng trị giá 150.000 VNĐ.
@@ -263,11 +262,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Chiết khấu không được thực hiện.
   - Hiển thị thông báo lỗi nêu rõ ngưỡng thiếu: "Đơn hàng chưa đạt giá trị tối thiểu 200.000 VNĐ để sử dụng mã này."
 - **Priority**: High
-- **Tags**: Rule#AF-03, Rule#BR-04, Rule#MR-02, Viewpoint#Negative, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-04, Rule#BR-07, Rule#AF-03, Rule#MR-02, Viewpoint#Negative, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-013
+### TC_ID: VOUCHER-013
 - **Title**: Validate hệ thống hiển thị thông báo lỗi inline khi người dùng nhấn nút Áp dụng mà để trống ô nhập mã
 - **Precondition**: 
   - Tài khoản `customer_neg06@shopgo.vn` đang tại trang Thanh toán.
@@ -279,13 +278,13 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Giá trị ô nhập: ""
 - **Expected Result**: 
   - Hệ thống không thực hiện gọi API kiểm tra.
-  - Hiển thị thông báo lỗi inline ngay bên dưới ô nhập mã: "Vui lòng nhập mã giảm giá".
+  - Hiển thị thông báo lỗi inline ngay bên dưới ô nhập mã: "Vui lòng nhập mã giảm giá."
 - **Priority**: Medium
-- **Tags**: Rule#MR-02, Viewpoint#Negative, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-01, Rule#MR-02, Viewpoint#Negative, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-014
+### TC_ID: VOUCHER-014
 - **Title**: Validate Khách vãng lai (Guest chưa đăng nhập) bị ngăn chặn truy cập trang Thanh toán và được yêu cầu Đăng nhập
 - **Precondition**: 
   - Người dùng chưa đăng nhập tài khoản (Guest user).
@@ -302,7 +301,7 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
 
 ---
 
-#### TC_ID: VOUCHER-015
+### TC_ID: VOUCHER-015
 - **Title**: Validate tài khoản bị khóa ở thời điểm giữa lúc áp mã và chốt đơn bị hệ thống tự động gỡ mã và ngăn chặn đặt hàng
 - **Precondition**: 
   - Tài khoản `customer_locked@shopgo.vn` áp dụng mã `DISC10` thành công tại trang Thanh toán.
@@ -317,11 +316,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Tự động hủy/gỡ mã `DISC10` khỏi đơn hàng.
   - Hiển thị thông báo lỗi: "Tài khoản của bạn đã bị khóa. Không thể hoàn tất đặt hàng."
 - **Priority**: High
-- **Tags**: Rule#MR-01, Viewpoint#Negative, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-02, Rule#MR-01, Viewpoint#Negative, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-016
+### TC_ID: VOUCHER-016
 - **Title**: Validate hệ thống tự động re-validate và gỡ mã giảm giá khi người dùng giảm bớt sản phẩm ở giỏ hàng làm Subtotal xuống dưới Min Order Value
 - **Precondition**: 
   - Tài khoản `customer_neg07@shopgo.vn` có giỏ hàng 250.000 VNĐ, áp mã `MIN200K` (Min Order Value: 200.000 VNĐ) thành công tại Checkout.
@@ -337,11 +336,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Tự động gỡ bỏ mã `MIN200K` khỏi đơn hàng.
   - Hiển thị thông báo: "Mã giảm giá đã tự động bị gỡ do tổng giá trị đơn hàng không còn đủ điều kiện tối thiểu 200.000 VNĐ."
 - **Priority**: High
-- **Tags**: Rule#AF-05, Rule#BR-17, Viewpoint#Negative, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-04, Rule#MR-04, Rule#MR-05, Viewpoint#Negative, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-017
+### TC_ID: VOUCHER-017
 - **Title**: Validate lượt mã ở trạng thái PENDING_HOLD tự động giải phóng về AVAILABLE khi giao dịch thanh toán online thất bại hoặc quá 15 phút
 - **Precondition**: 
   - Tài khoản `customer_neg08@shopgo.vn` áp dụng mã `ONLINE50` (chỉ còn 1 lượt khả dụng) và chốt đơn chọn thanh toán qua MoMo.
@@ -357,11 +356,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Đơn hàng chuyển sang trạng thái hủy do hết hạn thanh toán.
   - Lượt mã `ONLINE50` tự động giải phóng từ `PENDING_HOLD` trở lại trạng thái `AVAILABLE` cho hệ thống.
 - **Priority**: High
-- **Tags**: Rule#MR-04, Viewpoint#Negative, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-05, Rule#MR-04, Viewpoint#Negative, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-018
+### TC_ID: VOUCHER-018
 - **Title**: Verify mã giảm giá được áp dụng thành công khi tổng tiền giỏ hàng (Subtotal) bằng đúng giá trị đơn hàng tối thiểu (Min Order Value)
 - **Precondition**: 
   - Mã `MIN300K` có quy định Min Order Value = 300.000 VNĐ.
@@ -381,7 +380,7 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
 
 ---
 
-#### TC_ID: VOUCHER-019
+### TC_ID: VOUCHER-019
 - **Title**: Validate hệ thống từ chối áp dụng mã giảm giá khi tổng tiền giỏ hàng nhỏ hơn giá trị đơn hàng tối thiểu đúng 1 VNĐ
 - **Precondition**: 
   - Mã `MIN300K` có Min Order Value = 300.000 VNĐ.
@@ -401,7 +400,7 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
 
 ---
 
-#### TC_ID: VOUCHER-020
+### TC_ID: VOUCHER-020
 - **Title**: Verify số tiền giảm của mã loại phần trăm (%) bị ép đúng trần tối đa 50.000 VNĐ khi số tiền tính theo phần trăm vượt quá 50.000 VNĐ
 - **Precondition**: 
   - Mã `PCT20` cấu hình giảm 20%, trần giảm giá tối đa (Max discount cap) = 50.000 VNĐ.
@@ -416,11 +415,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Số tiền giảm hiển thị bị khống chế đúng trần: "-50.000 VNĐ" (thay vì -200.000 VNĐ).
   - Tổng tiền thanh toán mới: "950.000 VNĐ".
 - **Priority**: High
-- **Tags**: Rule#BR-12, Viewpoint#Boundary, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-03, Rule#MR-03, Viewpoint#Boundary, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-021
+### TC_ID: VOUCHER-021
 - **Title**: Verify tổng tiền giảm của nhiều mã áp dụng đồng thời bị ép không vượt quá trần tối đa 50.000 VNĐ đối với mã loại phần trăm
 - **Precondition**: 
   - Giỏ hàng Subtotal = 600.000 VNĐ.
@@ -435,11 +434,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Cả 2 mã được chấp nhận nhưng tổng tiền chiết khấu kết hợp bị khống chế tối đa đúng trần: "-50.000 VNĐ".
   - Tổng tiền thanh toán mới: "550.000 VNĐ".
 - **Priority**: High
-- **Tags**: Rule#BR-12, Rule#BR-13, Viewpoint#Boundary, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-03, Rule#MR-03, Viewpoint#Boundary, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-022
+### TC_ID: VOUCHER-022
 - **Title**: Verify tổng tiền thanh toán sau khi trừ mã giảm giá tiền cố định VNĐ lớn hơn Subtotal được giữ ở mức sàn tối thiểu bằng đúng 0 VNĐ
 - **Precondition**: 
   - Mã `FIX100K` có giá trị giảm cố định 100.000 VNĐ.
@@ -454,11 +453,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Số tiền chiết khấu thực tế áp dụng: "-40.000 VNĐ".
   - Tổng tiền thanh toán được giữ ở mức sàn tối thiểu: "0 VNĐ" (tuyệt đối không bị âm < 0 VNĐ).
 - **Priority**: High
-- **Tags**: Rule#MR-03, Viewpoint#Boundary, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-03, Rule#MR-03, Viewpoint#Boundary, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-023
+### TC_ID: VOUCHER-023
 - **Title**: Verify mã giảm giá được áp dụng và chốt đơn thành công vào thời điểm mút cuối cùng 23:59:59 (giờ ICT / UTC+7) của ngày hết hạn
 - **Precondition**: 
   - Mã `ENDTODAY` cấu hình ngày hết hạn là 16/08/2026 23:59:59 UTC+7.
@@ -473,11 +472,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Mã xác thực còn hạn sử dụng thành công.
   - Đơn hàng được khởi tạo thành công có áp dụng số tiền chiết khấu của mã.
 - **Priority**: High
-- **Tags**: Rule#BR-05, Rule#BR-14, Viewpoint#Boundary, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-05, Rule#MR-04, Viewpoint#Boundary, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-024
+### TC_ID: VOUCHER-024
 - **Title**: Validate hệ thống từ chối chốt đơn áp mã vào thời điểm mút bắt đầu 00:00:01 (giờ ICT / UTC+7) của ngày tiếp theo ngay sau khi hết hạn
 - **Precondition**: 
   - Mã `ENDTODAY` hết hạn lúc 16/08/2026 23:59:59 UTC+7.
@@ -492,11 +491,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Hệ thống re-validate tại thời điểm chốt đơn và phát hiện mã đã quá hạn.
   - Chặn đặt hàng, gỡ mã và hiển thị thông báo: "Mã giảm giá đã hết hạn sử dụng."
 - **Priority**: High
-- **Tags**: Rule#BR-05, Rule#BR-14, Viewpoint#Boundary, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-05, Rule#MR-04, Viewpoint#Boundary, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-025
+### TC_ID: VOUCHER-025
 - **Title**: Verify hệ thống cho phép áp dụng tối đa đúng 02 mã giảm giá hợp lệ và ngăn chặn không cho áp dụng mã thứ 03 trên cùng 01 đơn hàng
 - **Precondition**: 
   - Khách hàng đã áp dụng thành công 02 mã hợp lệ `CODE1` và `CODE2` trên đơn hàng tại trang Thanh toán.
@@ -511,11 +510,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Hệ thống ngăn chặn không cho áp dụng mã thứ 03.
   - Hiển thị thông báo lỗi: "Đơn hàng chỉ được áp dụng tối đa 02 mã giảm giá."
 - **Priority**: High
-- **Tags**: Rule#MR-03, Viewpoint#Boundary, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-03, Rule#MR-03, Viewpoint#Boundary, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-026
+### TC_ID: VOUCHER-026
 - **Title**: Verify ô nhập mã giảm giá chấp nhận chuỗi có độ dài tối đa 50 ký tự và ngăn chặn không cho nhập ký tự thứ 51
 - **Precondition**: 
   - Màn hình trang Thanh toán đang hiển thị ô nhập "Mã giảm giá".
@@ -529,12 +528,12 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Ô nhập nhận đúng 50 ký tự.
   - Ký tự thứ 51 "X" bị chặn hoàn toàn, không thể chèn thêm vào ô nhập (`maxlength="50"`).
 - **Priority**: Medium
-- **Tags**: Rule#MR-02, Viewpoint#Boundary, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-01, Rule#MR-02, Viewpoint#Boundary, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-027
-- **Title**: Validate tính năng áp mã tự động bị khóa trong 15 phút khi 01 tài khoản hoặc IP bấm Áp dụng mã sai quá 05 lần trong 01 phút
+### TC_ID: VOUCHER-027
+- **Title**: Validate tính năng áp mã tự động bị khóa trong 10 phút khi 01 tài khoản hoặc IP bấm Áp dụng mã sai quá 05 lần trong 01 phút
 - **Precondition**: 
   - Tài khoản `customer_sec01@shopgo.vn` tại IP `192.168.1.100` đang ở trang Thanh toán.
 - **Test Steps**:
@@ -545,14 +544,14 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Chuỗi nhập sai: WRONG1, WRONG2, WRONG3, WRONG4, WRONG5, WRONG6
 - **Expected Result**: 
   - Ở lần bấm thứ 6, hệ thống từ chối xử lý API.
-  - Hiển thị thông báo chặn: "Bạn đã nhập sai mã quá 5 lần. Tính năng áp dụng mã giảm giá tạm thời bị khóa trong 15 phút."
+  - Hiển thị thông báo chặn: "Bạn đã nhập sai mã quá 5 lần. Tính năng áp dụng mã giảm giá tạm thời bị khóa trong 10 phút."
 - **Priority**: High
-- **Tags**: Rule#MR-06, Viewpoint#Security, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-07, Rule#MR-06, Viewpoint#Security, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-028
-- **Title**: Verify hệ thống ưu tiên xử lý cho người hoàn thành thanh toán trước và tự động ghi nhận trạng thái mã là (OVER) trong CSDL nếu trùng millisecond
+### TC_ID: VOUCHER-028
+- **Title**: Verify hệ thống sử dụng khóa mức server chỉ cho phép 01 giao dịch áp dụng thành công và thông báo hết lượt cho giao dịch còn lại khi tranh chấp lượt cuối
 - **Precondition**: 
   - Mã `LASTONE` chỉ còn duy nhất 01 lượt dùng khả dụng cuối cùng (`remaining_usage = 1`).
 - **Test Steps**:
@@ -562,14 +561,14 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Mã: LASTONE (Lượt còn lại: 1)
   - User A & User B gửi request trùng timestamp millisecond
 - **Expected Result**: 
-  - Cả 2 đơn hàng đều được chốt thành công.
-  - Đơn hàng thứ 2 được hệ thống tự động đánh dấu trạng thái mã trong CSDL là `(OVER)` để phục vụ đối soát Admin.
+  - Giao dịch của User A (đến trước vài microsecond) được hệ thống khóa atomic lock và áp dụng thành công.
+  - Giao dịch của User B bị từ chối áp dụng và nhận thông báo: "Mã giảm giá đã hết lượt sử dụng."
 - **Priority**: High
-- **Tags**: Rule#BR-16, Viewpoint#Security, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-05, Rule#MR-01, Viewpoint#Security, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-029
+### TC_ID: VOUCHER-029
 - **Title**: Validate Backend từ chối xử lý request API áp mã từ Khách vãng lai hoặc tài khoản bị khóa và trả về mã lỗi 401 hoặc 403 Unauthorized
 - **Precondition**: 
   - Server API Endpoint `POST /api/v1/checkout/apply-voucher` đang hoạt động.
@@ -587,7 +586,7 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
 
 ---
 
-#### TC_ID: VOUCHER-030
+### TC_ID: VOUCHER-030
 - **Title**: Verify hệ thống tự động làm sạch và mã hóa an toàn chuỗi nhập chứa mã độc SQL Injection hoặc Script XSS mà không thực thi mã độc
 - **Precondition**: 
   - Tài khoản `customer_sec02@shopgo.vn` đang ở màn hình Thanh toán.
@@ -602,11 +601,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Không có popup script nào bị thực thi; CSDL không nổ lỗi syntax SQL.
   - Hiển thị thông báo lỗi chuẩn: "Mã giảm giá không hợp lệ. Vui lòng kiểm tra lại."
 - **Priority**: High
-- **Tags**: Viewpoint#Security, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-01, Rule#MR-02, Viewpoint#Security, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-031
+### TC_ID: VOUCHER-031
 - **Title**: Verify lượt mã chuyển sang trạng thái PENDING_HOLD trong 15 phút khi người dùng chốt đơn chọn thanh toán trực tuyến qua VNPay hoặc MoMo
 - **Precondition**: 
   - Mã `ONLINE2026` ở trạng thái `AVAILABLE`.
@@ -621,11 +620,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Trạng thái lượt mã của người dùng trong CSDL cập nhật thành `PENDING_HOLD`.
   - Hạn tạm giữ (hold expire time) được ghi nhận chính xác 15 phút.
 - **Priority**: High
-- **Tags**: Rule#MR-04, Viewpoint#Integration, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-05, Rule#MR-04, Viewpoint#Integration, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-032
+### TC_ID: VOUCHER-032
 - **Title**: Verify phân hệ Giỏ hàng tự động gửi thông tin re-validate điều kiện Min Order Value sang bước chốt đơn Thanh toán khi thay đổi số lượng
 - **Precondition**: 
   - Phân hệ Giỏ hàng (Cart Service) và Thanh toán (Checkout Service) hoạt động tích hợp.
@@ -639,11 +638,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Cart Service tự động phát sự kiện đồng bộ Subtotal mới.
   - Checkout Service nhận thông tin, re-validate và tự động hủy áp dụng mã `MIN200K`.
 - **Priority**: High
-- **Tags**: Rule#BR-17, Rule#AF-05, Viewpoint#Integration, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-04, Rule#MR-04, Rule#MR-05, Viewpoint#Integration, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-033
+### TC_ID: VOUCHER-033
 - **Title**: Verify hệ thống đối soát thời hạn sử dụng mã dựa trên Server Time theo múi giờ ICT (UTC+7) bất kể việc thay đổi thời gian trên thiết bị client
 - **Precondition**: 
   - Mã `SERVERTIME` hết hạn lúc 16/08/2026 12:00:00 UTC+7.
@@ -658,29 +657,29 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Backend đối soát thời gian căn cứ vào Server Time (UTC+7).
   - Từ chối áp dụng và hiển thị lỗi: "Mã giảm giá đã hết hạn sử dụng."
 - **Priority**: High
-- **Tags**: Rule#BR-14, Viewpoint#Integration, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-05, Rule#BR-07, Viewpoint#Integration, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-034
-- **Title**: Verify mã giảm giá đã sử dụng thành công không được khôi phục hay hoàn trả về trạng thái chưa sử dụng khi đơn hàng bị hủy hoặc phát sinh trả hàng
+### TC_ID: VOUCHER-034
+- **Title**: Verify mã giảm giá đã sử dụng thành công được tự động khôi phục về trạng thái chưa sử dụng khi đơn hàng bị hủy hoặc trả hàng toàn phần
 - **Precondition**: 
-  - Đơn hàng `#ORD8888` có sử dụng mã `NONREFUND` đã chốt đơn thành công (`status = USED`).
+  - Đơn hàng `#ORD8888` có sử dụng mã `RETURNABLE` đã chốt đơn thành công (`status = USED`).
 - **Test Steps**:
-  1. Khách hàng bấm "Hủy đơn hàng" `#ORD8888` tại trang Lịch sử đơn hàng.
-  2. Kiểm tra trạng thái sử dụng của mã `NONREFUND` trong CSDL tài khoản.
+  1. Khách hàng bấm "Hủy đơn hàng" `#ORD8888` tại trang Lịch sử đơn hàng trước khi shop giao hàng.
+  2. Kiểm tra trạng thái sử dụng của mã `RETURNABLE` trong CSDL tài khoản.
 - **Test Data**:
   - Mã đơn hàng: #ORD8888
-  - Mã giảm giá: NONREFUND
+  - Mã giảm giá: RETURNABLE
 - **Expected Result**: 
   - Đơn hàng cập nhật trạng thái `CANCELLED`.
-  - Trạng thái mã `NONREFUND` giữ nguyên là `USED`, tuyệt đối không được khôi phục về `AVAILABLE`.
+  - Trạng thái mã `RETURNABLE` được khôi phục thành công về `AVAILABLE` và hoàn lại 1 lượt dùng cho tài khoản.
 - **Priority**: High
-- **Tags**: Rule#BR-15, Viewpoint#Integration, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-05, Rule#MR-05, Viewpoint#Integration, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-035
+### TC_ID: VOUCHER-035
 - **Title**: Confirm trang Thanh toán hiển thị rõ ràng số tiền chiết khấu giảm giá dạng số âm và tổng tiền thanh toán mới sau khi áp mã thành công
 - **Precondition**: 
   - Đơn hàng có Subtotal = 500.000 VNĐ, đã áp thành công mã `DISC50` (Giảm 50.000 VNĐ).
@@ -697,8 +696,8 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
 
 ---
 
-#### TC_ID: VOUCHER-036
-- **Title**: Confirm tính năng tự động trim khoảng trắng và không phân biệt chữ hoa hay chữ thường giúp người dùng áp mã thành công mượt mà
+### TC_ID: VOUCHER-036
+- **Title**: Confirm tính năng tự động trim khoảng trắng và không phân biệt chữ hoa hay chữ thường giúp người dùng áp mã thành công mà không bị báo lỗi
 - **Precondition**: 
   - Mã khuyến mãi `EASYUSE` công bố rộng rãi trên banner.
 - **Test Steps**:
@@ -708,13 +707,13 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Input: " easyuse "
 - **Expected Result**: 
   - Giao diện không báo lỗi nhập liệu vô lý.
-  - Mã áp dụng thành công ngay lập tức mang lại cảm giác mượt mượt cho người dùng.
+  - Mã áp dụng thành công ngay lập tức mang lại cảm giác mượt mà cho người dùng.
 - **Priority**: Medium
-- **Tags**: Rule#BR-11, Viewpoint#UX/Usability, Module#ShopGo_Voucher, Manual
+- **Tags**: Rule#BR-01, Rule#MR-02, Viewpoint#UX/Usability, Module#ShopGo_Voucher, Manual
 
 ---
 
-#### TC_ID: VOUCHER-037
+### TC_ID: VOUCHER-037
 - **Title**: Confirm các thông báo phản hồi lỗi phân biệt rõ nguyên nhân cụ thể như hết hạn, hết lượt, không đủ giá trị đơn tối thiểu
 - **Precondition**: 
   - Người dùng nhập thử các mã vi phạm điều kiện khác nhau.
@@ -727,11 +726,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
 - **Expected Result**: 
   - Mỗi mã hiển thị đúng câu văn thông báo phản hồi nêu rõ lý do tương ứng, không dùng câu chung chung.
 - **Priority**: Medium
-- **Tags**: Rule#MR-02, Viewpoint#UX/Usability, Module#ShopGo_Voucher, Manual
+- **Tags**: Rule#BR-07, Rule#MR-02, Viewpoint#UX/Usability, Module#ShopGo_Voucher, Manual
 
 ---
 
-#### TC_ID: VOUCHER-038
+### TC_ID: VOUCHER-038
 - **Title**: Confirm giao diện ô nhập mã, nút Áp dụng và dòng tiền giảm hiển thị tương thích cân đối, không bị vỡ bố cục trên cả Desktop và Mobile Web
 - **Precondition**: 
   - Truy cập trang Thanh toán trên các thiết bị Desktop và Mobile.
@@ -743,11 +742,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
 - **Expected Result**: 
   - Ô nhập mã, nút "Áp dụng" và các dòng tiền hiển thị cân đối, không bị đè chữ hay tràn viền trên cả 2 loại màn hình.
 - **Priority**: Medium
-- **Tags**: Rule#BR-10, Viewpoint#UX/Usability, Module#ShopGo_Voucher, Manual
+- **Tags**: Rule#BR-08, Viewpoint#UX/Usability, Module#ShopGo_Voucher, Manual
 
 ---
 
-#### TC_ID: VOUCHER-039
+### TC_ID: VOUCHER-039
 - **Title**: Verify thời gian xử lý của API kiểm tra điều kiện mã và tính toán chiết khấu phản hồi dưới 3 giây trên các trình duyệt Chrome, Edge và Safari
 - **Precondition**: 
   - Mở Network tab trên DevTools của các trình duyệt Chrome, Edge, Safari.
@@ -764,7 +763,7 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
 
 ---
 
-#### TC_ID: VOUCHER-040
+### TC_ID: VOUCHER-040
 - **Title**: Verify giao diện DOM trang Thanh toán cập nhật lại tổng tiền thanh toán tức thì sau khi API trả kết quả mà không gây treo hay đơ màn hình
 - **Precondition**: 
   - Trang Thanh toán sẵn sàng ở phía Client.
@@ -781,7 +780,7 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
 
 ---
 
-#### TC_ID: VOUCHER-041
+### TC_ID: VOUCHER-041
 - **Title**: Confirm người dùng có thể di chuyển vào ô nhập mã bằng phím Tab và kích hoạt nút Áp dụng bằng phím Enter hoặc Space
 - **Precondition**: 
   - Màn hình Thanh toán mở, không dùng chuột điều hướng.
@@ -796,11 +795,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Đường viền focus indicator hiển thị rõ ràng trên ô nhập và nút bấm.
   - Phím `Enter`/`Space` kích hoạt nút "Áp dụng" thành công.
 - **Priority**: Low
-- **Tags**: Viewpoint#Accessibility, Module#ShopGo_Voucher, Manual
+- **Tags**: Rule#BR-01, Viewpoint#Accessibility, Module#ShopGo_Voucher, Manual
 
 ---
 
-#### TC_ID: VOUCHER-042
+### TC_ID: VOUCHER-042
 - **Title**: Confirm văn bản thông báo lỗi và thông báo thành công có độ tương phản màu sắc đạt chuẩn giúp người dùng dễ đọc
 - **Precondition**: 
   - Các thông báo phản hồi (Banner/Toast) đang hiển thị tại trang Thanh toán.
@@ -813,11 +812,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
 - **Expected Result**: 
   - Tỷ lệ tương phản màu sắc (Color Contrast Ratio) đạt mức tối thiểu >= 4.5:1 (đạt chuẩn WCAG AA).
 - **Priority**: Low
-- **Tags**: Viewpoint#Accessibility, Module#ShopGo_Voucher, Manual
+- **Tags**: Rule#BR-07, Viewpoint#Accessibility, Module#ShopGo_Voucher, Manual
 
 ---
 
-#### TC_ID: VOUCHER-043
+### TC_ID: VOUCHER-043
 - **Title**: Confirm giao diện ô nhập mã và nút Áp dụng không bị đè khuất hay vỡ khung hình khi thu phóng trình duyệt lên mức 200%
 - **Precondition**: 
   - Trình duyệt Chrome/Edge/Safari đang mở trang Thanh toán.
@@ -829,11 +828,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
 - **Expected Result**: 
   - Giao diện tự động căn chỉnh co giãn, không bị vỡ khung hình, không bị đè khuất chữ hay nút bấm.
 - **Priority**: Low
-- **Tags**: Viewpoint#Accessibility, Module#ShopGo_Voucher, Manual
+- **Tags**: Rule#BR-08, Viewpoint#Accessibility, Module#ShopGo_Voucher, Manual
 
 ---
 
-#### TC_ID: VOUCHER-044
+### TC_ID: VOUCHER-044
 - **Title**: Verify số tiền giảm giá của mã được hệ thống tự động phân bổ tỷ lệ thuận vào từng sản phẩm (Line Items) trong CSDL đơn hàng
 - **Precondition**: 
   - Đơn hàng gồm 2 sản phẩm: Sản phẩm A (Giá 300.000 VNĐ, SL 1) và Sản phẩm B (Giá 100.000 VNĐ, SL 1). Subtotal = 400.000 VNĐ. Áp mã `SAVE40K` (Giảm 40.000 VNĐ).
@@ -849,11 +848,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Số tiền chiết khấu phân bổ cho SP B: `40.000 * 25% = 10.000 VNĐ`.
   - Tổng tiền chiết khấu các line items bằng đúng 40.000 VNĐ.
 - **Priority**: High
-- **Tags**: Rule#MR-05, Viewpoint#[GIẢ ĐỊNH] Data Integrity & Financial Accounting, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-03, Rule#MR-05, Viewpoint#[GIẢ ĐỊNH] Data Integrity & Financial Accounting, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-045
+### TC_ID: VOUCHER-045
 - **Title**: Verify số tiền hoàn lại khi khách hàng trả 01 sản phẩm được tính bằng giá trị sản phẩm đó trừ đi phần chiết khấu đã được phân bổ
 - **Precondition**: 
   - Đơn hàng có SP A (Giá 300.000 VNĐ, Chiết khấu phân bổ 30.000 VNĐ). Khách hàng yêu cầu trả lại SP A.
@@ -867,11 +866,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Số tiền hoàn lại cho SP A được tính chính xác: `300.000 - 30.000 = 270.000 VNĐ`.
   - Hệ thống không hoàn lại nguyên giá 300.000 VNĐ ban đầu.
 - **Priority**: High
-- **Tags**: Rule#MR-05, Viewpoint#[GIẢ ĐỊNH] Data Integrity & Financial Accounting, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-03, Rule#MR-05, Viewpoint#[GIẢ ĐỊNH] Data Integrity & Financial Accounting, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-046
+### TC_ID: VOUCHER-046
 - **Title**: Verify số tiền chiết khấu tính theo phần trăm (%) được làm tròn toán học chuẩn (Math.round) đến hàng đơn vị VNĐ
 - **Precondition**: 
   - Giỏ hàng Subtotal = 155.555 VNĐ. Áp dụng mã `PCT7` (Giảm 7%).
@@ -885,11 +884,11 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Chiết khấu được làm tròn toán học theo `Math.round`: `10.889 VNĐ`.
   - Không có số thập phân trong CSDL và UI, không gây lệch tiền lẻ 1 VNĐ.
 - **Priority**: High
-- **Tags**: Rule#BR-08, Rule#MR-06, Viewpoint#[GIẢ ĐỊNH] Data Integrity & Financial Accounting, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-03, Rule#BR-09, Rule#MR-06, Viewpoint#[GIẢ ĐỊNH] Data Integrity & Financial Accounting, Module#ShopGo_Voucher, Automated
 
 ---
 
-#### TC_ID: VOUCHER-047
+### TC_ID: VOUCHER-047
 - **Title**: Verify hệ thống từ chối áp dụng chiết khấu đối với các sản phẩm thuộc danh mục bị đánh dấu loại trừ khuyến mãi
 - **Precondition**: 
   - Giỏ hàng có SP A (Sản phẩm thường: 200.000 VNĐ) và SP B (Thuộc danh mục "Loại trừ khuyến mãi": 300.000 VNĐ). Subtotal = 500.000 VNĐ. Mã `PCT10` (Giảm 10%).
@@ -904,15 +903,16 @@ Tài liệu này đặc tả chi tiết **47 Test Cases** hoàn chỉnh được
   - Chiết khấu 10% chỉ áp dụng trên SP A (`200.000 * 10% = 20.000 VNĐ`).
   - SP B không được tính chiết khấu. Dòng chiết khấu hiển thị: `-20.000 VNĐ`.
 - **Priority**: High
-- **Tags**: Rule#MR-05, Viewpoint#[GIẢ ĐỊNH] Data Integrity & Financial Accounting, Module#ShopGo_Voucher, Automated
+- **Tags**: Rule#BR-03, Rule#MR-05, Viewpoint#[GIẢ ĐỊNH] Data Integrity & Financial Accounting, Module#ShopGo_Voucher, Automated
 
 ---
 
-## 3. BẢNG TỰ AUDIT CHẤT LƯỢNG TEST CASE (FACT CHECKLIST AUDIT)
+## 3. BẢNG TỰ AUDIT CHẤT LƯỢNG TEST CASE (FACT & BOUNDARY AUDIT CHECKLIST)
 
 | Tiêu chuẩn FACT | Tiêu chí Kiểm tra (Checkpoints) | Tự đánh giá | Luận điểm & Minh chứng |
 |:---|:---|:---:|:---|
-| **F — Factual** | 100% Test Steps, Test Data và Expected Result bám sát Business Rules (BR) và Missing Rules (MR). | **PASS** | Mọi test case đều dẫn chiếu chính xác mã Rule# (BR-01 đến BR-17, MR-01 đến MR-06) tại thẻ `Tags`. Không phát sinh logic bịa đặt. |
-| **A — Applicable** | Cấu trúc 8 trường thông tin chuẩn hóa; Test Data là giá trị thực tế; có thể import và chạy ngay trên Jira Xray / TestRail. | **PASS** | Đã tuân thủ nghiêm ngặt 8 trường chuẩn. Dữ liệu Test Data 100% cụ thể (`customer_happy01@shopgo.vn`, `PCT10`, `200.000 VNĐ`), cấm dùng placeholder mơ hồ. |
-| **C — Complete** | 100% Test Idea "Giữ" từ Step 04 (47/47 Test Ideas) được expand thành Test Case hoàn chỉnh. | **PASS** | Mở rộng trọn vẹn 47/47 Test Idea "Giữ" (từ VOUCHER-001 đến VOUCHER-047), không lược bỏ hay cắt giảm bất kỳ kịch bản hợp lệ nào. |
-| **T — Testable** | Expected Result có tiêu chí xác minhPass/Fail rõ ràng (Message, UI State, DB Record, Response Code). | **PASS** | Expected Result mô tả kết quả đầu ra định lượng cụ thể (Ví dụ: Trạng thái CSDL `USED`, mã lỗi HTTP `401`, số tiền `-50.000 VNĐ`, thông báo nguyên văn). |
+| **F — Factual** | 100% Test Steps, Test Data và Expected Result bám sát Business Rules (BR) và Missing Rules (MR). | **PASS** | Mọi test case đều dẫn chiếu chính xác mã Rule# (BR-01 đến BR-10, MR-01 đến MR-06) tại thẻ `Tags`. Không phát sinh logic bịa đặt. |
+| **A — Accurate** | Test Steps, Test Data và Expected Result diễn đạt chính xác, một nghĩa; giá trị cụ thể, không mơ hồ, không dùng placeholder chung chung. | **PASS** | Đã tuân thủ nghiêm ngặt 8 trường chuẩn. Dữ liệu Test Data 100% cụ thể (`customer_happy01@shopgo.vn`, `PCT10`, `200.000 VNĐ`), cấm dùng placeholder mơ hồ. |
+| **C — Complete** | 100% Test Idea "Giữ" từ Step 04 (47/47 Test Ideas) được expand thành Test Case hoàn chỉnh; không có test case mồ côi. | **PASS** | Mở rộng trọn vẹn 47/47 Test Idea "Giữ" (từ VOUCHER-001 đến VOUCHER-047), không lược bỏ hay cắt giảm bất kỳ kịch bản hợp lệ nào. |
+| **T — Testable** | Expected Result có tiêu chí xác minh Pass/Fail rõ ràng (Message, UI State, DB Record, Response Code). | **PASS** | Expected Result mô tả kết quả đầu ra định lượng cụ thể (Ví dụ: Trạng thái CSDL `USED`, mã lỗi HTTP `401`, số tiền `-50.000 VNĐ`, thông báo nguyên văn). |
+| **Boundary Completeness** | Phủ đầy đủ các mốc biên (`min-1, min, min+1, max-1, max, max+1`) và các Equivalence Partition cho các trường min/max, định dạng và độ dài. | **PASS** | Đã phủ các điểm mút biên Min Order Value (VOUCHER-018, VOUCHER-019), trần giảm giá % 50k (VOUCHER-020, VOUCHER-021), sàn 0 VNĐ (VOUCHER-022), mút thời gian 23:59:59 / 00:00:01 ICT (VOUCHER-023, VOUCHER-024), độ dài 50/51 ký tự (VOUCHER-026). Các mốc biên chi tiết hơn được chuyển Step 06 review bổ sung. |

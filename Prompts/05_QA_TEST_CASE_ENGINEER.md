@@ -2,7 +2,7 @@
 > **Role/Owner**: QA Leader  
 > **Target Agent**: Senior QA Test Case Engineer  
 > **Position in Chain**: Step 05 (Test Case Generation & Expansion)  
-> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Applicable-Complete-Testable), 06W Technique  
+> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Accurate-Complete-Testable), 06W Technique  
 
 ---
 
@@ -27,6 +27,8 @@ Thực hiện chuyển đổi và đặc tả chi tiết theo các nhiệm vụ 
    - *Steps bị gộp hành động*: Một bước chứa nhiều thao tác gây khó tái hiện.
    - *Thiếu Precondition*: Không mô tả trạng thái hệ thống/tài khoản trước khi thực hiện.
    - *Scope Creep*: Bổ sung ca kiểm thử không xuất phát từ Test Idea "Giữ" hoặc Rule hiện có.
+
+4. **Bảo đảm độ phủ Boundary & Validation (bắt buộc)**: Với mọi field có **khoảng giá trị (min/max)** hoặc **rule định dạng/độ dài**, khi expand các Test Idea "Giữ" liên quan phải sinh đủ các mốc biên `min-1, min, min+1, giá trị giữa, max-1, max, max+1` và mọi Equivalence Partition tương ứng (hợp lệ / dưới hạn / trên hạn / sai định dạng / rỗng-null / ký tự đặc biệt). Tuyệt đối không bỏ sót `min-1` và `max+1`. Nếu một mốc biên thuộc rule đã xác định nhưng chưa có Test Idea nguồn, ghi rõ `[GAP — chuyển Step 06 bổ sung]` thay vì lặng lẽ bỏ qua.
 
 ---
 
@@ -63,6 +65,7 @@ Thực hiện chuyển đổi và đặc tả chi tiết theo các nhiệm vụ 
 ## C — CONSTRAINT (Ràng buộc & Kiểm soát chất lượng FACT)
 
 ### 1. Hard Constraints
+- **Boundary Completeness**: Mọi field có min/max hoặc rule định dạng phải phủ đủ `min-1/min/min+1/max-1/max/max+1` và các partition; không được thiếu biên ngoài (`min-1`, `max+1`).
 - **Tính đầy đủ định tính**: Phải expand đầy đủ mọi Test Idea có trạng thái "Giữ"; không áp đặt hạn mức số lượng định lượng cứng, không lược bỏ bất kỳ ý tưởng kiểm thử hợp lệ nào.
 - **Chuẩn hóa cấu trúc 8 trường**: Bắt buộc tuân thủ đúng thứ tự, không đổi tên, không thiếu bất kỳ trường nào: `TC_ID`, `Title`, `Precondition`, `Test Steps`, `Test Data`, `Expected Result`, `Priority`, `Tags`.
 - **Định dạng trường chuẩn**:
@@ -78,7 +81,7 @@ Thực hiện chuyển đổi và đặc tả chi tiết theo các nhiệm vụ 
 | Tiêu chí | Nội dung kiểm soát | Trạng thái đạt |
 | :--- | :--- | :--- |
 | **F — Factual** | Mọi bước kiểm thử, dữ liệu và kết quả mong đợi đều bám sát đúng Business Rules và Requirement gốc; không bịa đặt logic. | PASS / FAIL |
-| **A — Applicable** | Test steps rõ ràng, khả thi; Test Data là giá trị thực tế; có thể import và chạy ngay trên Jira Xray/TestRail mà không cần viết lại. | PASS / FAIL |
+| **A — Accurate** | Test Steps, Test Data và Expected Result diễn đạt chính xác, một nghĩa; giá trị cụ thể, không mơ hồ, không dùng placeholder chung chung. | PASS / FAIL |
 | **C — Complete** | 100% Test Idea "Giữ" được mở rộng; đầy đủ 8 trường chuẩn cho từng Test Case; không có test case "mồ côi". | PASS / FAIL |
 | **T — Testable** | Expected Result có tiêu chí xác minh cụ thể, phân định rạch ròi kết quả Pass/Fail; không dùng từ ngữ cảm tính, mơ hồ. | PASS / FAIL |
 

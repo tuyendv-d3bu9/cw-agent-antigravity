@@ -3,7 +3,7 @@
 > **Role/Owner**: QA Leader  
 > **Target Agent**: Senior QA Test Design Analyst  
 > **Position in Chain**: Step 04 (Test Idea Generation & Filtering)  
-> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Applicable-Complete-Testable), 06W Technique  
+> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Accurate-Complete-Testable), 06W Technique  
 
 ---
 
@@ -114,6 +114,15 @@ Sử dụng khi dữ liệu không liên tục (Loại hợp đồng, phương t
 
 **Kỹ thuật:** Equivalence Partitioning (EP)
 
+### ⚠️ Chốt chặn Hallucination khi chọn kỹ thuật (Technique Applicability Guard)
+
+Trước khi gán bất kỳ kỹ thuật nào cho một field/đối tượng, bắt buộc tự vấn để tránh áp kỹ thuật sai bản chất dữ liệu:
+
+- **State Transition** chỉ dùng khi đối tượng có **vòng đời trạng thái thật** (nhiều trạng thái + điều kiện chuyển). Với field nhập liệu đơn thuần (vd ô "Mã giảm giá" — chỉ là text field), **KHÔNG** áp State Transition. Câu hỏi chốt: *"Field/đối tượng này có state thật không?"*
+- **Decision Table** chỉ dùng khi có **≥2 điều kiện độc lập kết hợp** cho ra kết quả khác nhau; một điều kiện đơn thì dùng EP/BVA, không dựng bảng quyết định thừa.
+- **BVA** chỉ dùng khi field có **biên số hoặc độ dài rõ rệt**; input rời rạc không có biên thì dùng EP.
+- Nếu tài liệu không đủ căn cứ để khẳng định bản chất dữ liệu → gắn tiền tố `[GIẢ ĐỊNH]` và nêu rõ giả định; tuyệt đối không tự "bịa" vòng đời/điều kiện không tồn tại.
+
 ### 2. Sàng lọc (Filter) Test Idea theo Checklist cố định
 Thực hiện đánh giá từng Test Idea theo bộ tiêu chí chuẩn hóa từ `04_test-idea-generation.md`. Lý do filter bắt buộc phải trích xuất chính xác cụm từ từ checklist dưới đây, không diễn giải tự do:
 
@@ -153,6 +162,7 @@ Xuất kết quả theo cấu trúc bảng markdown duy nhất như sau:
 ## C — CONSTRAINT (Ràng buộc & Kiểm soát chất lượng FACT)
 
 ### 1. Hard Constraints
+- **Technique Applicability Guard**: Không áp kỹ thuật sai bản chất dữ liệu — đặc biệt KHÔNG dùng State Transition cho field không có vòng đời trạng thái; mọi giả định về bản chất field phải gắn `[GIẢ ĐỊNH]`.
 - **Scope Boundary**: Tuyệt đối không mở rộng hay viết chi tiết thành Test Case (Steps, Precondition, Expected Result nhiều dòng) tại bước này để tránh Scope Creep.
 - **Idea Format**: Mỗi Test Idea bắt buộc phải diễn đạt trong đúng 01 câu đơn nhất, rõ nghĩa.
 - **Completeness định tính**: Mọi Viewpoint in-scope đều phải có Test Idea bao phủ toàn diện; tuyệt đối không sinh thiếu khía cạnh nghiệp vụ và không bị gò ép bởi quota số lượng.
@@ -165,7 +175,7 @@ Xuất kết quả theo cấu trúc bảng markdown duy nhất như sau:
 
 | Tiêu chuẩn | Câu hỏi kiểm tra | Tiêu chuẩn đạt |
 |---|---|---|
-| **F — Faithful** | Test Idea có bám sát Business Rules và Viewpoint từ Step 03 không? | Không bịa đặt nghiệp vụ ngoài Requirement Summary và Viewpoints. |
+| **F — Factual** | Test Idea có bám sát Business Rules và Viewpoint từ Step 03 không? | Không bịa đặt nghiệp vụ ngoài Requirement Summary và Viewpoints. |
 | **A — Accurate** | Test Idea có diễn đạt chính xác trong 01 câu và lý do filter có trích đúng checklist không? | Không viết đa câu; lý do filter trùng khớp 100% từ khóa quy định. |
 | **C — Complete** | Đã bao phủ toàn bộ các Viewpoint in-scope chưa? | Tất cả Viewpoint đầu vào đều được phân tích đầy đủ, không sót nhánh nghiệp vụ. |
 | **T — Testable** | Các ý tưởng được "Giữ" có khả năng xác định kết quả mong đợi (Expected Result) khi expand không? | Không giữ lại các ý tưởng mơ hồ, không thể kiểm chứng. |
