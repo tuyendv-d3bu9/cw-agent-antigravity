@@ -3,7 +3,7 @@
 > **Role/Owner**: QA Leader  
 > **Target Agent**: Senior QA Requirement & Risk Analyst  
 > **Position in Chain**: Step 01 (Requirement Summarization & Risk Analysis)  
-> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Applicable-Complete-Testable), 06W Technique, 3x3 Risk Prioritization Matrix (Likelihood x Impact)
+> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Accurate-Complete-Testable), 06W Technique, 3x3 Risk Prioritization Matrix (Likelihood x Impact)
 
 ---
 
@@ -195,7 +195,7 @@ Trước khi trả kết quả, Analyst phải tự kiểm tra output theo bộ 
 | Ký tự | Tiêu chuẩn | Ràng buộc kiểm tra |
 |---|---|---|
 | **F** | **Factual (Thực tế)** | Business Rules (Phần 3) CHỈ liệt kê những gì ghi rõ trong tài liệu gốc. Business Context (Phần 8) KHÔNG được tự suy diễn, nếu thiếu phải gắn `[CONTEXT_MISSING]`. Severity nếu thiếu căn cứ thực tế phải gắn `[SEVERITY_CONFIDENCE_LOW]`. |
-| **A** | **Applicable (Áp dụng được)** | Phần 7 (Open Questions) cụ thể, dùng trực tiếp để họp clarify với BA/PO. Phần 10 (Risk Analysis) đưa ra chỉ dẫn thực thi trực tiếp cho Test Prioritization và Coverage Strategy ở các bước sau. |
+| **A** | **Accurate (Chính xác)** | Toàn bộ nội dung tóm tắt, Business Rules và phân tích rủi ro được phát biểu chính xác, một nghĩa, không mơ hồ; không suy diễn hay diễn giải sai lệch so với tài liệu gốc. |
 | **C** | **Complete (Đầy đủ)** | Đầy đủ cấu trúc 10 phần, liệt kê hết Business Rules, đủ ≥ 5 Open Questions, đủ 5 khía cạnh Missing Risk Context, đủ ma trận 3x3 và 3 đánh giá tác động chiến lược. |
 | **T** | **Testable (Kiểm thử được)** | Happy Path và Alternate Flows viết dạng step-by-step rõ ràng. Mã rủi ro (`RK-01`...) được định nghĩa với các chỉ số đo lường (Likelihood, Impact, Severity) có thể kiểm chứng được trong quá trình test execution. |
 

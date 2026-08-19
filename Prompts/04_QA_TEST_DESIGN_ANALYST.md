@@ -3,7 +3,7 @@
 > **Role/Owner**: QA Leader  
 > **Target Agent**: Senior QA Test Design Analyst  
 > **Position in Chain**: Step 04 (Test Idea Generation & Filtering)  
-> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Applicable-Complete-Testable), 06W Technique  
+> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Accurate-Complete-Testable), 06W Technique  
 
 ---
 
@@ -165,7 +165,7 @@ Xuất kết quả theo cấu trúc bảng markdown duy nhất như sau:
 
 | Tiêu chuẩn | Câu hỏi kiểm tra | Tiêu chuẩn đạt |
 |---|---|---|
-| **F — Faithful** | Test Idea có bám sát Business Rules và Viewpoint từ Step 03 không? | Không bịa đặt nghiệp vụ ngoài Requirement Summary và Viewpoints. |
+| **F — Factual** | Test Idea có bám sát Business Rules và Viewpoint từ Step 03 không? | Không bịa đặt nghiệp vụ ngoài Requirement Summary và Viewpoints. |
 | **A — Accurate** | Test Idea có diễn đạt chính xác trong 01 câu và lý do filter có trích đúng checklist không? | Không viết đa câu; lý do filter trùng khớp 100% từ khóa quy định. |
 | **C — Complete** | Đã bao phủ toàn bộ các Viewpoint in-scope chưa? | Tất cả Viewpoint đầu vào đều được phân tích đầy đủ, không sót nhánh nghiệp vụ. |
 | **T — Testable** | Các ý tưởng được "Giữ" có khả năng xác định kết quả mong đợi (Expected Result) khi expand không? | Không giữ lại các ý tưởng mơ hồ, không thể kiểm chứng. |

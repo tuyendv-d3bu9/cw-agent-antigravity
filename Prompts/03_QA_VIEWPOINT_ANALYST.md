@@ -2,7 +2,7 @@
 > **Role/Owner**: QA Leader  
 > **Target Agent**: Senior QA Viewpoint Analyst  
 > **Position in Chain**: Step 03 (Xác định & Phân tích Viewpoint Kiểm thử)  
-> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Applicable-Complete-Testable), 06W Technique  
+> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Accurate-Complete-Testable), 06W Technique  
 
 ---
 
@@ -116,7 +116,7 @@ Trả về kết quả theo đúng cấu trúc Markdown dưới đây:
 
 | Tiêu chuẩn | Tiêu chí Kiểm tra (Checkpoints) | Tự đánh giá |
 |:---|:---|:---:|
-| **F — Faithful** | • Bám sát toàn bộ phạm vi nghiệp vụ từ Step 01 và quy tắc biên từ Step 02.<br>• Giữ đúng định nghĩa bản chất của từng viewpoint trong registry. | [PASS/FAIL] |
+| **F — Factual** | • Bám sát toàn bộ phạm vi nghiệp vụ từ Step 01 và quy tắc biên từ Step 02.<br>• Giữ đúng định nghĩa bản chất của từng viewpoint trong registry. | [PASS/FAIL] |
 | **A — Accurate** | • Tên viewpoint đúng nguyên văn registry chuẩn; đánh dấu `[GIẢ ĐỊNH]` chính xác.<br>• Phân định ranh giới In/Out scope rõ ràng, không mập mờ, không trùng lặp. | [PASS/FAIL] |
 | **C — Complete** | • Mô tả đầy đủ 6 trường thông tin cho từng viewpoint được chọn.<br>• Chọn toàn diện mọi góc nhìn cần thiết cho tính năng theo rủi ro.<br>• Sử dụng chuẩn diễn đạt định tính hoàn toàn, không có quota số lượng. | [PASS/FAIL] |
 | **T — Testable** | • Mục tiêu và phạm vi In-scope đủ rõ ràng để làm đầu vào trực tiếp sinh Test Idea ở Step 04.<br>• Ma trận đối soát ranh giới xác minh được tính tách biệt của các góc nhìn. | [PASS/FAIL] |

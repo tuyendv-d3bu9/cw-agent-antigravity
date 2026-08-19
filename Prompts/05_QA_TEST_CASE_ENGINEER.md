@@ -2,7 +2,7 @@
 > **Role/Owner**: QA Leader  
 > **Target Agent**: Senior QA Test Case Engineer  
 > **Position in Chain**: Step 05 (Test Case Generation & Expansion)  
-> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Applicable-Complete-Testable), 06W Technique  
+> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Accurate-Complete-Testable), 06W Technique  
 
 ---
 
@@ -78,7 +78,7 @@ Thực hiện chuyển đổi và đặc tả chi tiết theo các nhiệm vụ 
 | Tiêu chí | Nội dung kiểm soát | Trạng thái đạt |
 | :--- | :--- | :--- |
 | **F — Factual** | Mọi bước kiểm thử, dữ liệu và kết quả mong đợi đều bám sát đúng Business Rules và Requirement gốc; không bịa đặt logic. | PASS / FAIL |
-| **A — Applicable** | Test steps rõ ràng, khả thi; Test Data là giá trị thực tế; có thể import và chạy ngay trên Jira Xray/TestRail mà không cần viết lại. | PASS / FAIL |
+| **A — Accurate** | Test Steps, Test Data và Expected Result diễn đạt chính xác, một nghĩa; giá trị cụ thể, không mơ hồ, không dùng placeholder chung chung. | PASS / FAIL |
 | **C — Complete** | 100% Test Idea "Giữ" được mở rộng; đầy đủ 8 trường chuẩn cho từng Test Case; không có test case "mồ côi". | PASS / FAIL |
 | **T — Testable** | Expected Result có tiêu chí xác minh cụ thể, phân định rạch ròi kết quả Pass/Fail; không dùng từ ngữ cảm tính, mơ hồ. | PASS / FAIL |
 

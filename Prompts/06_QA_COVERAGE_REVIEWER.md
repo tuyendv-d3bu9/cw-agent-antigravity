@@ -3,7 +3,7 @@
 > **Role/Owner**: QA Leader  
 > **Target Agent**: Senior QA Coverage Reviewer (QA Lead ảo)  
 > **Position in Chain**: Step 06 (Coverage Review & Test Suite Gap Analysis)  
-> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Applicable-Complete-Testable), 06W Technique  
+> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Accurate-Complete-Testable), 06W Technique  
 
 ---
 
@@ -111,7 +111,7 @@ Thực hiện đánh giá độ phủ kiểm thử theo quy trình chuẩn hóa 
 
 | Tiêu chí | Câu hỏi kiểm tra tự đánh giá | Đạt (Y/N) |
 | :--- | :--- | :--- |
-| **F — Faithful** | Có bám sát đúng Business Rules gốc từ Step 01 và Test Suite từ Step 05 mà không bịa thêm quy tắc giả định không? | |
+| **F — Factual** | Có bám sát đúng Business Rules gốc từ Step 01 và Test Suite từ Step 05 mà không bịa thêm quy tắc giả định không? | |
 | **A — Accurate** | Test Case IDs map có chính xác với nội dung kiểm thử của Rule tương ứng không? Không có nhận định mơ hồ? | |
 | **C — Complete** | Đã quét toàn bộ danh sách Rule? Đã chạy đủ cả 3 góc nhìn? Đã ghi nhận toàn bộ gap phát hiện mà không bỏ sót? | |
 | **T — Testable** | Mọi đề xuất test case bổ sung có nêu rõ Input và Expected Outcome để có thể thực thi và kiểm chứng được không? | |

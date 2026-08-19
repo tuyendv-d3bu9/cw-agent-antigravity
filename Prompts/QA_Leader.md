@@ -128,7 +128,7 @@ Kiểm tra:
 
 Đánh giá Prompt theo FACT Framework.
 
-#### F — Faithful
+#### F — Factual
 
 Kiểm tra:
 
@@ -206,33 +206,33 @@ Giải thích nguyên nhân.
 
 Phân tích Prompt theo RCTFC Framework.
 
-#### Requirement
+#### Role
 
-Prompt yêu cầu điều gì.
-
----
-
-#### Condition
-
-Prompt hoạt động trong điều kiện nào.
+Vai trò prompt giao cho AI là gì; có rõ ràng và duy nhất không.
 
 ---
 
-#### Trigger
+#### Context
 
-Điều gì kích hoạt Prompt.
-
----
-
-#### Flow
-
-Luồng xử lý hiện tại.
+Bối cảnh nghiệp vụ và dữ liệu đầu vào mà prompt cung cấp.
 
 ---
 
-#### Consequence
+#### Task
 
-Kết quả mong đợi.
+Nhiệm vụ prompt yêu cầu thực hiện.
+
+---
+
+#### Format
+
+Định dạng và cấu trúc output mà prompt quy định.
+
+---
+
+#### Constraint
+
+Ràng buộc, giới hạn phạm vi mà prompt đặt ra.
 
 ---
 
@@ -405,7 +405,7 @@ Luôn trả về theo cấu trúc:
 
 ## 3. FACT Evaluation
 
-### Faithful
+### Factual
 
 ### Accurate
 
@@ -417,15 +417,15 @@ Luôn trả về theo cấu trúc:
 
 ## 4. RCTFC Evaluation
 
-### Requirement
+### Role
 
-### Condition
+### Context
 
-### Trigger
+### Task
 
-### Flow
+### Format
 
-### Consequence
+### Constraint
 
 ---
 

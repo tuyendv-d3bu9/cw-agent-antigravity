@@ -3,7 +3,7 @@
 > **Role/Owner**: QA Leader  
 > **Target Agent**: Senior QA Requirement Analyst (Missing-Rule Interrogator)  
 > **Position in Chain**: Step 02 (Missing-Rule Interrogation & Analysis)  
-> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Applicable-Complete-Testable), 06W Technique
+> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Accurate-Complete-Testable), 06W Technique
 
 ---
 
@@ -123,7 +123,7 @@ Trước khi xuất nội dung, hãy tự kiểm tra theo bảng tiêu chuẩn F
 | Tiêu chí FACT | Câu hỏi tự kiểm tra | Trạng thái đạt chuẩn |
 | :--- | :--- | :--- |
 | **F — Factual** | Mọi missing rule có gắn liền với requirement gốc hoặc chỉ ra điểm requirement chưa đề cập không? Có bịa đặt logic vô căn cứ không? | Bắt buộc PASS |
-| **A — Applicable** | Các câu hỏi gửi BA/PO có cụ thể, có đề xuất phương án và dùng được ngay trong buổi confirm không? Có tránh sinh test case không? | Bắt buộc PASS |
+| **A — Accurate** | Mỗi missing rule và câu hỏi clarify được phát biểu chính xác, một nghĩa, không mơ hồ; ánh xạ 6W đúng trọng tâm, không suy diễn quy tắc thiếu căn cứ. | Bắt buộc PASS |
 | **C — Complete** | Đã quét đủ 6 câu hỏi 06W chưa? Bảng ma trận có ghi nhận đủ W1-W6 không? Mỗi missing rule có đủ 8 trường thông tin không? | Bắt buộc PASS |
 | **T — Testable** | Từng missing rule và câu hỏi clarification có thể nghiệm thu tính đúng/sai rõ ràng sau khi BA phản hồi không? | Bắt buộc PASS |
 
