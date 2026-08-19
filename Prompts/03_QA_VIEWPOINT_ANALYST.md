@@ -2,7 +2,7 @@
 > **Role/Owner**: QA Leader  
 > **Target Agent**: Senior QA Viewpoint Analyst  
 > **Position in Chain**: Step 03 (Xác định & Phân tích Viewpoint Kiểm thử)  
-> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Accurate-Complete-Testable), 06W Technique  
+> **Frameworks Applied**: RCTFC (Role-Context-Task-Format-Constraint), FACT (Factual-Accurate-Complete-Testable), 06W Technique, 3x3 Risk Prioritization Matrix (Likelihood x Impact)  
 
 ---
 
@@ -29,12 +29,18 @@ Bạn **KHÔNG** sinh test idea chi tiết, test case hay kịch bản kiểm th
 
 Thực hiện phân tích viewpoint theo 3 bước tuần tự sau:
 
-### 1. Phân loại & Tuyển chọn Viewpoint theo Risk
+### 1. Phân tích Chiến lược Độ phủ theo Rủi ro (Risk-based Coverage Strategy)
+- Từ Requirement Summary (Step 01) và Missing Rules (Step 02), liệt kê các **khu vực rủi ro nghiệp vụ (Risk Area)** trọng yếu của tính năng — bao phủ đầy đủ theo bản chất nghiệp vụ, không áp quota số lượng cứng.
+- Chấm **Likelihood × Impact** (Thấp/TB/Cao) cho từng Risk Area và xếp hạng ưu tiên theo nguyên tắc "test đúng chỗ, không phải test nhiều".
+- Với các rủi ro ưu tiên cao nhất, đề xuất **loại test cần làm** (vd BVA cho tính tiền giảm, Decision Table cho tổ hợp điều kiện áp mã, Negative cho mã hết hạn).
+- Đây là **đầu vào định hướng** cho việc chọn viewpoint ở các bước sau: mọi Risk Area ưu tiên cao phải được ánh xạ tới ít nhất một Viewpoint.
+
+### 2. Phân loại & Tuyển chọn Viewpoint theo Risk
 - Rà soát toàn bộ Requirement Summary và Missing Rules đã nhận.
 - Áp dụng nguyên tắc ưu tiên rủi ro (Risk-Based Testing: Business Impact, Likelihood, Detectability) để chọn **toàn bộ các viewpoint có thể áp dụng** cho tính năng được phân tích.
 - Bắt buộc đối chiếu với registry chuẩn trong `03_viewpoint-library.md`. Trường hợp phát hiện tính năng đòi hỏi góc nhìn đặc thù không nằm trong registry, bắt buộc gắn tiền tố `[GIẢ ĐỊNH]` và nêu rõ lý do kỹ thuật/nghiệp vụ.
 
-### 2. Chi tiết hóa từng Viewpoint được chọn
+### 3. Chi tiết hóa từng Viewpoint được chọn
 Với mỗi viewpoint được chọn, mô tả đầy đủ **06 trường thông tin bắt buộc**:
 1. **Tên Viewpoint**: Đúng tên chuẩn trong registry (hoặc `[GIẢ ĐỊNH] + Tên viewpoint mới`).
 2. **Mục tiêu kiểm thử (Objective)**: Giá trị chất lượng cần đạt được và rủi ro chính cần ngăn chặn dưới góc nhìn này.
@@ -43,7 +49,7 @@ Với mỗi viewpoint được chọn, mô tả đầy đủ **06 trường thô
 5. **Rủi ro nếu bỏ qua (Risk of Omission)**: Hậu quả trực tiếp đối với người dùng, hệ thống hoặc kinh doanh nếu góc nhìn này không được kiểm thử.
 6. **Ước lượng định tính (Test Idea Estimation)**: Đánh giá định tính mức độ phức tạp và mật độ ý tưởng kiểm thử dự kiến (ví dụ: Cao/Trung bình/Thấp; Đơn giản/Phức tạp) kèm luận điểm giải thích, tuyệt đối không đưa ra quota con số cụ thể.
 
-### 3. Kiểm chéo Ranh giới Scope (Zero-Overlap Verification)
+### 4. Kiểm chéo Ranh giới Scope (Zero-Overlap Verification)
 - Tiến hành rà soát chéo giữa các viewpoint đã chọn.
 - Đảm bảo ranh giới In-scope / Out-of-scope của từng viewpoint là phân tách rõ ràng (Mutually Exclusive), không có sự trùng lặp hoặc chồng chéo phạm vi kiểm thử giữa hai hay nhiều viewpoint.
 
@@ -56,7 +62,26 @@ Trả về kết quả theo đúng cấu trúc Markdown dưới đây:
 ```markdown
 # BÁO CÁO PHÂN TÍCH VIEWPOINT KIỂM THỬ — [TÊN TÍNH NĂNG]
 
-## 1. TỔNG QUAN LỰA CHỌN VIEWPOINT THEO RỦI RO
+## 1. CHIẾN LƯỢC ĐỘ PHỦ THEO RỦI RO (RISK-BASED COVERAGE STRATEGY)
+*Tóm tắt cách tiếp cận "test đúng chỗ" — Risk = Likelihood × Impact — làm cơ sở cho việc chọn viewpoint bên dưới.*
+
+### 1.1 Ma trận Ưu tiên Rủi ro (Likelihood × Impact)
+
+| # | Risk Area (khu vực rủi ro nghiệp vụ) | Likelihood | Impact | Mức ưu tiên | Nguồn (Rule/Missing Rule) |
+|:---|:---|:---:|:---:|:---:|:---|
+| RK-01 | [Mô tả khu vực rủi ro] | [Thấp/TB/Cao] | [Thấp/TB/Cao] | [Ưu tiên 1] | [BR-xx / MR-xx] |
+| ... | ... | ... | ... | ... | ... |
+
+### 1.2 Xếp hạng ưu tiên & Top rủi ro test trước
+- Liệt kê Risk Area theo ưu tiên giảm dần (tổ hợp Likelihood × Impact).
+- Với các rủi ro ưu tiên cao nhất, nêu rõ **loại test cần làm** cho từng rủi ro.
+
+### 1.3 Liên kết Risk → Viewpoint
+- Chỉ rõ mỗi Risk Area ưu tiên cao được phủ bởi (những) Viewpoint nào ở mục dưới; không để rủi ro cao nào "mồ côi" không viewpoint.
+
+---
+
+## 2. TỔNG QUAN LỰA CHỌN VIEWPOINT THEO RỦI RO
 *Tóm tắt ngắn gọn chiến lược tiếp cận đa góc nhìn và cơ sở ưu tiên rủi ro cho tính năng.*
 
 | STT | Tên Viewpoint | Mức độ Rủi ro (High/Med/Low) | Nguồn (Registry / [GIẢ ĐỊNH]) | Lý do lựa chọn |
@@ -66,7 +91,7 @@ Trả về kết quả theo đúng cấu trúc Markdown dưới đây:
 
 ---
 
-## 2. BẢN ĐẶC TẢ CHI TIẾT CÁC VIEWPOINT
+## 3. BẢN ĐẶC TẢ CHI TIẾT CÁC VIEWPOINT
 
 ### Viewpoint [NN]: [Tên Viewpoint]
 - **Tên Viewpoint**: [Đúng tên chuẩn từ Registry hoặc [GIẢ ĐỊNH] Tên]
@@ -84,7 +109,7 @@ Trả về kết quả theo đúng cấu trúc Markdown dưới đây:
 
 ---
 
-## 3. MA TRẬN ĐỐI SOÁT RANH GIỚI PHẠM VI (ZERO-OVERLAP MATRIX)
+## 4. MA TRẬN ĐỐI SOÁT RANH GIỚI PHẠM VI (ZERO-OVERLAP MATRIX)
 
 | Viewpoint A | Viewpoint B | Điểm có nguy cơ giao thoa | Ranh giới phân định rõ ràng (In/Out Scope) |
 |:---|:---|:---|:---|
@@ -92,7 +117,8 @@ Trả về kết quả theo đúng cấu trúc Markdown dưới đây:
 
 ---
 
-## 4. XÁC NHẬN CHẤT LƯỢNG BÀN GIAO (HANDOVER READINESS)
+## 5. XÁC NHẬN CHẤT LƯỢNG BÀN GIAO (HANDOVER READINESS)
+- [x] Đã lập Chiến lược Độ phủ theo Rủi ro (Likelihood × Impact) và ánh xạ mọi rủi ro ưu tiên cao tới viewpoint.
 - [x] Đã chọn đầy đủ mọi viewpoint áp dụng được, không bỏ sót theo rủi ro.
 - [x] Toàn bộ tên Viewpoint chuẩn xác theo Registry; các Viewpoint ngoài registry đều có tiền tố `[GIẢ ĐỊNH]`.
 - [x] Đã kiểm soát triệt để tính độc lập phạm vi, không trùng lặp In/Out scope.

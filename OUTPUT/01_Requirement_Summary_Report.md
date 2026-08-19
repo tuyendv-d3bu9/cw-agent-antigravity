@@ -65,11 +65,17 @@ Tính năng **"Áp dụng Mã Giảm Giá (Voucher)"** (Function D) nằm ở b�
 
 ## 7. OPEN QUESTIONS
 - Q1 (What if input): Khi người dùng nhập mã giảm giá, hệ thống có tự động cắt bỏ khoảng trắng thừa ở đầu/cuối chuỗi (trim spaces) và xử lý không phân biệt chữ hoa/chữ thường (case-insensitive) hay yêu cầu nhập chính xác tuyệt đối?
+  - → **[GIẢ ĐỊNH] Trả lời**: Hệ thống tự trim khoảng trắng đầu/cuối và chuẩn hóa case-insensitive (đưa mã về chữ hoa) trước khi validate; khách không cần nhập chính xác hoa/thường.
 - Q2 (What if data): Đối với mã giảm giá theo tỷ lệ phần trăm (%), hệ thống có thiết lập trần giảm giá tối đa (Max discount cap) hay không? Trường hợp số tiền giảm bằng 100% giá trị đơn hàng, tổng tiền thanh toán có bị âm không hay áp dụng sàn tối thiểu là 0 VNĐ?
+  - → **[GIẢ ĐỊNH] Trả lời**: Số tiền giảm không vượt quá giá trị đơn hàng; tổng tiền thanh toán có sàn tối thiểu 0 VNĐ, không bao giờ âm. (Trần giảm tối đa theo campaign chưa được cung cấp — cần BA xác nhận.)
 - Q3 (What if state): Hệ thống có hỗ trợ cho phép áp dụng đồng thời nhiều mã giảm giá (ví dụ: mã giảm giá sản phẩm kết hợp mã miễn phí vận chuyển) trên cùng 01 đơn hàng hay chỉ cho phép sử dụng duy nhất 01 mã cho mỗi giao dịch?
+  - → **[GIẢ ĐỊNH] Trả lời**: Cho phép áp đồng thời tối đa 02 mã nếu KHÁC loại (01 mã giảm giá đơn + 01 mã miễn phí vận chuyển); KHÔNG cộng dồn 02 mã cùng loại trên một đơn.
 - Q4 (What when timing): Trường hợp người dùng nhấn nút "Áp dụng" mã thành công ở thời điểm mã còn hạn (ví dụ: 23:59:50), nhưng khi thực hiện "Đặt hàng" chốt đơn thì mã đã quá ngày hết hạn, hệ thống sẽ giữ giá trị giảm đã ghi nhận hay sẽ báo lỗi và yêu cầu tính lại tổng tiền?
+  - → **[GIẢ ĐỊNH] Trả lời**: Hệ thống re-validate mã tại bước "Đặt hàng"; nếu mã đã hết hạn tại thời điểm chốt đơn → hủy phần giảm, báo lỗi và tính lại tổng tiền; KHÔNG giữ giá trị giảm đã ghi nhận trước đó.
 - Q5 (What happens after post-condition): Khi một đơn hàng có sử dụng mã giảm giá bị hủy (do người dùng hủy hoặc hệ thống/Admin hủy) hoặc phát sinh trả hàng, mã giảm giá đó có được khôi phục về trạng thái "chưa sử dụng" cho khách hàng hay không?
+  - → **[GIẢ ĐỊNH] Trả lời**: Đơn bị hủy hoặc trả hàng TOÀN phần → mã khôi phục về trạng thái "chưa sử dụng" và hoàn lại lượt dùng cho khách; trả hàng MỘT phần thì KHÔNG hoàn mã.
 - Q6 (Who else actor): Một mã giảm giá có quy định hạn mức tổng số lần sử dụng trên toàn hệ thống hay không? Nếu có 2 người dùng cùng bấm "Áp dụng" cho lượt dùng cuối cùng của mã tại cùng một thời điểm, hệ thống xử lý tranh chấp (concurrency locking) như thế nào?
+  - → **[GIẢ ĐỊNH] Trả lời**: Mã có hạn mức tổng lượt dùng toàn hệ thống; tranh chấp lượt cuối xử lý bằng khóa ở tầng server (atomic decrement / optimistic lock): chỉ giao dịch xác nhận trước nhận lượt cuối, giao dịch còn lại nhận lỗi "Mã đã hết lượt sử dụng".
 
 ---
 

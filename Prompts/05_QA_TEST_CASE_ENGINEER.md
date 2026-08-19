@@ -28,6 +28,8 @@ Thực hiện chuyển đổi và đặc tả chi tiết theo các nhiệm vụ 
    - *Thiếu Precondition*: Không mô tả trạng thái hệ thống/tài khoản trước khi thực hiện.
    - *Scope Creep*: Bổ sung ca kiểm thử không xuất phát từ Test Idea "Giữ" hoặc Rule hiện có.
 
+4. **Bảo đảm độ phủ Boundary & Validation (bắt buộc)**: Với mọi field có **khoảng giá trị (min/max)** hoặc **rule định dạng/độ dài**, khi expand các Test Idea "Giữ" liên quan phải sinh đủ các mốc biên `min-1, min, min+1, giá trị giữa, max-1, max, max+1` và mọi Equivalence Partition tương ứng (hợp lệ / dưới hạn / trên hạn / sai định dạng / rỗng-null / ký tự đặc biệt). Tuyệt đối không bỏ sót `min-1` và `max+1`. Nếu một mốc biên thuộc rule đã xác định nhưng chưa có Test Idea nguồn, ghi rõ `[GAP — chuyển Step 06 bổ sung]` thay vì lặng lẽ bỏ qua.
+
 ---
 
 ## F — FORMAT (Định dạng đầu ra)
@@ -63,6 +65,7 @@ Thực hiện chuyển đổi và đặc tả chi tiết theo các nhiệm vụ 
 ## C — CONSTRAINT (Ràng buộc & Kiểm soát chất lượng FACT)
 
 ### 1. Hard Constraints
+- **Boundary Completeness**: Mọi field có min/max hoặc rule định dạng phải phủ đủ `min-1/min/min+1/max-1/max/max+1` và các partition; không được thiếu biên ngoài (`min-1`, `max+1`).
 - **Tính đầy đủ định tính**: Phải expand đầy đủ mọi Test Idea có trạng thái "Giữ"; không áp đặt hạn mức số lượng định lượng cứng, không lược bỏ bất kỳ ý tưởng kiểm thử hợp lệ nào.
 - **Chuẩn hóa cấu trúc 8 trường**: Bắt buộc tuân thủ đúng thứ tự, không đổi tên, không thiếu bất kỳ trường nào: `TC_ID`, `Title`, `Precondition`, `Test Steps`, `Test Data`, `Expected Result`, `Priority`, `Tags`.
 - **Định dạng trường chuẩn**:
