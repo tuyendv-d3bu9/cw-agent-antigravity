@@ -112,7 +112,7 @@ Purpose
 When To Use
 Why Use
 Inputs
-Outputs
+OUTPUTS
 Benefits
 Limitations
 Output:

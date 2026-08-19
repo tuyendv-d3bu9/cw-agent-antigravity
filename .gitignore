@@ -2,8 +2,10 @@ node_modules
 .env
 
 .backup/
-Outputs/
-outputs/
+OUTPUTS/
+OUTPUTS/
 
-RAW_INPUT/*.docx 
-RAW_INPUT/*.md
+INPUT/raw 
+
+.agents/
+skills-lock.json
