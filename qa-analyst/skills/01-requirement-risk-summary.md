@@ -21,6 +21,8 @@ Analysis 3 phần**. Là cửa ngõ đầu tiên của pipeline — mọi bướ
 - Sinh viewpoint, test idea hay test case — đó là skill 03/04 và `qa-test-design`.
 - Tự suy diễn Business Context. Thiếu dữ liệu bối cảnh → bắt buộc `[CONTEXT_MISSING]`.
 - Đánh Severity chỉ dựa trên tài liệu Requirement đơn thuần (xem Bước 10).
+- Tự ý đi tiếp sang các phân tích tiếp theo / skill tiếp theo khi Open Questions chưa được trả lời và xác nhận.
+- Bỏ qua hoặc tự động cho qua khi người dùng cố tình skip câu hỏi chưa làm rõ.
 
 ## Các bước
 
@@ -33,10 +35,25 @@ Analysis 3 phần**. Là cửa ngõ đầu tiên của pipeline — mọi bướ
 | 4 | Happy Path | Luồng chính thành công, step-by-step, dạng kịch bản kiểm thử được |
 | 5 | Alternate Flows | Luồng phụ / rẽ nhánh / ngoại lệ / lỗi được đề cập |
 | 6 | Out of Scope | Ghi rõ những gì tài liệu KHÔNG đề cập |
-| 7 | Open Questions | **Tối thiểu 5 câu**. Tài liệu càng đầy đủ càng phải dùng 06W (§4) để đào góc khuất |
+| 7 | Open Questions | **Tối thiểu 5 câu**. Dùng 06W (§4) để đào sâu vùng chưa rõ, mâu thuẫn |
 | 8 | Business Criticality Assessment | Thu thập Business Context phục vụ Risk Analysis. Không có dữ liệu → `[CONTEXT_MISSING]` |
 | 9 | Missing Risk Context | Quét đủ 5 khía cạnh (bảng dưới), tổng hợp 3 mục *Available / Missing / Risk Analysis Impact* |
 | 10 | Risk Analysis & Prioritization | Ma trận 3x3 (§5) + 3 đánh giá tác động chiến lược |
+
+## Cơ chế Hard Stop & Xác nhận (Clarification Gate)
+> **Bắt buộc tuân thủ**: Phân tích yêu cầu là nền móng cho toàn bộ pipeline QA. Bất kỳ sự thiếu sót hoặc hiểu sai nào đều gây sai lệch lan truyền.
+
+1. **Dừng lại yêu cầu trả lời & confirm**:
+   - Khi phát hiện các thông tin chưa rõ, thiếu sót hoặc có câu hỏi cần làm rõ ở **Bước 7 (Open Questions)**: Agent **BẮT BUỘC DỪNG LẠI**, xuất danh sách câu hỏi cần làm rõ/confirm cho người dùng (BA / PO / User).
+   - Tuyệt đối không tự ý tiếp tục các bước phân tích sâu hơn hoặc chuyển sang skill tiếp theo (`02`, `03`...) khi chưa có câu trả lời.
+2. **Cập nhật câu trả lời vào file OUTPUT**:
+   - Khi người dùng phản hồi/xác nhận: Cập nhật ngay câu trả lời vào mục `## 7. OPEN QUESTIONS` (kèm trạng thái `[Đã xác nhận]` và chi tiết câu trả lời) trong file `output/<task-slug>/01_requirement_risk_summary.md`.
+   - Nếu câu trả lời bổ sung hoặc làm rõ Business Rule / Luồng xử lý, cập nhật bổ sung tương ứng vào `## 3. BUSINESS RULES` hoặc `## 5. ALTERNATE FLOWS`.
+   - Chỉ khi đã cập nhật hoàn chỉnh vào file OUTPUT mới được phép tiến hành các bước phân tích tiếp theo.
+3. **Quy tắc nghiêm ngặt chống bỏ qua (Strict Anti-Bypass Rule)**:
+   - Nếu người dùng cố tình bỏ qua (yêu cầu đi tiếp, "skip", "tự giả định", hoặc không trả lời các câu hỏi cần làm rõ):
+   - Ở lượt tiếp theo, Agent **TIẾP TỤC DỪNG LẠI**, nhắc lại danh sách câu hỏi còn tồn đọng và yêu cầu trả lời/xác nhận.
+   - **TUYỆT ĐỐI KHÔNG ĐI TIẾP** cho đến khi có phản hồi làm rõ hoặc quyết định xác nhận chính thức.
 
 ### Bước 9 — 5 khía cạnh Missing Risk Context
 | Khía cạnh | Thiếu gì |
@@ -81,7 +98,7 @@ Ghi ra `output/<task-slug>/01_requirement_risk_summary.md`, giữ nguyên thứ 
 - [ngoài phạm vi 1]
 
 ## 7. OPEN QUESTIONS
-- Q1: [câu hỏi]   … (≥5 câu, kết hợp 06W)
+- Q1: [câu hỏi] (≥5 câu, kết hợp 06W) — **Trạng thái**: [Chờ trả lời | Đã xác nhận: <nội dung phản hồi>]
 
 ## 8. BUSINESS CRITICALITY ASSESSMENT
 - **Trạng thái dữ liệu bối cảnh**: [Đầy đủ | [CONTEXT_MISSING]]
@@ -126,10 +143,12 @@ nếu chưa có):
 |---|---|
 | 1 Feature Overview · 2 Actor · 4 Happy Path · 5 Alternate Flows · 6 Out of Scope | phần 1, 2, 4, 5, 6 của báo cáo |
 | 3 Business Rules | phần 3 — trạng thái `Confirmed` nếu ghi rõ trong tài liệu |
-| 7 Open Questions | phần 7 — trạng thái `New` |
+| 7 Open Questions | phần 7 — trạng thái `New` hoặc `Confirmed` sau khi được trả lời |
 | 9 Domain constant | hằng số nghiệp vụ trích được (format mã, khoảng giá trị, đơn vị) |
 | 10 Traceability | nguồn của từng `BR-xx` |
 
 ## Chốt chặn
 - Đủ 10 phần, đúng thứ tự, không gộp.
-- Hoàn thành trọn vẹn báo cáo này **trước khi** chuyển sang skill 02.
+- **Clarification Gate**: Bắt buộc dừng lại khi có Open Questions / điểm chưa rõ. Cập nhật câu trả lời vào file OUTPUT trước khi tiến hành phân tích tiếp theo.
+- **Strict Anti-Bypass**: Nếu người dùng cố tình bỏ qua (skip), tiếp tục dừng lại ở lượt tiếp theo và yêu cầu trả lời, tuyệt đối không đi tiếp.
+- Hoàn thành trọn vẹn báo cáo này và giải quyết Open Questions **trước khi** chuyển sang skill 02.
