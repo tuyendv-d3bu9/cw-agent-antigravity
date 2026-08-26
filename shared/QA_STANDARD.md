@@ -1,6 +1,6 @@
 # QA STANDARD — Spine dùng chung
 
-> Mọi `AGENT.md` và `skills/*.md` trong `qa-*/` đều tuân thủ file này.
+> Mọi `AGENT.md` và `skills/*.md` trong `agents/qa-*/` đều tuân thủ file này.
 > Ràng buộc chung CHỈ nằm ở đây — skill không nhắc lại.
 > Frameworks: RCTFC (Role-Context-Task-Format-Constraint) · FACT (Factual-Accurate-Complete-Testable).
 

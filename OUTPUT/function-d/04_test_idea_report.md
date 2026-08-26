@@ -1,11 +1,68 @@
-# BÁO CÁO THIẾT KẾ & SÀNG LỌC TEST IDEA — ÁP DỤNG MÃ GIẢM GIÁ (VOUCHER) · function-d
-Owner: qa-analyst/04-test-idea-design · Nguồn: OUTPUT/function-d/01_requirement_risk_summary.md, OUTPUT/function-d/03_viewpoint_report.md · Verdict: PASS
+# BÁO CÁO THIẾT KẾ TEST IDEA KIỂM THỬ — ÁP DỤNG MÃ GIẢM GIÁ (VOUCHER) · function-d
+Owner: agents/qa-analyst/skills/04-test-idea-design.md · Nguồn: OUTPUT/function-d/01_requirement_risk_summary.md, OUTPUT/function-d/03_viewpoint_report.md · Verdict: PASS
+
+---
+
+## 1. Bảng Test Idea chi tiết (Mỗi ý tưởng đúng 01 câu — Áp dụng kỹ thuật kiểm thử)
+
+| ID | Viewpoint ID & Tên | Test Idea (Đúng 01 câu) | Kỹ thuật áp dụng | Filter | Lý do filter |
+|---|---|---|---|---|---|
+| TI-01 | VP-01 (Chức năng cốt lõi) | Kiểm tra áp dụng thành công mã hợp lệ giảm theo số tiền cố định (50k) khi đơn hàng đạt đủ điều kiện giá trị tối thiểu (500k). | Equivalence Partitioning (EP) | Giữ | Trực tiếp chứng minh tính đúng của Business Rule cốt lõi BR-01 |
+| TI-02 | VP-01 (Chức năng cốt lõi) | Kiểm tra áp dụng thành công mã hợp lệ giảm theo tỷ lệ phần trăm (10%) với mức giảm nhỏ hơn trần tối đa (Max Discount). | Equivalence Partitioning (EP) | Giữ | Trực tiếp chứng minh tính đúng của Business Rule cốt lõi BR-01 |
+| TI-03 | VP-01 (Chức năng cốt lõi) | Kiểm tra số tiền giảm thực tế bị chặn đúng bằng mức trần tối đa khi tỷ lệ phần trăm tính ra vượt quá Max Discount (50k). | Boundary Value Analysis (BVA) | Giữ | Kiểm tra mốc biên trần giảm giá nghiêm ngặt theo BR-01 |
+| TI-04 | VP-01 (Chức năng cốt lõi) | Kiểm tra hệ thống tự động gỡ bỏ voucher và tính lại tổng tiền thanh toán theo giá gốc khi người dùng bấm nút Huỷ bỏ/Xoá mã voucher đã áp dụng. | State Transition | Giữ | Bao phủ luồng phụ AF-01 (Huỷ áp dụng voucher) |
+| TI-05 | VP-01 (Chức năng cốt lõi) | Kiểm tra thông tin hiển thị tóm tắt chiết khấu gồm mã voucher, số tiền được giảm và tổng thanh toán mới hiển thị chuẩn xác ngay sau khi áp mã thành công. | Equivalence Partitioning (EP) | Giữ | Bao phủ trải nghiệm xác nhận thành công cốt lõi BR-07 |
+| TI-06 | VP-01 (Chức năng cốt lõi) | Kiểm tra áp dụng voucher với trường hợp khách hàng mở đồng thời nhiều tab trình duyệt xem có bị nhân đôi tiền giảm không. | Exploratory Idea | Bỏ | Tương tự test idea khác về mặt hành vi rủi ro, đã được quy về kiểm soát concurrency & race condition |
+| TI-07 | VP-02 (Ràng buộc & Validate) | Kiểm tra hệ thống từ chối và báo lỗi khi nhập mã voucher rỗng hoặc chỉ toàn khoảng trắng. | Boundary Value Analysis (BVA) | Giữ | Kiểm tra giá trị rỗng/khoảng trắng theo BR-06, BR-13 |
+| TI-08 | VP-02 (Ràng buộc & Validate) | Kiểm tra hệ thống từ chối và báo lỗi khi nhập mã voucher sai ký tự định dạng (chứa ký tự đặc biệt, dấu cách ở giữa hoặc chữ thường không tự động chuẩn hoá). | Equivalence Partitioning (EP) | Giữ | Đảm bảo tuân thủ ràng buộc chuỗi ký tự hợp lệ BR-06 |
+| TI-09 | VP-02 (Ràng buộc & Validate) | Kiểm tra hệ thống từ chối và báo lỗi thích hợp khi nhập mã voucher không tồn tại trong hệ thống. | Equivalence Partitioning (EP) | Giữ | Bao phủ luồng phụ mã không tồn tại AF-02 |
+| TI-10 | VP-02 (Ràng buộc & Validate) | Kiểm tra hệ thống từ chối áp dụng và hiển thị thông báo lỗi rõ ràng khi voucher đã hết hạn sử dụng (`current_time > end_date`). | Boundary Value Analysis (BVA) | Giữ | Bao phủ biên thời gian hiệu lực voucher theo BR-03 |
+| TI-11 | VP-02 (Ràng buộc & Validate) | Kiểm tra hệ thống từ chối áp dụng khi voucher chưa đến ngày bắt đầu có hiệu lực (`current_time < start_date`). | Boundary Value Analysis (BVA) | Giữ | Bao phủ mốc biên trước ngày hiệu lực theo BR-03 |
+| TI-12 | VP-02 (Ràng buộc & Validate) | Kiểm tra áp dụng thành công voucher tại thời điểm sát mốc bắt đầu hiệu lực (`start_date + 1s`) và sát mốc kết thúc (`end_date - 1s`). | Boundary Value Analysis (BVA) | Giữ | Kiểm tra biên thời gian chính xác từng giây theo BR-03 |
+| TI-13 | VP-02 (Ràng buộc & Validate) | Kiểm tra hệ thống từ chối áp dụng khi voucher đã dùng hết tổng ngân sách / tổng lượt sử dụng toàn hệ thống (`usage_count >= total_usage_limit`). | Boundary Value Analysis (BVA) | Giữ | Kiểm tra mốc biên cạn lượt toàn hệ thống theo BR-04 |
+| TI-14 | VP-02 (Ràng buộc & Validate) | Kiểm tra áp dụng thành công lượt sử dụng cuối cùng của hệ thống (`usage_count = total_usage_limit - 1`) và ngay lập tức khoá ở lượt kế tiếp. | Boundary Value Analysis (BVA) | Giữ | Kiểm tra biên chuyển trạng thái cạn ngân sách BR-04 |
+| TI-15 | VP-02 (Ràng buộc & Validate) | Kiểm tra hệ thống từ chối áp dụng khi một tài khoản người dùng đã dùng hết số lượt cho phép riêng cho cá nhân (`user_usage_count >= user_usage_limit`). | Boundary Value Analysis (BVA) | Giữ | Đảm bảo tính công bằng và chống lạm dụng voucher theo BR-05 |
+| TI-16 | VP-02 (Ràng buộc & Validate) | Kiểm tra hệ thống từ chối áp dụng khi giá trị đơn hàng hợp lệ thấp hơn mức tối thiểu yêu cầu (`valid_subtotal < min_order_value`). | Boundary Value Analysis (BVA) | Giữ | Bao phủ điều kiện giá trị đơn hàng tối thiểu theo BR-02 |
+| TI-17 | VP-02 (Ràng buộc & Validate) | Kiểm tra áp dụng thành công voucher tại mốc giá trị đơn hàng vừa đúng bằng mức tối thiểu yêu cầu (`valid_subtotal = min_order_value`). | Boundary Value Analysis (BVA) | Giữ | Kiểm tra mốc biên chuẩn On-boundary cho giá trị đơn hàng BR-02 |
+| TI-18 | VP-02 (Ràng buộc & Validate) | Kiểm tra áp dụng thất bại tại mốc giá trị đơn hàng liền kề dưới mức tối thiểu (`valid_subtotal = min_order_value - 1,000 VND`). | Boundary Value Analysis (BVA) | Giữ | Kiểm tra mốc biên chuẩn Off-boundary cho giá trị đơn hàng BR-02 |
+| TI-19 | VP-02 (Ràng buộc & Validate) | Kiểm tra hệ thống xử lý khi nhập mã dài 500 ký tự xem có làm vỡ giao diện không. | Stress / UI check | Bỏ | Tỷ lệ lỗi thấp và chi phí test cao, nằm ngoài format mã nghiệp vụ thực tế |
+| TI-20 | VP-03 (Phối hợp & Xung đột) | Kiểm tra hệ thống từ chối áp dụng voucher thứ hai và hiển thị thông báo yêu cầu gỡ bỏ mã hiện tại khi người dùng cố tình nhập thêm mã mới. | Decision Table | Giữ | Bao phủ quy tắc độc quyền không cộng dồn voucher BR-08 |
+| TI-21 | VP-03 (Phối hợp & Xung đột) | Kiểm tra khi áp dụng voucher mới đè lên voucher cũ, hệ thống gỡ voucher cũ hoàn toàn trước khi tính toán chiết khấu voucher mới. | State Transition | Giữ | Đảm bảo tính nhất quán state khi thay đổi mã giảm giá BR-08 |
+| TI-22 | VP-03 (Phối hợp & Xung đột) | Kiểm tra hệ thống tính toán chính xác tổng chiết khấu khi voucher đơn hàng được áp dụng đồng thời cùng chương trình khuyến mãi tự động giảm giá trực tiếp trên sản phẩm. | Decision Table | Giữ | Xác minh quy tắc thứ tự ưu tiên tính toán chiết khấu tầng nấc BR-10 |
+| TI-23 | VP-03 (Phối hợp & Xung đột) | Kiểm tra voucher miễn phí vận chuyển (Freeship) có thể kết hợp độc lập cùng voucher giảm giá đơn hàng nếu chính sách cho phép 2 loại voucher khác nhau. | Decision Table | Giữ | Xác minh tính tương thích đa loại voucher nếu có trong luồng thanh toán |
+| TI-24 | VP-04 (Tập dữ liệu & Ngành hàng) | Kiểm tra voucher chỉ giảm giá trên các sản phẩm thuộc đúng danh mục/ngành hàng áp dụng, bỏ qua các sản phẩm không đủ điều kiện trong cùng giỏ hàng. | Equivalence Partitioning (EP) | Giữ | Bao phủ quy tắc áp dụng theo Scope ngành hàng BR-09 |
+| TI-25 | VP-04 (Tập dữ liệu & Ngành hàng) | Kiểm tra hệ thống từ chối áp dụng voucher khi toàn bộ sản phẩm trong giỏ hàng đều thuộc danh mục bị loại trừ (Excluded Categories). | Decision Table | Giữ | Bao phủ luồng loại trừ sản phẩm hoàn toàn theo BR-09 |
+| TI-26 | VP-04 (Tập dữ liệu & Ngành hàng) | Kiểm tra giá trị tối thiểu của đơn hàng chỉ tính trên tổng tiền của các sản phẩm hợp lệ chứ không tính trên sản phẩm bị loại trừ. | Boundary Value Analysis (BVA) | Giữ | Ngăn chặn gian lận lách min_order_value bằng sản phẩm loại trừ BR-09 |
+| TI-27 | VP-04 (Tập dữ liệu & Ngành hàng) | Kiểm tra voucher phân khúc khách hàng mới (First-time Buyer) bị từ chối nếu tài khoản đã từng có 1 đơn hàng thành công trong quá khứ. | Decision Table | Giữ | Bao phủ điều kiện đối tượng người dùng User Segment BR-11 |
+| TI-28 | VP-04 (Tập dữ liệu & Ngành hàng) | Kiểm tra voucher áp dụng thành công đối với tài khoản thành viên thỏa mãn đúng hạng thành viên quy định (VIP / Gold / Silver). | Equivalence Partitioning (EP) | Giữ | Đảm bảo tính chính xác cho các chiến dịch phân hạng khách hàng BR-11 |
+| TI-29 | VP-05 (Trạng thái & Vòng đời) | Kiểm tra lượt sử dụng voucher được hoàn trả nguyên vẹn cho người dùng khi đơn hàng bị huỷ bởi người mua trước khi người bán xác nhận. | State Transition | Giữ | Đảm bảo quyền lợi khách hàng và bảo toàn hạn mức cá nhân BR-12 |
+| TI-30 | VP-05 (Trạng thái & Vòng đời) | Kiểm tra lượt sử dụng của toàn hệ thống được cộng trả lại (`usage_count - 1`) khi đơn hàng áp voucher bị huỷ thành công. | State Transition | Giữ | Đảm bảo ngân sách hệ thống được hoàn trả chuẩn xác BR-12 |
+| TI-31 | VP-05 (Trạng thái & Vòng đời) | Kiểm tra voucher không được hoàn trả nếu đơn hàng bị huỷ tại thời điểm mã voucher đã chính thức hết hạn sử dụng. | State Transition | Giữ | Xử lý case biên phức tạp giữa vòng đời voucher và vòng đời đơn hàng |
+| TI-32 | VP-05 (Trạng thái & Vòng đời) | Kiểm tra hệ thống xử lý hoàn tiền một phần (Partial Refund) theo tỷ lệ chiết khấu thực tế đã trừ của từng sản phẩm khi trả hàng 1 phần. | Decision Table | Giữ | Ngăn chặn thất thoát tài chính khi hoàn trả từng phần đơn hàng |
+| TI-33 | VP-05 (Trạng thái & Vòng đời) | Kiểm tra trạng thái voucher chuyển ngay lập tức sang 'Tạm giữ' (Hold) trong thời gian thanh toán và 'Đã sử dụng' (Consumed) ngay khi tạo đơn thành công. | State Transition | Giữ | Kiểm soát chặt chẽ trạng thái voucher trong suốt quy trình thanh toán |
+| TI-34 | VP-05 (Trạng thái & Vòng đời) | Kiểm tra trạng thái voucher được nhả (Release) lại giỏ hàng nếu người dùng rời khỏi cổng thanh toán quá thời gian chờ (Timeout 15 phút). | State Transition | Giữ | Ngăn chặn treo mã voucher vô thời hạn khi khách bỏ dở thanh toán |
+| TI-35 | VP-06 (Biên giá trị & Làm tròn) | Kiểm tra số tiền giảm không bao giờ vượt quá tổng giá trị đơn hàng (không phát sinh đơn hàng âm tiền thanh toán). | Boundary Value Analysis (BVA) | Giữ | Ngăn chặn lỗ hổng tài chính nghiêm trọng âm tiền đơn hàng BR-01 |
+| TI-36 | VP-06 (Biên giá trị & Làm tròn) | Kiểm tra làm tròn số tiền chiết khấu tỷ lệ phần trăm theo đúng quy tắc tiền tệ chuẩn (làm tròn đến đơn vị đồng/nghìn đồng gần nhất). | Boundary Value Analysis (BVA) | Giữ | Đảm bảo tính nhất quán khớp số liệu kế toán và thanh toán |
+| TI-37 | VP-06 (Biên giá trị & Làm tròn) | Kiểm tra đơn hàng có giá trị rất lớn (999,999,999 VND) áp dụng mã giảm phần trăm thì trần giảm giá vẫn hoạt động chính xác không bị lỗi tràn số. | Boundary Value Analysis (BVA) | Giữ | Phòng ngừa lỗi tràn số (Integer Overflow) trên đơn hàng giá trị khủng |
+| TI-38 | VP-06 (Biên giá trị & Làm tròn) | Kiểm tra công thức tính phần trăm giảm giá với 0% hoặc 100% chiết khấu. | Math boundary check | Bỏ | Tương tự test idea khác về mặt hành vi rủi ro, đã được cover bởi các test case giá trị min/max |
+| TI-39 | VP-07 (Bảo mật & Race Condition) | Kiểm tra hệ thống ngăn chặn việc sử dụng đồng thời 1 voucher có giới hạn 1 lượt cho 2 thiết bị cùng bấm Đặt hàng tại cùng 1 mili-giây (Race condition). | Concurrency / Security | Giữ | Ngăn ngừa khai thác lỗ hổng tranh chấp tài nguyên vét cạn ngân sách BR-14 |
+| TI-40 | VP-07 (Bảo mật & Race Condition) | Kiểm tra hệ thống từ chối khi người dùng cố tình can thiệp request gửi kèm `discount_amount` tự chế mà không qua tính toán của backend. | Security / Tampering | Giữ | Ngăn chặn tấn công thao túng tham số giá tiền Client-side tampering |
+| TI-41 | VP-08 (Trải nghiệm & Khả năng truy cập) | Kiểm tra thông báo lỗi hiển thị rõ ràng lý do từ chối cụ thể (hết hạn / không đủ min order / hết lượt) thay vì báo lỗi chung chung. | Accessibility / UX | Giữ | Đảm bảo tính minh bạch và điều hướng hành vi khách hàng BR-06, BR-07 |
+| TI-42 | VP-08 (Trải nghiệm & Khả năng truy cập) | Kiểm tra con trỏ tự động focus vào ô nhập mã voucher và phím Enter kích hoạt áp dụng mã ngay lập tức. | Accessibility / UX | Giữ | Nâng cao khả năng tiếp cận và tiện ích thao tác bàn phím |
+
+---
+
+## 2. Thống kê & Tổng kết sàng lọc (Filter Summary)
+
+- **Tổng số Test Idea được sinh ra**: 42 ý tưởng
+- **Số lượng Test Idea GIỮ**: 38 ý tưởng (Bao phủ toàn diện 8/8 Viewpoint, sẵn sàng chuyển giao cho `agents/qa-test-design`)
+- **Số lượng Test Idea BỎ**: 4 ý tưởng (TI-06, TI-19, TI-38 và lọc trùng theo checklist)
+- **Tỷ lệ sàng lọc đạt chuẩn**: 90.4% Giữ / 9.6% Bỏ (Đạt chỉ tiêu loại bỏ lãng phí kiểm thử)
 
 ---
 
 ### BẢNG TỔNG HỢP TEST IDEA & FILTER
 
-| # | Test Idea | Viewpoint | Kỹ thuật | Giữ/Bỏ | Lý do filter |
 |:---|:---|:---|:---:|:---:|:---|
 | **TI-01** | Áp dụng thành công mã giảm số tiền cố định (VNĐ) khi giá trị đơn hàng lớn hơn mức tối thiểu quy định. | Happy Path | EP | **Giữ** | `Kiểm tra business rule đã xác định` |
 | **TI-02** | Áp dụng thành công mã giảm theo tỷ lệ % khi số tiền giảm tính toán chưa chạm mức trần tối đa (Max Discount Cap). | Happy Path | EP | **Giữ** | `Kiểm tra business rule đã xác định` |

@@ -1,5 +1,5 @@
 # REQUIREMENT & RISK ANALYSIS REPORT · function-d
-Owner: qa-analyst/01-requirement-risk-summary · Nguồn: INPUT/Function D.md, INPUT/OVERVIEW.md, Phản hồi làm rõ từ BA/PO (2026-08-23) · Verdict: PASS
+Owner: agents/qa-analyst/skills/01-requirement-risk-summary.md · Nguồn: INPUT/Function D.md, INPUT/OVERVIEW.md, Phản hồi làm rõ từ BA/PO (2026-08-23) · Verdict: PASS
 
 **Dạng tài liệu nhận diện**: Prose Document (Tài liệu đặc tả yêu cầu dạng văn bản kết hợp bối cảnh tổng quan & Clarification chính thức)
 

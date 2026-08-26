@@ -41,7 +41,7 @@ Theo `shared/QA_STANDARD.md` §1. Không có ảnh → `ASK`.
 - **Ra**: `output/<task-slug>/08_ui_screenshot_analysis.md`
 
 ## Bàn giao
-Phát hiện UX/A11y → có thể vòng lại `qa-analyst/03-viewpoint-selection` để bổ sung viewpoint
+Phát hiện UX/A11y → có thể vòng lại `agents/qa-analyst/skills/03-viewpoint-selection.md` để bổ sung viewpoint
 UX/Usability hoặc Accessibility nếu lộ ra vùng chưa được phủ.
 
 ## Cách gọi

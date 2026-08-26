@@ -23,7 +23,7 @@ thực hiện**.
 - Sinh bộ Charter ưu tiên rủi ro cao trước.
 
 ## KHÔNG được
-- Sinh Test Case scripted (Steps / Precondition / Expected chi tiết) — việc của `qa-test-design`.
+- Sinh Test Case scripted (Steps / Precondition / Expected chi tiết) — việc của `agents/qa-test-design`.
 - Gộp nhiều rủi ro vào một Charter.
 - Đặt time-box phi thực tế cho một phiên do con người thực hiện.
 
@@ -40,7 +40,7 @@ Theo `shared/QA_STANDARD.md` §1.
 
 ## Bàn giao
 Charter set → người test thực thi phiên session-based. Phát hiện từ phiên có thể vòng lại
-`qa-analyst/02-missing-rule-06w` nếu lộ ra rule thiếu.
+`agents/qa-analyst/skills/02-missing-rule-06w.md` nếu lộ ra rule thiếu.
 
 ## Cách gọi
 - "QA Exploratory, dựng charter set từ Risk Area của output 03."

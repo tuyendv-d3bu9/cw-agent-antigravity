@@ -1,5 +1,5 @@
 # BÁO CÁO PHÂN TÍCH VIEWPOINT KIỂM THỬ — ÁP DỤNG MÃ GIẢM GIÁ (VOUCHER) · function-d
-Owner: qa-analyst/03-viewpoint-selection · Nguồn: OUTPUT/function-d/01_requirement_risk_summary.md, OUTPUT/function-d/02_missing_rule_report.md · Verdict: PASS
+Owner: agents/qa-analyst/skills/03-viewpoint-selection.md · Nguồn: OUTPUT/function-d/01_requirement_risk_summary.md, OUTPUT/function-d/02_missing_rule_report.md · Verdict: PASS
 
 ---
 

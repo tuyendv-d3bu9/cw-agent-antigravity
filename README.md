@@ -15,26 +15,26 @@ knowledge/                  TRI THỨC NỀN — tích luỹ, chạy lại vẫn
   _template.md                  mẫu để copy cho mỗi feature
   <feature-slug>.md             rule đã xác nhận · câu trả lời BA · giả định đã chốt · domain constant
 
-qa-analyst/                 PIPELINE — phân tích
+agents/qa-analyst/          PIPELINE — phân tích
   01-requirement-risk-summary   requirement thô  → báo cáo 10 phần + risk matrix
   02-missing-rule-06w           output 01        → missing rule + câu hỏi cho BA
   03-viewpoint-selection        output 01+02     → risk area + viewpoint (zero-overlap)
   04-test-idea-design           output 01+03     → test idea (1 câu) + filter Giữ/Bỏ
 
-qa-test-design/             PIPELINE — thiết kế & kiểm định
+agents/qa-test-design/      PIPELINE — thiết kế & kiểm định
   05-test-case-generation       output 01+03+04  → test case 8 trường
   06-coverage-review            output 01+03+05  → gap analysis + verdict
 
-qa-test-data/               PIPELINE — dữ liệu (chạy sau 05)
+agents/qa-test-data/        PIPELINE — dữ liệu (chạy sau 05)
   09-data-class-map             output 01        → field map + 5 data class
   10-dataset-generation         output 09        → dataset sát nghiệp vụ + export CSV/SQL/JSON
   11-boundary-negative-dataset  output 09        → dataset biên/âm tính (mỗi record 1 Test Purpose)
   12-data-validation-traceability output 10+11+05 → validate + traceability data ↔ test case
 
-qa-exploratory/             ĐỘC LẬP — không thuộc pipeline
+agents/qa-exploratory/      ĐỘC LẬP — không thuộc pipeline
   07-exploratory-charter        risk area (03)   → charter set cho phiên thăm dò
 
-qa-ui-review/               ĐỘC LẬP — cần ảnh đính kèm (Vision)
+agents/qa-ui-review/        ĐỘC LẬP — cần ảnh đính kèm (Vision)
   08-ui-screenshot-review       ảnh màn hình     → UI / A11y / UX issues
 ```
 
@@ -50,8 +50,8 @@ qa-ui-review/               ĐỘC LẬP — cần ảnh đính kèm (Vision)
 Chỉ cần trỏ file, agent tự đọc:
 
 ```
-Đọc shared/QA_STANDARD.md, knowledge/_project.md, qa-analyst/AGENT.md và
-qa-analyst/skills/01-requirement-risk-summary.md.
+Đọc shared/QA_STANDARD.md, knowledge/_project.md, agents/qa-analyst/AGENT.md và
+agents/qa-analyst/skills/01-requirement-risk-summary.md.
 Chạy skill 01 với input INPUT/Function D.md.
 Ghi kết quả ra output/function-d/01_requirement_risk_summary.md
 và cập nhật knowledge/function-d.md
@@ -60,7 +60,7 @@ và cập nhật knowledge/function-d.md
 Bước tiếp theo chỉ cần đổi tên skill:
 
 ```
-Chạy qa-analyst/skills/02-missing-rule-06w.md với output/function-d/01_requirement_risk_summary.md
+Chạy agents/qa-analyst/skills/02-missing-rule-06w.md với output/function-d/01_requirement_risk_summary.md
 ```
 
 ### Kiểu B · Dán tay vào chat AI (ChatGPT / Claude web / Gemini)
@@ -70,14 +70,14 @@ Dán theo đúng 4 khối này, mỗi lần chạy 1 skill:
 ```
 [Khối 1] toàn bộ nội dung shared/QA_STANDARD.md
 [Khối 2] knowledge/_project.md + knowledge/<feature-slug>.md (nếu đã có)
-[Khối 3] toàn bộ nội dung <agent>/AGENT.md
-[Khối 4] toàn bộ nội dung <agent>/skills/<skill>.md
+[Khối 3] toàn bộ nội dung agents/<agent>/AGENT.md
+[Khối 4] toàn bộ nội dung agents/<agent>/skills/<skill>.md
 [Khối 5] === INPUT ===
          <dán tài liệu yêu cầu, hoặc output của skill trước>
 ```
 
 Khối 1 → 3 giống nhau trong cùng một agent → giữ nguyên cuộc chat, các lần sau chỉ đổi Khối 4 + 5.
-Đây là lý do tách `shared/`: bạn dán 1 lần, dùng cho cả 4 skill của `qa-analyst`.
+Đây là lý do tách `shared/`: bạn dán 1 lần, dùng cho cả 4 skill của `agents/qa-analyst`.
 
 Chạy skill `01` / `02` xong, nhớ **dán kết quả knowledge trở lại file** `knowledge/<feature-slug>.md` —
 chat AI không tự ghi file được, mà đây là thứ duy nhất còn lại sau khi đóng cuộc chat.
@@ -88,15 +88,15 @@ chat AI không tự ghi file được, mà đây là thứ duy nhất còn lại
 
 | # | Gọi gì | Vào | Ra |
 |---|---|---|---|
-| 1 | `qa-analyst` / `01` | `INPUT/Function D.md` | `output/function-d/01_requirement_risk_summary.md` |
-| 2 | `qa-analyst` / `02` | `01` | `02_missing_rule_report.md` |
-| 3 | `qa-analyst` / `03` | `01` + `02` | `03_viewpoint_report.md` |
-| 4 | `qa-analyst` / `04` | `01` + `03` | `04_test_idea_report.md` |
-| 5 | `qa-test-design` / `05` | `01` + `03` + `04` | `05_test_case_spec.md` |
-| 6 | `qa-test-design` / `06` | `01` + `03` + `05` | `06_coverage_review.md` |
-| 7 | `qa-test-data` / `09`→`12` | `01`, `05` | `09_*` → `12_*` |
-| — | `qa-exploratory` / `07` | risk area ở `03` | `07_exploratory_charter.md` |
-| — | `qa-ui-review` / `08` | ảnh đính kèm | `08_ui_screenshot_analysis.md` |
+| 1 | `agents/qa-analyst` / `01` | `INPUT/Function D.md` | `output/function-d/01_requirement_risk_summary.md` |
+| 2 | `agents/qa-analyst` / `02` | `01` | `02_missing_rule_report.md` |
+| 3 | `agents/qa-analyst` / `03` | `01` + `02` | `03_viewpoint_report.md` |
+| 4 | `agents/qa-analyst` / `04` | `01` + `03` | `04_test_idea_report.md` |
+| 5 | `agents/qa-test-design` / `05` | `01` + `03` + `04` | `05_test_case_spec.md` |
+| 6 | `agents/qa-test-design` / `06` | `01` + `03` + `05` | `06_coverage_review.md` |
+| 7 | `agents/qa-test-data` / `09`→`12` | `01`, `05` | `09_*` → `12_*` |
+| — | `agents/qa-exploratory` / `07` | risk area ở `03` | `07_exploratory_charter.md` |
+| — | `agents/qa-ui-review` / `08` | ảnh đính kèm | `08_ui_screenshot_analysis.md` |
 
 Mọi file ra nằm trong `output/<task-slug>/`, kèm `_index.md` liệt kê file + verdict từng bước.
 

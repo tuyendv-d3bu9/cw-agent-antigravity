@@ -1,5 +1,5 @@
 # BÁO CÁO PHÂN TÍCH QUY TẮC NGHIỆP VỤ BỊ THIẾU (MISSING-RULE REPORT) · function-d
-Owner: qa-analyst/02-missing-rule-06w · Nguồn: OUTPUT/function-d/01_requirement_risk_summary.md, knowledge/function-d.md · Verdict: PASS
+Owner: agents/qa-analyst/skills/02-missing-rule-06w.md · Nguồn: OUTPUT/function-d/01_requirement_risk_summary.md, knowledge/function-d.md · Verdict: PASS
 
 ---
 

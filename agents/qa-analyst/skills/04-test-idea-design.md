@@ -7,7 +7,7 @@ Chuyển viewpoint thành **Test Idea** (mỗi ý tưởng đúng 01 câu) và s
 cố định — tối ưu độ bao phủ, loại bỏ lãng phí kiểm thử.
 
 **Quy ước khái niệm**: *Test Idea* = 01 câu mô tả một điều kiện/khía cạnh cần kiểm.
-*Test Case* = kịch bản đầy đủ (Precondition / Steps / Test Data / Expected Result) — thuộc `qa-test-design`.
+*Test Case* = kịch bản đầy đủ (Precondition / Steps / Test Data / Expected Result) — thuộc `agents/qa-test-design`.
 
 ## Đầu vào
 - `output/<task-slug>/01_requirement_risk_summary.md`

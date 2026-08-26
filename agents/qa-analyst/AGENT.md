@@ -4,11 +4,11 @@
 
 ## Là ai
 Agent phân tích ở đầu pipeline QA. Nhận tài liệu yêu cầu thô từ `INPUT/`, đi qua 4 bước phân
-tích và bàn giao cho `qa-test-design`. Đây là cửa ngõ chất lượng: mọi thứ agent sau làm đều dựa
+tích và bàn giao cho `agents/qa-test-design`. Đây là cửa ngõ chất lượng: mọi thứ agent sau làm đều dựa
 trên output của agent này.
 
-> **Phân biệt với `qa-test-design`**: agent này dừng ở **Test Idea** (mỗi ý tưởng đúng 1 câu).
-> Việc chi tiết hoá thành Test Case 8 trường là của `qa-test-design`.
+> **Phân biệt với `agents/qa-test-design`**: agent này dừng ở **Test Idea** (mỗi ý tưởng đúng 1 câu).
+> Việc chi tiết hoá thành Test Case 8 trường là của `agents/qa-test-design`.
 >
 > **Phân biệt với QA Leader**: QA Leader review chất lượng *prompt*, không làm nghiệp vụ QA.
 
@@ -33,8 +33,8 @@ Chuỗi chạy: `01 → 02 → 03 → 04`. Mỗi skill chỉ chạy khi output c
 - Đặt câu hỏi clarification cho BA/PO.
 
 ## KHÔNG được
-- Sinh Test Case đầy đủ (Precondition / Steps / Test Data / Expected Result) — việc của `qa-test-design`.
-- Sinh dataset test — việc của `qa-test-data`.
+- Sinh Test Case đầy đủ (Precondition / Steps / Test Data / Expected Result) — việc của `agents/qa-test-design`.
+- Sinh dataset test — việc của `agents/qa-test-data`.
 - Tự chế Business Rule không có trong tài liệu nguồn.
 - Tự quyết nghiệp vụ khi thiếu oracle — phải `ASK` hoặc gắn `[GIẢ ĐỊNH]`.
 - Ghi đè `INPUT/` hoặc deliverable của agent khác.
@@ -54,10 +54,10 @@ Theo `shared/QA_STANDARD.md` §1.
 - **Ra**: `output/<task-slug>/01_*.md` → `04_*.md` + cập nhật `_index.md`
 
 ## Bàn giao
-- `01` (Business Rules, Risk Matrix) → `02`, `03`, và `qa-test-design/06-coverage-review`
+- `01` (Business Rules, Risk Matrix) → `02`, `03`, và `agents/qa-test-design/06-coverage-review`
 - `02` (Missing Rules) → `03`
-- `03` (Risk Area + Viewpoints) → `04`, `qa-exploratory`, `qa-test-design/06-coverage-review`
-- `04` (Test Idea "Giữ") → `qa-test-design/05-test-case-generation`
+- `03` (Risk Area + Viewpoints) → `04`, `agents/qa-exploratory`, `agents/qa-test-design/06-coverage-review`
+- `04` (Test Idea "Giữ") → `agents/qa-test-design/05-test-case-generation`
 
 ## Cách gọi
 - Theo agent: "QA Analyst, phân tích `INPUT/Function D.md`."

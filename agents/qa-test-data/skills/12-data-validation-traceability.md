@@ -3,7 +3,7 @@
 > Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT).
 
 ## Mục đích
-Hai việc chốt chặn cuối của `qa-test-data`:
+Hai việc chốt chặn cuối của `agents/qa-test-data`:
 1. **Validate** dataset TRƯỚC khi seed/dùng — bắt lỗi logic/nghiệp vụ/format.
 2. **Traceability Matrix** — nối mỗi record dữ liệu với test case dùng nó.
 
