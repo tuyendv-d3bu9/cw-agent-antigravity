@@ -35,9 +35,10 @@ _[không thuộc phạm vi]_
 
 ## 7. OPEN QUESTIONS & MISSING RULES
 > Trạng thái mặc định `New`. Người duyệt chuyển: `Confirmed` / `TREO` / `Rejected`.
-> 6W: What if input lạ · state lạ · data lạ · What when timing · Who else actor · What happens after.
+> 06W (định nghĩa chuẩn: `shared/QA_STANDARD.md` §4) — ghi cột `Loại (06W)` theo dạng `Wx (Tên)`:
+> `W1 (input lạ)` · `W2 (state lạ)` · `W3 (data lạ)` · `W4 (timing)` · `W5 (who else actor)` · `W6 (what happens after)`.
 
-| ID | Mô tả gap | Loại (6W) | Rủi ro | Câu hỏi cho BA | Trả lời của BA | Trạng thái |
+| ID | Mô tả gap | Loại (06W) | Rủi ro | Câu hỏi cho BA | Trả lời của BA | Trạng thái |
 |---|---|---|---|---|---|---|
 | MR-01 |  |  |  |  |  | New |
 

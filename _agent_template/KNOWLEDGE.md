@@ -33,9 +33,10 @@ _[không đề cập]_
 
 ## Missing Rule Report (6W)
 > Trạng thái mặc định `New`. Người duyệt chuyển: `Confirmed` / `TREO` / `Rejected`.
-> 6W = What if input lạ / state lạ / data lạ / What when timing / Who else actor / What happens after.
+> 06W (định nghĩa chuẩn: `shared/QA_STANDARD.md` §4) — ghi cột `Loại (06W)` theo dạng `Wx (Tên)`:
+> `W1 (input lạ)` · `W2 (state lạ)` · `W3 (data lạ)` · `W4 (timing)` · `W5 (who else actor)` · `W6 (what happens after)`.
 
-| ID | Mô tả gap | Loại (6W) | Requirement hiện tại | Rủi ro | Câu hỏi cho BA | Trạng thái |
+| ID | Mô tả gap | Loại (06W) | Requirement hiện tại | Rủi ro | Câu hỏi cho BA | Trạng thái |
 |----|-----------|-----------|----------------------|--------|----------------|-----------|
 | G1 |  |  |  |  |  | New |
 

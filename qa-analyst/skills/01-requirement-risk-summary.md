@@ -1,154 +1,84 @@
-# Skill: 01-requirement-risk-summary
+# Skill: 02-missing-rule-06w
 
-> Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT · 06W · risk matrix 3x3).
+> Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT · 06W).
 
 ## Mục đích
-Chuyển requirement thô thành **Requirement Summary 7 phần** + **Business Criticality & Risk
-Analysis 3 phần**. Là cửa ngõ đầu tiên của pipeline — mọi bước sau dựa trên output này.
-
-## Tham số
-- `input-type` ∈ `prose` · `user-story` · `wireframe` · `email-chat` — tự nhận diện ở Bước 0.
+Đại diện Tester đặt câu hỏi phản biện đa chiều để phát hiện triệt để **missing rule** (quy tắc
+thiếu), **implicit rule** (quy tắc ngầm chưa văn bản hoá) và kẽ hở logic trong tài liệu yêu cầu.
+Đầu ra là danh sách Missing Rule có cấu trúc + câu hỏi clarification dùng ngay được với BA/PO.
 
 ## Đầu vào
-- Tài liệu yêu cầu thô: BRD / SRS / User Story / Wireframe + mô tả UI / email-chat từ BA.
-- `knowledge/_project.md` · `knowledge/<feature-slug>.md` nếu đã có (xem `shared/QA_STANDARD.md` §8).
+- `output/<task-slug>/01_requirement_risk_summary.md` — Business Rules + Open Questions từ skill 01.
+- `knowledge/<feature-slug>.md` — mục 7 (gap đã hỏi trước đó) và mục 8 (giả định đã chốt).
 
-> **Knowledge thắng giả định**: Bước 8/9 dưới đây chỉ gắn `[CONTEXT_MISSING]` cho khía cạnh mà
-> **cả** tài liệu đầu vào **và** `knowledge/_project.md` §3 đều không có. Đã có trong knowledge
-> thì dùng luôn, ghi rõ nguồn là knowledge.
+> **Không hỏi lại điều đã có câu trả lời**: gap nào ở mục 7 knowledge đã có `Trả lời của BA`
+> và trạng thái `Confirmed`/`Rejected` thì KHÔNG đưa vào báo cáo như missing rule mới — nó đã
+> là rule xác nhận hoặc đã bị loại. Chỉ `New` và `TREO` mới còn là gap.
 
 ## KHÔNG được (riêng skill này)
-- Sinh viewpoint, test idea hay test case — đó là skill 03/04 và `qa-test-design`.
-- Tự suy diễn Business Context. Thiếu dữ liệu bối cảnh → bắt buộc `[CONTEXT_MISSING]`.
-- Đánh Severity chỉ dựa trên tài liệu Requirement đơn thuần (xem Bước 10).
-- Tự ý đi tiếp sang các phân tích tiếp theo / skill tiếp theo khi Open Questions chưa được trả lời và xác nhận.
-- Bỏ qua hoặc tự động cho qua khi người dùng cố tình skip câu hỏi chưa làm rõ.
+- Sinh test case / scenario / steps / test data / expected result.
+- Sao chép nguyên văn Open Questions của skill 01 — phải **chuyển hoá và đào sâu** thành kẽ hở
+  quy tắc nghiệp vụ cụ thể.
 
 ## Các bước
+1. **Quét 06W** — áp đủ W1→W6 theo `shared/QA_STANDARD.md` §4 lên toàn bộ tài liệu đầu vào.
+2. **Ghi nhận truy vết** — W nào ra kẽ hở → lập bản ghi Missing Rule. W nào không ra → ghi
+   `"Không phát hiện vấn đề qua câu hỏi #W[X]"`. Không bỏ trống câu hỏi nào.
+3. **Phân loại** mỗi missing rule vào đúng 1 trong 5 nhóm:
 
-| # | Bước | Yêu cầu |
-|---|---|---|
-| 0 | Nhận diện dạng input | Xác định 1 trong 4 dạng ở `input-type` |
-| 1 | Feature Overview | 1–2 câu: mục đích + giá trị cốt lõi cho user |
-| 2 | Actor & User Role | Mọi loại user, vai trò phân quyền, system actor có tương tác |
-| 3 | Business Rules | Trích **toàn bộ** rule có trong tài liệu. Đánh số `BR-01`, `BR-02`… mỗi rule 1 dòng |
-| 4 | Happy Path | Luồng chính thành công, step-by-step, dạng kịch bản kiểm thử được |
-| 5 | Alternate Flows | Luồng phụ / rẽ nhánh / ngoại lệ / lỗi được đề cập |
-| 6 | Out of Scope | Ghi rõ những gì tài liệu KHÔNG đề cập |
-| 7 | Open Questions | **Tối thiểu 5 câu**. Dùng 06W (§4) để đào sâu vùng chưa rõ, mâu thuẫn |
-| 8 | Business Criticality Assessment | Thu thập Business Context phục vụ Risk Analysis. Không có dữ liệu → `[CONTEXT_MISSING]` |
-| 9 | Missing Risk Context | Quét đủ 5 khía cạnh (bảng dưới), tổng hợp 3 mục *Available / Missing / Risk Analysis Impact* |
-| 10 | Risk Analysis & Prioritization | Ma trận 3x3 (§5) + 3 đánh giá tác động chiến lược |
+   | Nhóm | Nội dung |
+   |---|---|
+   | Boundary & Edge Rules | Giá trị biên, ngưỡng giới hạn, ca ngoại lệ |
+   | State & Lifecycle Rules | Vòng đời đối tượng, điều kiện chuyển trạng thái, xung đột trạng thái |
+   | Exception & Error Handling Rules | Luồng lỗi, fallback, rollback, thông báo phản hồi |
+   | Dependency & Side-Effect Rules | Liên kết hệ thống, phụ thuộc dữ liệu chéo, ảnh hưởng liên đới |
+   | Implicit & Authorization Rules | Quy tắc ngầm, kiểm soát quyền, xác thực, an toàn dữ liệu |
 
-## Cơ chế Hard Stop & Xác nhận (Clarification Gate)
-> **Bắt buộc tuân thủ**: Phân tích yêu cầu là nền móng cho toàn bộ pipeline QA. Bất kỳ sự thiếu sót hoặc hiểu sai nào đều gây sai lệch lan truyền.
-
-1. **Dừng lại yêu cầu trả lời & confirm**:
-   - Khi phát hiện các thông tin chưa rõ, thiếu sót hoặc có câu hỏi cần làm rõ ở **Bước 7 (Open Questions)**: Agent **BẮT BUỘC DỪNG LẠI**, xuất danh sách câu hỏi cần làm rõ/confirm cho người dùng (BA / PO / User).
-   - Tuyệt đối không tự ý tiếp tục các bước phân tích sâu hơn hoặc chuyển sang skill tiếp theo (`02`, `03`...) khi chưa có câu trả lời.
-2. **Cập nhật câu trả lời vào file OUTPUT**:
-   - Khi người dùng phản hồi/xác nhận: Cập nhật ngay câu trả lời vào mục `## 7. OPEN QUESTIONS` (kèm trạng thái `[Đã xác nhận]` và chi tiết câu trả lời) trong file `output/<task-slug>/01_requirement_risk_summary.md`.
-   - Nếu câu trả lời bổ sung hoặc làm rõ Business Rule / Luồng xử lý, cập nhật bổ sung tương ứng vào `## 3. BUSINESS RULES` hoặc `## 5. ALTERNATE FLOWS`.
-   - Chỉ khi đã cập nhật hoàn chỉnh vào file OUTPUT mới được phép tiến hành các bước phân tích tiếp theo.
-3. **Quy tắc nghiêm ngặt chống bỏ qua (Strict Anti-Bypass Rule)**:
-   - Nếu người dùng cố tình bỏ qua (yêu cầu đi tiếp, "skip", "tự giả định", hoặc không trả lời các câu hỏi cần làm rõ):
-   - Ở lượt tiếp theo, Agent **TIẾP TỤC DỪNG LẠI**, nhắc lại danh sách câu hỏi còn tồn đọng và yêu cầu trả lời/xác nhận.
-   - **TUYỆT ĐỐI KHÔNG ĐI TIẾP** cho đến khi có phản hồi làm rõ hoặc quyết định xác nhận chính thức.
-
-### Bước 9 — 5 khía cạnh Missing Risk Context
-| Khía cạnh | Thiếu gì |
-|---|---|
-| Missing **User** Context | Phân nhóm, đặc trưng người dùng |
-| Missing **Usage** Context | Tần suất sử dụng, tải hệ thống, thời gian cao điểm |
-| Missing **Financial** Context | Dòng tiền, giá trị giao dịch, tác động doanh thu |
-| Missing **Operational** Context | Quy trình vận hành, SLA, khả năng phục hồi |
-| Missing **Criticality** Context | Mức quan trọng của tính năng với tổng thể sản phẩm |
-
-Mỗi khía cạnh ghi: *thiếu dữ liệu nào* | *ảnh hưởng tới Risk Analysis thế nào* | *mức độ HIGH/MED/LOW*.
-
-### Bước 10 — nguồn đánh giá Risk (bắt buộc đủ 4)
-Business Rules · Gap Analysis (từ Open Questions / logic trống) · Business Criticality
-Assessment · Missing Risk Context Information.
+4. **Chi tiết hoá** từng Missing Rule đủ **8 trường** (xem format).
+5. **Tổng hợp** ma trận truy vết 06W + bảng câu hỏi clarification gửi BA/PO.
 
 ## Format output
-Ghi ra `output/<task-slug>/01_requirement_risk_summary.md`, giữ nguyên thứ tự 10 phần:
+Ghi ra `output/<task-slug>/02_missing_rule_report.md`:
 
 ```markdown
-# REQUIREMENT & RISK ANALYSIS REPORT
-**Dạng tài liệu nhận diện**: [Prose Document | User Story | Wireframe + Mô tả | Email/Chat Thread]
+# BÁO CÁO PHÂN TÍCH QUY TẮC NGHIỆP VỤ BỊ THIẾU (MISSING-RULE REPORT)
 
-## 1. FEATURE OVERVIEW
-[1–2 câu]
+## 1. Ma trận Truy vết 06W
+| STT | Câu hỏi 06W | Trọng tâm kiểm tra | Trạng thái | Mã Missing Rule liên quan |
+|:---|:---|:---|:---|:---|
+| W1 | What if input lạ | Dữ liệu nhập bất thường | [Đã phát hiện / Không phát hiện] | [MR-xx hoặc "Không phát hiện vấn đề qua câu hỏi #W1"] |
+| W2 | What if state lạ | Trạng thái hệ thống/tài khoản chưa xử lý | … | … |
+| W3 | What if data lạ | Dữ liệu nền edge case & mâu thuẫn nguồn | … | … |
+| W4 | What when timing | Thời điểm, đồng thời, hết hạn giữa chừng | … | … |
+| W5 | Who else actor | Actor khác & phụ thuộc chéo | … | … |
+| W6 | What happens after | Side-effect & kỳ vọng ngầm sau hành động | … | … |
 
-## 2. ACTOR & USER ROLE
-- [Actor/Role]: [vai trò/quyền hạn]
+## 2. Chi tiết Missing Rules
 
-## 3. BUSINESS RULES
-- BR-01: [nội dung]
-- BR-02: [nội dung]
+### [MR-01] <tên ngắn gọn>
+1. **Mã Rule ID**: MR-01
+2. **Căn cứ Requirement gốc**: <trích cụ thể mục/câu từ output 01 HOẶC "Chưa đề cập trong tài liệu">
+3. **Câu hỏi 06W tương ứng**: <W1…W6>
+4. **Phân loại**: <1 trong 5 nhóm>
+5. **Mô tả kẽ hở / quy tắc bị thiếu**: <chi tiết tình huống thiếu sót, mơ hồ, thiếu quy tắc xử lý>
+6. **Rủi ro & Tác động**: <hệ quả với hệ thống / dữ liệu / người dùng nếu bỏ qua>
+7. **Đề xuất hành vi xử lý mặc định**: <giải pháp logic đề xuất>
+8. **Câu hỏi xác nhận cho BA/PO**: <câu hỏi cụ thể, rõ ngữ cảnh, dùng ngay được trong buổi clarification>
 
-## 4. HAPPY PATH
-1. [bước 1]  2. [bước 2]  3. [kết quả mong đợi]
+*(Tiếp tục [MR-02]… theo đúng 8 trường, đến khi hết missing rule tìm được)*
 
-## 5. ALTERNATE FLOWS
-### AF-01: [tên luồng]
-1. [bước 1]
-
-## 6. OUT OF SCOPE
-- [ngoài phạm vi 1]
-
-## 7. OPEN QUESTIONS
-- Q1: [câu hỏi] (≥5 câu, kết hợp 06W) — **Trạng thái**: [Chờ trả lời | Đã xác nhận: <nội dung phản hồi>]
-
-## 8. BUSINESS CRITICALITY ASSESSMENT
-- **Trạng thái dữ liệu bối cảnh**: [Đầy đủ | [CONTEXT_MISSING]]
-- **Bối cảnh nghiệp vụ ghi nhận**: [nội dung, hoặc [CONTEXT_MISSING]]
-
-## 9. MISSING RISK CONTEXT INFORMATION
-### 9.1 Chi tiết theo khía cạnh
-- **Missing User Context**: [dữ liệu thiếu | ảnh hưởng | HIGH/MED/LOW]
-- **Missing Usage Context**: …
-- **Missing Financial Context**: …
-- **Missing Operational Context**: …
-- **Missing Criticality Context**: …
-
-### 9.2 Tổng hợp
-- **Available Context**: […]
-- **Missing Context**: […]
-- **Risk Analysis Impact**: […]
-
-## 10. RISK ANALYSIS & PRIORITIZATION
-### 10.1 Nguồn đánh giá Risk
-- **Business Rules**: [số lượng & độ phức tạp]
-- **Gap Analysis**: [vùng trống logic từ Open Questions / Alternate Flows]
-- **Business Criticality Assessment**: [mức quan trọng ghi nhận được]
-- **Missing Risk Context Information**: [mức ảnh hưởng của dữ liệu bị thiếu]
-
-### 10.2 Ma trận Đánh giá Rủi ro (3x3)
-| Mã rủi ro | Likelihood | Impact | Risk Level | Severity | Cờ tin cậy | Lý do (5 yếu tố Impact) |
-|:---|:---|:---|:---|:---|:---|:---|
-| RK-01: [tên] | [HIGH/MED/LOW] | [HIGH/MED/LOW] | [CRITICAL/HIGH/MED/LOW] | [Critical/Major/Minor] | [SEVERITY_CONFIDENCE_HIGH \| SEVERITY_CONFIDENCE_LOW] | [giải thích] |
-
-### 10.3 Đánh giá tác động chiến lược
-- **Impact to Risk Analysis**: [độ chính xác & toàn diện của bức tranh rủi ro]
-- **Impact to Test Prioritization**: [thứ tự ưu tiên thực thi theo Risk Level]
-- **Impact to Coverage Strategy**: [vùng nào Deep Testing/Automation, vùng nào Sanity/Smoke]
+## 3. Tổng hợp Câu hỏi Clarification gửi BA/PO
+| STT | Mã Rule | Phân loại | Câu hỏi cho BA/PO | Ưu tiên |
+|:---|:---|:---|:---|:---|
+| 1 | MR-01 | <nhóm> | <nội dung> | <High/Medium/Low> |
 ```
 
 ## Ghi knowledge
-Sau khi xuất báo cáo, cập nhật `knowledge/<feature-slug>.md` (tạo từ `knowledge/_template.md`
-nếu chưa có):
-
-| Mục knowledge | Lấy từ |
-|---|---|
-| 1 Feature Overview · 2 Actor · 4 Happy Path · 5 Alternate Flows · 6 Out of Scope | phần 1, 2, 4, 5, 6 của báo cáo |
-| 3 Business Rules | phần 3 — trạng thái `Confirmed` nếu ghi rõ trong tài liệu |
-| 7 Open Questions | phần 7 — trạng thái `New` hoặc `Confirmed` sau khi được trả lời |
-| 9 Domain constant | hằng số nghiệp vụ trích được (format mã, khoảng giá trị, đơn vị) |
-| 10 Traceability | nguồn của từng `BR-xx` |
+Cập nhật `knowledge/<feature-slug>.md`:
+- Mục **7** — thêm mỗi `MR-xx` thành một dòng, trạng thái `New`, cột `Trả lời của BA` để trống.
+- Mục **8** — khi BA/PO trả lời, người duyệt chuyển kết luận xuống đây kèm ai chốt + ngày.
+- **Không xoá** dòng cũ, chỉ đổi `Trạng thái` (`New` → `Confirmed` / `TREO` / `Rejected`).
 
 ## Chốt chặn
-- Đủ 10 phần, đúng thứ tự, không gộp.
-- **Clarification Gate**: Bắt buộc dừng lại khi có Open Questions / điểm chưa rõ. Cập nhật câu trả lời vào file OUTPUT trước khi tiến hành phân tích tiếp theo.
-- **Strict Anti-Bypass**: Nếu người dùng cố tình bỏ qua (skip), tiếp tục dừng lại ở lượt tiếp theo và yêu cầu trả lời, tuyệt đối không đi tiếp.
-- Hoàn thành trọn vẹn báo cáo này và giải quyết Open Questions **trước khi** chuyển sang skill 02.
+- Câu hỏi gửi BA/PO phải viết trực diện, kèm giả định/phương án đề xuất để BA/PO trả lời
+  Có/Không hoặc chọn giải pháp ngay — không đặt câu hỏi mở chung chung.

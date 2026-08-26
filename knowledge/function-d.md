@@ -60,26 +60,26 @@ Chức năng cho phép khách hàng nhập mã giảm giá (Voucher) tại trang
 ## 7. OPEN QUESTIONS & MISSING RULES
 > Trạng thái mặc định `New`. Người duyệt chuyển: `Confirmed` / `TREO` / `Rejected`.
 
-| ID | Mô tả gap | Loại (6W) | Rủi ro | Câu hỏi cho BA | Trả lời của BA | Trạng thái |
+| ID | Mô tả gap | Loại (06W) | Rủi ro | Câu hỏi cho BA | Trả lời của BA | Trạng thái |
 |---|---|---|---|---|---|---|
-| GAP-01 | Giới hạn số lần sử dụng của mỗi mã trên từng tài khoản. | W1 (Who) | Lạm dụng voucher | Mã có giới hạn lượt dùng mỗi user không? | Có, mỗi người chỉ được áp mã đó 1 lần duy nhất | Confirmed |
-| GAP-02 | Quy tắc hủy / thay đổi / áp đè mã giảm giá. | W2 (Negative) | Khách kẹt mã | Có được áp đè mã khác không? | Được. Khi đè mã, chỉ được thay thế mã, không áp cùng lúc | Confirmed |
-| GAP-03 | Mức sàn khi giảm cố định > tổng đơn & Trần giảm giá mã %. | W3 (Boundary) | Giảm tiền âm / quá ngân sách | Tiền giảm > tổng đơn thì sao? Mã % có trần giảm không? | Tiền giảm tối đa về 0đ; Có quy định giảm tối đa theo % (Max Cap) | Confirmed |
-| GAP-04 | Xử lý khi giỏ hàng thay đổi sau khi đã áp mã thành công. | W4 (State) | Lách luật giảm giá | Sửa giỏ hàng dưới mức tối thiểu thì xử lý ra sao? | Hệ thống tính lại, cảnh báo và tự động hủy voucher | Confirmed |
-| GAP-05 | Phạm vi áp dụng của mã (tiền hàng hay phí ship). | W5 (Dependency) | Sai lệch phí ship | Mã áp dụng cho tiền hàng hay cả phí ship? | Chỉ áp dụng giảm giá đơn hàng (tiền sản phẩm) | Confirmed |
-| GAP-06 | Hoàn lại lượt dùng mã khi đơn hàng bị hủy. | W6 (Lifecycle) | Khiếu nại mất mã | Hủy đơn có hoàn lại lượt dùng mã không? | Có, lượt dùng sẽ hoàn lại cho khách hàng | Confirmed |
-| MR-01 | Hết hạn session khi đang ở trang Thanh toán áp mã. | W1 (Who) | Lỗi hệ thống / bypass auth | Hết session thì mở modal login tại chỗ hay redirect? | | New |
-| MR-02 | Tài khoản bị khóa trong lúc đang thao tác thanh toán. | W1 (Who) | Gian lận voucher | Có kiểm tra trạng thái Active của user realtime khi áp mã không? | | New |
-| MR-03 | Xử lý khoảng trắng thừa (trim whitespace) trong ô nhập mã. | W2 (Negative) | Khách nhập đúng nhưng bị báo lỗi | Có tự động trim khoảng trắng đầu/cuối chuỗi nhập không? | | New |
-| MR-04 | Phân biệt chữ hoa / chữ thường (Case Sensitivity). | W2 (Negative) | Trải nghiệm người dùng kém | Mã giảm giá có phân biệt hoa/thường (Case-sensitive) không? | | New |
-| MR-05 | Giới hạn độ dài tối đa & ký tự đặc biệt của ô nhập mã. | W3 (Boundary) | Tràn buffer / bảo mật | Độ dài tối đa của mã là bao nhiêu ký tự? | | New |
-| MR-06 | Quy tắc làm tròn số tiền chiết khấu lẻ cho mã %. | W3 (Boundary) | Lệch tiền thanh toán/thối tiền | Làm tròn số lẻ tiền giảm theo quy tắc nào (làm tròn 1đ)? | | New |
-| MR-07 | Mốc thời gian hết hạn chính xác và Timezone hiệu lực. | W4 (State) | Hết hạn sớm trước kỳ vọng | Hạn đến ngày D là 23:59:59 ngày D theo GMT+7 đúng không? | | New |
-| MR-08 | Re-validate mã tại thời điểm bấm "Đặt hàng". | W4 (State) | Mã hết hạn giữa chừng | Có kiểm tra lại tính hợp lệ của mã lần cuối khi bấm Đặt hàng không? | | New |
-| MR-09 | Thứ tự trừ tiền kết hợp Ví ShopGo và Voucher. | W5 (Dependency) | Sai lệch số dư ví | Có thống nhất: Trừ voucher trước, sau đó mới trừ số dư ví không? | | New |
-| MR-10 | Biến động tồn kho/giá server khi đang ở màn hình thanh toán. | W5 (Dependency) | Lỗi đơn hàng không hợp lệ | Có tự động tính lại giỏ hàng và re-check voucher khi server đổi giá không? | | New |
-| MR-11 | Cơ chế Rate Limit chống brute-force đoán mã giảm giá. | W6 (Implicit) | Lộ mã nội bộ / quét mã | Có áp dụng Rate Limit (khóa tạm nếu nhập sai 5 lần) không? | | New |
-| MR-12 | Thống nhất danh sách thông điệp lỗi chi tiết phân biệt từng ca. | W6 (Implicit) | Thông báo lỗi mơ hồ | Có thống nhất danh sách câu thông báo lỗi chi tiết không? | | New |
+| GAP-01 | Giới hạn số lần sử dụng của mỗi mã trên từng tài khoản. | W5 (who else actor) | Lạm dụng voucher | Mã có giới hạn lượt dùng mỗi user không? | Có, mỗi người chỉ được áp mã đó 1 lần duy nhất | Confirmed |
+| GAP-02 | Quy tắc hủy / thay đổi / áp đè mã giảm giá. | W2 (state lạ) | Khách kẹt mã | Có được áp đè mã khác không? | Được. Khi đè mã, chỉ được thay thế mã, không áp cùng lúc | Confirmed |
+| GAP-03 | Mức sàn khi giảm cố định > tổng đơn & Trần giảm giá mã %. | W3 (data lạ) | Giảm tiền âm / quá ngân sách | Tiền giảm > tổng đơn thì sao? Mã % có trần giảm không? | Tiền giảm tối đa về 0đ; Có quy định giảm tối đa theo % (Max Cap) | Confirmed |
+| GAP-04 | Xử lý khi giỏ hàng thay đổi sau khi đã áp mã thành công. | W6 (what happens after) | Lách luật giảm giá | Sửa giỏ hàng dưới mức tối thiểu thì xử lý ra sao? | Hệ thống tính lại, cảnh báo và tự động hủy voucher | Confirmed |
+| GAP-05 | Phạm vi áp dụng của mã (tiền hàng hay phí ship). | W5 (who else actor) | Sai lệch phí ship | Mã áp dụng cho tiền hàng hay cả phí ship? | Chỉ áp dụng giảm giá đơn hàng (tiền sản phẩm) | Confirmed |
+| GAP-06 | Hoàn lại lượt dùng mã khi đơn hàng bị hủy. | W6 (what happens after) | Khiếu nại mất mã | Hủy đơn có hoàn lại lượt dùng mã không? | Có, lượt dùng sẽ hoàn lại cho khách hàng | Confirmed |
+| MR-01 | Hết hạn session khi đang ở trang Thanh toán áp mã. | W2 (state lạ) | Lỗi hệ thống / bypass auth | Hết session thì mở modal login tại chỗ hay redirect? | | New |
+| MR-02 | Tài khoản bị khóa trong lúc đang thao tác thanh toán. | W2 (state lạ) | Gian lận voucher | Có kiểm tra trạng thái Active của user realtime khi áp mã không? | | New |
+| MR-03 | Xử lý khoảng trắng thừa (trim whitespace) trong ô nhập mã. | W1 (input lạ) | Khách nhập đúng nhưng bị báo lỗi | Có tự động trim khoảng trắng đầu/cuối chuỗi nhập không? | | New |
+| MR-04 | Phân biệt chữ hoa / chữ thường (Case Sensitivity). | W1 (input lạ) | Trải nghiệm người dùng kém | Mã giảm giá có phân biệt hoa/thường (Case-sensitive) không? | | New |
+| MR-05 | Giới hạn độ dài tối đa & ký tự đặc biệt của ô nhập mã. | W1 (input lạ) | Tràn buffer / bảo mật | Độ dài tối đa của mã là bao nhiêu ký tự? | | New |
+| MR-06 | Quy tắc làm tròn số tiền chiết khấu lẻ cho mã %. | W3 (data lạ) | Lệch tiền thanh toán/thối tiền | Làm tròn số lẻ tiền giảm theo quy tắc nào (làm tròn 1đ)? | | New |
+| MR-07 | Mốc thời gian hết hạn chính xác và Timezone hiệu lực. | W4 (timing) | Hết hạn sớm trước kỳ vọng | Hạn đến ngày D là 23:59:59 ngày D theo GMT+7 đúng không? | | New |
+| MR-08 | Re-validate mã tại thời điểm bấm "Đặt hàng". | W4 (timing) | Mã hết hạn giữa chừng | Có kiểm tra lại tính hợp lệ của mã lần cuối khi bấm Đặt hàng không? | | New |
+| MR-09 | Thứ tự trừ tiền kết hợp Ví ShopGo và Voucher. | W5 (who else actor) | Sai lệch số dư ví | Có thống nhất: Trừ voucher trước, sau đó mới trừ số dư ví không? | | New |
+| MR-10 | Biến động tồn kho/giá server khi đang ở màn hình thanh toán. | W5 (who else actor) | Lỗi đơn hàng không hợp lệ | Có tự động tính lại giỏ hàng và re-check voucher khi server đổi giá không? | | New |
+| MR-11 | Cơ chế Rate Limit chống brute-force đoán mã giảm giá. | W6 (what happens after) | Lộ mã nội bộ / quét mã | Có áp dụng Rate Limit (khóa tạm nếu nhập sai 5 lần) không? | | New |
+| MR-12 | Thống nhất danh sách thông điệp lỗi chi tiết phân biệt từng ca. | W6 (what happens after) | Thông báo lỗi mơ hồ | Có thống nhất danh sách câu thông báo lỗi chi tiết không? | | New |
 
 ## 8. GIẢ ĐỊNH ĐÃ CHỐT
 > Mỗi lần BA/PO trả lời một `[GIẢ ĐỊNH]`, chuyển nó xuống đây. Lần chạy sau agent dùng luôn, không phải giả định lại.
@@ -111,4 +111,4 @@ Chức năng cho phép khách hàng nhập mã giảm giá (Voucher) tại trang
 | BR-07 | `INPUT/OVERVIEW.md` §3 |
 | BR-08 → BR-14 | Phản hồi làm rõ chính thức từ BA/PO (2026-08-23) |
 | GAP-01 → GAP-06 | Câu hỏi làm rõ từ `01_requirement_risk_summary.md` |
-| MR-01 → MR-12 | Phân tích 06W từ `02_missing_rule_report.md` |
+| MR-01 → MR-12 | Phân tích 06W (§4 QA_STANDARD) từ `02_missing_rule_report.md` |

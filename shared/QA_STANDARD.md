@@ -56,17 +56,23 @@ Cả 4 tiêu chí bắt buộc PASS. Tiêu chí nào FAIL → sửa trước khi
 
 ## 4. Kỹ thuật 06W
 
-| # | Câu hỏi | Trọng tâm kiểm tra |
+> Đây là **định nghĩa duy nhất** của 06W trong repo. Mã `W1…W6` dùng để trace; **tên** không
+> được đổi. Cột "Trọng tâm kiểm tra" là gợi ý mở — skill được phép mở rộng theo đặc thù feature.
+
+| # | Tên (chuẩn — không đổi) | Trọng tâm kiểm tra (mở rộng được) |
 |---|---|---|
-| **W1** | Who/What initiates? | Tác nhân/sự kiện kích hoạt · phân quyền · trạng thái tài khoản · ngữ cảnh thực thi |
-| **W2** | What if Invalid/Negative? | Dữ liệu sai · flow lỗi · mất kết nối · timeout · hành vi bất thường |
-| **W3** | Where is Boundary/Limit? | Biên min/max · dung lượng · định dạng · khoảng thời gian hiệu lực |
-| **W4** | When & State Transition? | Điều kiện tiên quyết chuyển trạng thái · thứ tự trước/sau · xung đột thời gian |
-| **W5** | Which Dependency/Side-effect? | Phụ thuộc service/module/bên thứ ba · tác động chéo tới dữ liệu & luồng khác |
-| **W6** | Why & Implicit Expectation? | Mục đích nghiệp vụ · kỳ vọng ngầm về UX, bảo mật, toàn vẹn, hiệu năng |
+| **W1** | What if input lạ | Sai định dạng · quá dài · ký tự đặc biệt · rỗng/null · hoa-thường · khoảng trắng thừa · giá trị ngoài khoảng cho phép |
+| **W2** | What if state lạ | Trạng thái hệ thống/tài khoản chưa xử lý · tiền điều kiện thiếu · session/quyền thay đổi giữa chừng · thao tác lặp trên trạng thái đã có |
+| **W3** | What if data lạ | Dữ liệu nền edge case · dữ liệu bẩn · mâu thuẫn giữa các nguồn tài liệu · giá trị biên nghiệp vụ · quy tắc làm tròn/ép kiểu |
+| **W4** | What when timing | Hết hạn giữa chừng · đồng thời/concurrent · timeout · timezone · thứ tự trước–sau · re-validate tại thời điểm chốt |
+| **W5** | Who else actor | Actor khác kích hoạt cùng flow · phân quyền · phụ thuộc module/service/bên thứ ba · tác động chéo tới dữ liệu khác |
+| **W6** | What happens after | Side-effect sau hành động · trạng thái thay đổi · rollback/undo/hoàn tác · kỳ vọng ngầm về UX, bảo mật, toàn vẹn dữ liệu |
 
 Quét đủ W1→W6. Câu hỏi nào không ra vấn đề vẫn phải ghi
 `"Không phát hiện vấn đề qua câu hỏi #W[X]"` — không được bỏ trống.
+
+> **Ranh giới với §6**: chuỗi biên min/max của một field thuộc §6 (Boundary Completeness),
+> không lặp lại thành một câu hỏi W riêng. W3 chỉ hỏi *dữ liệu nền có gì lạ*, không liệt kê biên.
 
 ---
 
