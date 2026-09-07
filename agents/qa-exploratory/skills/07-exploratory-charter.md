@@ -32,7 +32,7 @@ phiên thăm dò do con người thực hiện.
    góc nhìn ngoài dữ liệu đã cho → gắn `[GIẢ ĐỊNH]` + nêu lý do.
 
 ## Format output
-Ghi ra `output/<task-slug>/07_exploratory_charter.md`:
+Ghi ra `OUTPUT/<task-slug>/07_exploratory_charter.md`:
 
 ```markdown
 # EXPLORATORY CHARTER SET — [TÊN TÍNH NĂNG]

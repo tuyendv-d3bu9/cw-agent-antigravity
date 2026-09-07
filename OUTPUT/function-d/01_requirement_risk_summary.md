@@ -1,156 +1,168 @@
 # REQUIREMENT & RISK ANALYSIS REPORT · function-d
-Owner: agents/qa-analyst/skills/01-requirement-risk-summary.md · Nguồn: INPUT/Function D.md, INPUT/OVERVIEW.md, Phản hồi làm rõ từ BA/PO (2026-08-23) · Verdict: PASS
+Owner: agents/qa-analyst/01-requirement-risk-summary · Nguồn: INPUT/Function D.md, INPUT/OVERVIEW.md, knowledge/function-d.md · Verdict: ASK
 
-**Dạng tài liệu nhận diện**: Prose Document (Tài liệu đặc tả yêu cầu dạng văn bản kết hợp bối cảnh tổng quan & Clarification chính thức)
+**Dạng tài liệu nhận diện**: Prose Document (Đặc tả yêu cầu dạng văn xuôi & Bản đồ tính năng)
 
 ---
 
 ## 1. FEATURE OVERVIEW
-Chức năng **Áp dụng Mã Giảm Giá (Voucher)** tại bước Thanh toán của hệ thống thương mại điện tử ShopGo cho phép khách hàng nhập mã khuyến mãi để được giảm trừ giá trị đơn hàng theo tỷ lệ phần trăm (%) có mức trần giảm tối đa hoặc theo số tiền cố định (VNĐ) giảm tối đa về 0 VNĐ. Mỗi khách hàng chỉ được dùng mỗi mã 1 lần duy nhất, không áp dụng cộng dồn nhiều mã, và mã chỉ áp dụng cho giá trị đơn hàng. Mục đích cốt lõi là kích cầu mua sắm và gia tăng trải nghiệm thanh toán chính xác, minh bạch, an toàn cho hệ thống và người dùng.
-
-## 2. ACTOR & USER ROLE
-- **Khách hàng (Customer)**: Người dùng đã đăng ký và đăng nhập tài khoản trên ShopGo, tiến hành đặt hàng tại trang Thanh toán, nhập, áp dụng, thay thế mã giảm giá hợp lệ (mỗi mã 1 lần/tài khoản).
-- **Khách vãng lai (Guest)**: Được duyệt sản phẩm và thêm vào giỏ hàng, nhưng bắt buộc phải đăng nhập tài khoản khi thực hiện Thanh toán để áp dụng mã giảm giá.
-- **Hệ thống (System - ShopGo Platform)**: Tự động tiếp nhận mã, xác thực điều kiện hợp lệ (thời hạn, đơn tối thiểu, loại mã, giới hạn 1 lần/user), tính toán mức giảm (áp dụng trần giảm % hoặc sàn 0 VNĐ), cập nhật tổng tiền mới, cảnh báo và hủy mã khi giỏ hàng thay đổi không còn đạt điều kiện, tự động hoàn lượt mã khi hủy đơn.
-- **Nhân viên CSKH / Admin (Back-office)**: Quản lý cấu hình, phát hành và kiểm soát voucher (thuộc bối cảnh hệ thống, ngoài phạm vi test chi tiết của tính năng này).
-
-## 3. BUSINESS RULES
-- **BR-01**: Hệ thống hỗ trợ 2 loại mã giảm giá: giảm theo tỷ lệ phần trăm (%) và giảm theo số tiền cố định (VNĐ).
-- **BR-02**: Mã giảm giá chỉ có hiệu lực áp dụng khi giá trị đơn hàng đạt hoặc vượt mức giá trị tối thiểu quy định riêng của mã đó.
-- **BR-03**: Mỗi mã giảm giá có ngày hết hạn xác định; sau thời điểm hết hạn mã sẽ không còn giá trị sử dụng.
-- **BR-04**: Khi áp dụng mã thành công, hệ thống phải hiển thị rõ ràng số tiền được giảm trừ và tổng tiền thanh toán mới sau khi giảm.
-- **BR-05**: Khi mã không hợp lệ (không tồn tại, sai ký tự, chưa đủ điều kiện đơn tối thiểu, đã hết hạn, hoặc đã qua sử dụng), hệ thống phải hiển thị thông báo lỗi cụ thể tương ứng cho người dùng.
-- **BR-06**: Vị trí giao diện: Tại trang Thanh toán, cung cấp ô nhập văn bản "Mã giảm giá" và nút tương tác "Áp dụng".
-- **BR-07**: Khách hàng bắt buộc phải ở trạng thái đã đăng nhập tài khoản tại bước Thanh toán để sử dụng mã giảm giá.
-- **BR-08** *(Đã xác nhận)*: Mỗi khách hàng chỉ được áp dụng mỗi mã giảm giá **01 lần duy nhất**.
-- **BR-09** *(Đã xác nhận)*: Không hỗ trợ cộng dồn nhiều mã giảm giá trong cùng 1 đơn hàng. Khi khách hàng nhập và áp dụng mã mới, hệ thống sẽ **áp đè và thay thế** mã đang áp dụng hiện tại.
-- **BR-10** *(Đã xác nhận)*: Đối với mã giảm theo số tiền cố định, nếu giá trị giảm lớn hơn tổng giá trị đơn hàng thì số tiền thanh toán được giảm tối đa **về 0 VNĐ** (không phát sinh tiền âm).
-- **BR-11** *(Đã xác nhận)*: Đối với mã giảm theo tỷ lệ phần trăm (%), hệ thống có áp dụng quy định **mức giảm tối đa (Max Discount Cap)**.
-- **BR-12** *(Đã xác nhận)*: Mã giảm giá **chỉ áp dụng giảm trừ trực tiếp trên giá trị đơn hàng**, không áp dụng giảm trừ cho phí vận chuyển hay các dịch vụ khác.
-- **BR-13** *(Đã xác nhận)*: Trường hợp khách hàng thay đổi giỏ hàng sau khi đã áp mã khiến đơn hàng không còn đủ giá trị tối thiểu, hệ thống sẽ hiển thị **cảnh báo và tự động hủy voucher**, tính toán lại tổng tiền gốc.
-- **BR-14** *(Đã xác nhận)*: Khi đơn hàng đã áp mã giảm giá bị hủy, **lượt sử dụng của mã sẽ được tự động hoàn lại** cho tài khoản khách hàng để có thể sử dụng cho đơn hàng sau.
-
-## 4. HAPPY PATH
-1. Khách hàng đã đăng nhập tài khoản, có sản phẩm trong giỏ hàng và tiến hành điều hướng đến trang **Thanh toán**.
-2. Khách hàng quan sát thấy khu vực "Mã giảm giá" gồm ô nhập liệu và nút "Áp dụng".
-3. Khách hàng nhập một mã giảm giá hợp lệ (mã còn hạn, tài khoản chưa từng dùng mã này, tổng giá trị đơn hàng đạt hoặc vượt mức tối thiểu).
-4. Khách hàng nhấn nút **"Áp dụng"**.
-5. Hệ thống xác thực thành công, tính toán mức giảm (tuân thủ mức trần tối đa nếu là mã % hoặc không vượt quá tổng đơn về 0 VNĐ nếu là mã tiền cố định), hiển thị số tiền được giảm (VNĐ) và tự động cập nhật tổng tiền đơn hàng phải thanh toán.
-
-## 5. ALTERNATE FLOWS
-### AF-01: Áp dụng mã không tồn tại / sai định dạng
-1. Tại trang Thanh toán, khách hàng nhập mã giảm giá không tồn tại trong hệ thống hoặc chứa định dạng không hợp lệ.
-2. Khách hàng nhấn nút **"Áp dụng"**.
-3. Hệ thống kiểm tra và trả về thông báo lỗi: Mã giảm giá không hợp lệ/không tồn tại.
-4. Tổng tiền đơn hàng giữ nguyên không thay đổi, không phát sinh chiết khấu.
-
-### AF-02: Áp dụng mã đã hết hạn sử dụng
-1. Tại trang Thanh toán, khách hàng nhập mã giảm giá đã qua ngày hết hạn.
-2. Khách hàng nhấn nút **"Áp dụng"**.
-3. Hệ thống trả về thông báo lỗi: Mã giảm giá đã hết hạn sử dụng.
-4. Tổng tiền đơn hàng giữ nguyên không thay đổi.
-
-### AF-03: Đơn hàng chưa đạt giá trị tối thiểu của mã
-1. Tại trang Thanh toán, khách hàng nhập mã giảm giá hợp lệ nhưng giá trị đơn hàng hiện tại nhỏ hơn mức tối thiểu quy định của mã.
-2. Khách hàng nhấn nút **"Áp dụng"**.
-3. Hệ thống trả về thông báo lỗi nêu rõ đơn hàng chưa đạt giá trị tối thiểu để áp dụng mã.
-4. Tổng tiền đơn hàng giữ nguyên không thay đổi.
-
-### AF-04: Áp dụng mã mới thay thế mã hiện tại (Áp đè mã)
-1. Khách hàng đã áp dụng thành công Mã A vào đơn hàng.
-2. Khách hàng nhập tiếp Mã B hợp lệ vào ô "Mã giảm giá" và bấm **"Áp dụng"**.
-3. Hệ thống hủy áp dụng Mã A, áp dụng Mã B, cập nhật lại dòng chiết khấu theo Mã B và tính lại tổng tiền đơn hàng mới.
-
-### AF-05: Đơn hàng bị thay đổi sau khi đã áp mã thành công
-1. Khách hàng đã áp dụng thành công mã giảm giá có điều kiện đơn tối thiểu (ví dụ: tối thiểu 300.000 VNĐ).
-2. Khách hàng quay lại chỉnh sửa giỏ hàng (giảm số lượng/xóa bớt sản phẩm) khiến tổng giá trị đơn hàng giảm xuống dưới 300.000 VNĐ.
-3. Khi quay lại trang Thanh toán / cập nhật giỏ hàng, hệ thống phát hiện không còn đủ điều kiện, hiển thị thông báo cảnh báo và tự động hủy mã giảm giá, trả lại tổng tiền nguyên bản chưa giảm.
-
-### AF-06: Áp dụng mã đã từng sử dụng trước đó (Vượt giới hạn 1 lần/user)
-1. Khách hàng nhập mã giảm giá mà tài khoản này đã từng sử dụng thành công trong một đơn hàng trước đó.
-2. Khách hàng nhấn nút **"Áp dụng"**.
-3. Hệ thống kiểm tra lịch sử sử dụng của tài khoản và hiển thị thông báo lỗi: Bạn đã sử dụng mã giảm giá này rồi.
-4. Tổng tiền đơn hàng giữ nguyên không thay đổi.
-
-### AF-07: Áp dụng mã giảm cố định lớn hơn tổng giá trị đơn hàng
-1. Đơn hàng có tổng tiền 100.000 VNĐ (đạt mức tối thiểu), khách áp mã giảm cố định 150.000 VNĐ.
-2. Khách hàng bấm **"Áp dụng"**.
-3. Hệ thống áp dụng giảm trừ 100.000 VNĐ, hiển thị tổng tiền đơn hàng thanh toán là **0 VNĐ**.
-
-## 6. OUT OF SCOPE
-- Chức năng tạo lập, cấu hình hạn mức, thời gian hiệu lực và phân quyền mã giảm giá tại trang Quản trị Back-office.
-- Tích hợp cổng thanh toán bên thứ ba (VNPay, cổng thẻ ngân hàng quốc tế) và xử lý giao dịch trừ tiền/nạp tiền Ví ShopGo (thuộc Function E, F).
-- Kiểm thử trên ứng dụng di động gốc (Native App iOS/Android).
-- Kiểm thử tải cao và stress testing đồng thời trên toàn bộ máy chủ.
-
-## 7. OPEN QUESTIONS
-- **Q1 (W1 - Who & Giới hạn sử dụng)**: Mã giảm giá có quy định giới hạn số lần sử dụng trên từng tài khoản khách hàng (ví dụ: mỗi user chỉ dùng 1 lần) hoặc giới hạn tổng lượt dùng toàn hệ thống hay không?
-  - **Trạng thái**: **Đã xác nhận** — Mỗi người dùng chỉ được áp dụng mỗi mã giảm giá **01 lần duy nhất**.
-- **Q2 (W2 - What if / Xóa & Đổi mã)**: Sau khi áp dụng mã thành công, khách hàng có thể áp đè hoặc thay đổi sang mã khác trước khi bấm "Đặt hàng" không? Có được áp cùng lúc nhiều mã không?
-  - **Trạng thái**: **Đã xác nhận** — Được phép thay thế mã (áp đè mã mới lên mã cũ), **không được áp cùng lúc nhiều mã** (chỉ 1 mã/đơn).
-- **Q3 (W3 - Where / Giảm quá giá trị đơn & Mức trần voucher %)**:
-  - Trường hợp mã giảm số tiền cố định có giá trị giảm lớn hơn tổng tiền đơn hàng, hệ thống xử lý thế nào?
-  - Với voucher giảm theo %, hệ thống có quy định mức trần giảm tối đa (Max Discount Cap) không?
-  - **Trạng thái**: **Đã xác nhận** — 
-    - Ý 1: Khi áp mã giảm số tiền cố định lớn hơn giá trị đơn hàng, hệ thống giảm tối đa để tổng tiền đơn hàng về **0 VNĐ**.
-    - Ý 2: Có quy định mức giảm tối đa (Max Discount Cap) cho mã giảm theo phần trăm (%).
-- **Q4 (W4 - When / Thay đổi giỏ hàng sau khi áp mã)**: Sau khi áp mã thành công, nếu khách hàng quay lại giỏ hàng sửa đổi/xóa bớt sản phẩm khiến tổng đơn rơi xuống dưới mức tối thiểu của voucher thì hệ thống xử lý thế nào?
-  - **Trạng thái**: **Đã xác nhận** — Hệ thống sẽ tính lại điều kiện voucher khi đơn hàng có sự thay đổi; nếu không còn đủ điều kiện, hệ thống sẽ hiển thị **cảnh báo và tự động hủy voucher**.
-- **Q5 (W5 - Which / Phí ship & Đối tượng áp dụng)**: Mã giảm giá áp dụng cho đối tượng nào (tiền hàng hay cả phí vận chuyển)?
-  - **Trạng thái**: **Đã xác nhận** — **Chỉ áp dụng giảm giá trực tiếp trên giá trị đơn hàng** (không áp dụng cho phí vận chuyển).
-- **Q6 (W6 - Why / Hoàn mã khi hủy đơn)**: Khi đơn hàng đã áp mã giảm giá bị hủy, lượt sử dụng mã giảm giá đó có được tự động hoàn lại cho khách hàng không?
-  - **Trạng thái**: **Đã xác nhận** — **Có**, lượt sử dụng mã sẽ được tự động hoàn lại vào tài khoản của khách hàng.
-
-## 8. BUSINESS CRITICALITY ASSESSMENT
-- **Trạng thái dữ liệu bối cảnh**: **Đầy đủ sau Clarification**
-- **Bối cảnh nghiệp vụ ghi nhận**:
-  - Chức năng Áp dụng Voucher nằm ở bước Thanh toán, trực tiếp quyết định số tiền phải thu từ khách hàng.
-  - Các quy tắc về giới hạn 1 lần/user, cơ chế áp đè mã (không cộng dồn), sàn tiền 0 VNĐ, trần giảm %, và tự động kiểm tra lại giỏ hàng đã thiết lập một hàng rào kiểm soát tài chính chặt chẽ, ngăn ngừa triệt để các nguy cơ trục lợi voucher.
-
-## 9. MISSING RISK CONTEXT INFORMATION
-### 9.1 Chi tiết theo khía cạnh
-- **Missing User Context**: Đã xác định rõ: Khách hàng đăng nhập, mỗi khách chỉ dùng mã 1 lần. Vẫn cần lưu ý trường hợp 1 người tạo nhiều tài khoản (fraud) → **Mức độ: LOW**.
-- **Missing Usage Context**: Chưa có dữ liệu cụ thể về lưu lượng đỉnh (Peak Concurrency) trong các đợt flash sale → **Mức độ: MED**.
-- **Missing Financial Context**: Đã có quy tắc sàn 0 VNĐ và Max Discount Cap cho mã %, ngăn ngừa hoàn toàn lỗi tiền âm và giảm giá vô hạn → **Mức độ: LOW**.
-- **Missing Operational Context**: Đã có quy tắc rõ ràng về việc tự động hoàn lượt mã khi đơn hàng bị hủy → **Mức độ: LOW**.
-- **Missing Criticality Context**: Đã xác định mức độ quan trọng cao tại cổng thanh toán → **Mức độ: LOW**.
-
-### 9.2 Tổng hợp
-- **Available Context**: Quy tắc nghiệp vụ đầy đủ, toàn diện từ tài liệu gốc kết hợp làm rõ chính thức của BA/PO (14 Business Rules, 7 Alternate Flows).
-- **Missing Context**: Chỉ còn các thông số tải hạ tầng kỹ thuật (nằm ngoài phạm vi phân tích chức năng).
-- **Risk Analysis Impact**: Bức tranh rủi ro đã rõ ràng và có căn cứ xác thực cao, cho phép đánh giá Severity với độ tin cậy cao (`SEVERITY_CONFIDENCE_HIGH`).
-
-## 10. RISK ANALYSIS & PRIORITIZATION
-### 10.1 Nguồn đánh giá Risk
-- **Business Rules**: 14 Business Rules toàn diện (BR-01 đến BR-14).
-- **Gap Analysis**: Các khoảng trống nghiệp vụ đã được làm rõ hoàn toàn qua 6 câu hỏi 06W.
-- **Business Criticality Assessment**: Xác định rõ các điểm chạm rủi ro tài chính và trải nghiệm người dùng tại bước Thanh toán.
-- **Missing Risk Context Information**: Các khía cạnh tài chính và vòng đời mã đã được bù đắp đầy đủ.
-
-### 10.2 Ma trận Đánh giá Rủi ro (3x3)
-
-| Mã rủi ro | Likelihood | Impact | Risk Level | Severity | Cờ tin cậy | Lý do (5 yếu tố Impact) |
-|:---|:---|:---|:---|:---|:---|:---|
-| **RK-01: Sai lệch tính toán chiết khấu % vượt mức trần (Max Cap) hoặc sai tiền đơn hàng** | MED | HIGH | **HIGH** | Critical | SEVERITY_CONFIDENCE_HIGH | Sai công thức tính % hoặc không chặn mức trần Max Cap gây thiệt hại tài chính trực tiếp cho doanh nghiệp. |
-| **RK-02: Lỗi không hủy voucher khi sửa giỏ hàng làm tổng tiền dưới mức tối thiểu** | HIGH | HIGH | **CRITICAL** | Critical | SEVERITY_CONFIDENCE_HIGH | Người dùng lách luật bằng cách thêm hàng cho đủ min order, áp mã rồi xóa bớt hàng nhưng mã vẫn giảm. |
-| **RK-03: Lỗi cho phép 1 khách hàng sử dụng mã nhiều lần (Vượt giới hạn 1 lần/user)** | MED | HIGH | **HIGH** | Major | SEVERITY_CONFIDENCE_HIGH | Khách hàng tái sử dụng mã một lần dẫn đến cạn kiệt ngân sách khuyến mãi. |
-| **RK-04: Lỗi cho phép cộng dồn nhiều mã giảm giá thay vì áp đè thay thế** | MED | HIGH | **HIGH** | Major | SEVERITY_CONFIDENCE_HIGH | Nếu hệ thống không hủy mã cũ khi áp mã mới, khách hàng có thể hưởng nhiều ưu đãi cùng lúc. |
-| **RK-05: Lỗi tính toán ra số tiền âm khi mã giảm cố định > tổng giá trị đơn hàng** | LOW | HIGH | **MEDIUM** | Major | SEVERITY_CONFIDENCE_HIGH | Hệ thống phải đưa tổng tiền về chính xác 0 VNĐ, không được phát sinh giá trị âm hoặc lỗi Exception gián đoạn checkout. |
-| **RK-06: Lỗi không hoàn lại lượt dùng mã khi đơn hàng bị hủy** | MED | MED | **MEDIUM** | Minor | SEVERITY_CONFIDENCE_HIGH | Ảnh hưởng trực tiếp tới quyền lợi và trải nghiệm của khách hàng, gây phát sinh khiếu nại CSKH. |
-
-### 10.3 Đánh giá tác động chiến lược
-- **Impact to Risk Analysis**: Đầy đủ cơ sở dữ liệu để chuyển giao cho các bước thiết kế Viewpoint và Test Idea.
-- **Impact to Test Prioritization**: Tập trung cao độ vào kiểm thử tính toán biên (BVA cho min order, max cap, giảm về 0đ), kiểm thử chuyển trạng thái giỏ hàng (State Transition / Alternate Flow) và kiểm tra phân quyền tài khoản (1 lần/user).
-- **Impact to Coverage Strategy**: Áp dụng Equivalence Partitioning cho các loại voucher, Decision Table cho tổ hợp điều kiện áp mã và áp đè mã.
+Chức năng cho phép khách hàng nhập mã giảm giá (Voucher) tại màn hình Thanh toán của hệ thống thương mại điện tử ShopGo để được giảm trừ tiền vào tổng đơn hàng theo tỷ lệ phần trăm (%) có quy định trần giảm tối đa hoặc số tiền cố định (VNĐ) giảm tối đa về 0 VNĐ khi thỏa mãn các điều kiện quy định. Mỗi khách hàng chỉ được dùng mỗi mã 1 lần duy nhất, hệ thống không cho phép cộng dồn nhiều mã (chỉ áp dụng đè thay thế).
 
 ---
 
-## FIX
-| # | Vị trí | Vấn đề | Bản sửa đề xuất |
-|---|---|---|---|
-| 1 | `INPUT/Function D.md` | Tài liệu thô ban đầu thiếu các rule quan trọng (Max Cap, 1 lần/user, áp đè, hoàn mã) | Đã cập nhật và chuẩn hóa vào `01_requirement_risk_summary.md` và `knowledge/function-d.md` theo phản hồi chính thức của BA/PO |
+## 2. ACTOR & USER ROLE
+- **Khách hàng (Customer)**: Người dùng đã đăng ký và đăng nhập tài khoản ShopGo; có quyền nhập mã giảm giá và áp dụng voucher tại màn hình Thanh toán khi đặt hàng. Mỗi mã chỉ được áp dụng 01 lần duy nhất cho mỗi tài khoản.
+- **Khách vãng lai (Guest)**: Có thể xem danh mục sản phẩm, thêm hàng vào giỏ; bắt buộc phải đăng nhập khi tiến hành thanh toán để có thể áp dụng mã giảm giá.
+- **Hệ thống (System)**: Tự động kiểm tra tính hợp lệ của mã (tồn tại, thời hạn hiệu lực, giá trị đơn hàng tối thiểu, giới hạn lượt dùng của user), tính toán mức chiết khấu (ràng buộc Max Discount Cap, giảm tối đa về 0đ), cập nhật lại tổng tiền đơn hàng, cảnh báo và hủy mã khi giỏ hàng thay đổi không đủ điều kiện, tự động hoàn lại lượt dùng mã khi đơn hàng bị hủy.
+- **Nhân viên CSKH / Admin (Back-office)**: Quản lý cấu hình, tạo mới, chỉnh sửa mã giảm giá tại hệ thống quản trị (nằm ngoài phạm vi kiểm thử chi tiết của chức năng này).
+
+---
+
+## 3. BUSINESS RULES
+| ID | Nội dung quy tắc nghiệp vụ | Nguồn gốc | Trạng thái |
+|:---|:---|:---|:---|
+| **BR-01** | Có 2 loại mã giảm giá: giảm theo phần trăm (%) và giảm theo số tiền cố định (VNĐ). | `INPUT/Function D.md` §1 | Confirmed |
+| **BR-02** | Mã chỉ dùng được khi đơn hàng đạt giá trị tối thiểu quy định của mã (Min Order Value). | `INPUT/Function D.md` §1 | Confirmed |
+| **BR-03** | Mỗi mã giảm giá có ngày hết hạn xác định. | `INPUT/Function D.md` §1 | Confirmed |
+| **BR-04** | Áp dụng thành công → Hệ thống hiển thị số tiền được giảm và tổng tiền thanh toán mới sau giảm. | `INPUT/Function D.md` §1 | Confirmed |
+| **BR-05** | Mã không hợp lệ hoặc hết hạn → Hiển thị thông báo lỗi tương ứng cho người dùng. | `INPUT/Function D.md` §1 | Confirmed |
+| **BR-06** | Vị trí thao tác: Tại trang Thanh toán, có ô nhập "Mã giảm giá" và nút "Áp dụng". | `INPUT/Function D.md` §1 | Confirmed |
+| **BR-07** | Khách hàng bắt buộc phải đăng nhập khi tiến hành thanh toán (khách vãng lai được yêu cầu đăng nhập). | `INPUT/OVERVIEW.md` §3 | Confirmed |
+| **BR-08** | Mỗi khách hàng chỉ được áp dụng mỗi mã giảm giá 01 lần duy nhất trên tài khoản của mình. | `knowledge/function-d.md` (BA/PO chốt) | Confirmed |
+| **BR-09** | Không áp dụng cộng dồn nhiều mã giảm giá cùng lúc; khi nhập mã mới hợp lệ sẽ áp đè và thay thế mã hiện tại. | `knowledge/function-d.md` (BA/PO chốt) | Confirmed |
+| **BR-10** | Mã giảm số tiền cố định có giá trị lớn hơn tổng tiền đơn hàng thì tổng tiền thanh toán giảm tối đa về 0 VNĐ (không tạo số tiền âm). | `knowledge/function-d.md` (BA/PO chốt) | Confirmed |
+| **BR-11** | Mã giảm giá theo phần trăm (%) có quy định mức giảm tối đa (Max Discount Cap). | `knowledge/function-d.md` (BA/PO chốt) | Confirmed |
+| **BR-12** | Mã giảm giá chỉ áp dụng giảm trực tiếp trên giá trị đơn hàng (tiền hàng), không áp dụng giảm trừ trên phí vận chuyển. | `knowledge/function-d.md` (BA/PO chốt) | Confirmed |
+| **BR-13** | Khi thay đổi giỏ hàng khiến đơn hàng không còn đủ giá trị tối thiểu, hệ thống hiển thị cảnh báo và tự động hủy voucher. | `knowledge/function-d.md` (BA/PO chốt) | Confirmed |
+| **BR-14** | Khi đơn hàng đã áp mã bị hủy, lượt sử dụng mã sẽ được tự động hoàn lại cho tài khoản khách hàng. | `knowledge/function-d.md` (BA/PO chốt) | Confirmed |
+
+---
+
+## 4. HAPPY PATH
+1. **Tiền điều kiện**: Khách hàng đã đăng nhập tài khoản ShopGo hợp lệ, đã chọn sản phẩm vào giỏ hàng và chuyển đến trang **Thanh toán**.
+2. **Thao tác**: Khách hàng nhập mã giảm giá hợp lệ (mã tồn tại, còn hạn sử dụng, chưa từng dùng, giá trị đơn hàng đạt mức tối thiểu) vào ô *"Mã giảm giá"*.
+3. **Thực hiện**: Khách hàng nhấn nút **"Áp dụng"**.
+4. **Kết quả mong đợi**:
+   - Hệ thống xác thực thành công mã giảm giá.
+   - Hiển thị rõ ràng số tiền được giảm trừ (áp dụng Max Cap nếu là mã %, hoặc giảm tối đa về 0 VNĐ nếu là mã tiền cố định).
+   - Cập nhật và hiển thị tổng tiền thanh toán mới sau khi giảm trừ.
+   - Trạng thái mã được ghi nhận liên kết tạm thời với đơn hàng chờ thanh toán.
+
+---
+
+## 5. ALTERNATE FLOWS
+- **AF-01 (Mã không tồn tại / sai định dạng)**: Khách hàng nhập mã không tồn tại trong hệ thống hoặc chứa ký tự không hợp lệ → Nhấn "Áp dụng" → Hệ thống hiển thị thông báo lỗi *"Mã giảm giá không hợp lệ"*, giữ nguyên tổng tiền đơn hàng ban đầu.
+- **AF-02 (Mã đã hết hạn)**: Khách hàng nhập mã đã quá ngày hết hạn → Nhấn "Áp dụng" → Hệ thống hiển thị thông báo lỗi *"Mã giảm giá đã hết hạn sử dụng"*, không giảm trừ tiền.
+- **AF-03 (Chưa đạt giá trị đơn hàng tối thiểu)**: Khách hàng nhập mã có giá trị đơn hàng hiện tại nhỏ hơn Min Order Value của voucher → Nhấn "Áp dụng" → Hệ thống báo lỗi *"Đơn hàng chưa đạt giá trị tối thiểu để áp dụng mã này"*.
+- **AF-04 (Áp đè / Thay thế mã giảm giá)**: Khách hàng đã áp dụng thành công mã A, sau đó nhập tiếp mã B hợp lệ và nhấn "Áp dụng" → Hệ thống tự động gỡ bỏ mã A, áp dụng mã B và tính toán lại tổng tiền mới.
+- **AF-05 (Thay đổi giỏ hàng sau khi áp mã)**: Khách hàng quay lại giỏ hàng giảm bớt số lượng/sản phẩm khiến tổng tiền hàng thấp hơn Min Order Value của mã đã áp → Quay lại trang Thanh toán → Hệ thống cảnh báo đơn không đủ điều kiện và tự động hủy mã voucher đã chọn, tính lại giá gốc.
+- **AF-06 (Mã đã từng được sử dụng bởi user)**: Khách hàng nhập mã hợp lệ nhưng tài khoản này đã sử dụng mã đó trong một đơn hàng trước đây → Nhấn "Áp dụng" → Hệ thống báo lỗi *"Bạn đã sử dụng mã giảm giá này rồi"*.
+- **AF-07 (Mã giảm tiền cố định > tổng giá trị đơn hàng)**: Đơn hàng trị giá 100.000 VNĐ, khách hàng áp mã giảm 150.000 VNĐ → Hệ thống giảm tối đa 100.000 VNĐ, hiển thị tổng tiền thanh toán là 0 VNĐ.
+
+---
+
+## 6. OUT OF SCOPE
+- Chức năng quản lý, tạo mới, phát hành, chỉnh sửa cấu hình mã giảm giá ở Back-office / Admin portal.
+- Quy trình tích hợp thanh toán qua thẻ ngân hàng, cổng thanh toán bên thứ ba và quản lý số dư Ví điện tử ShopGo (thuộc Function E & F).
+- Ứng dụng native mobile app trên iOS/Android (chỉ tập trung Web responsive trên Desktop và Mobile Web).
+- Kiểm thử tải cao và hiệu năng chịu tải đồng thời lớn (Load/Stress Testing).
+- Tích hợp hệ thống quản lý kho vận ERP / Logistics vận chuyển.
+
+---
+
+## 7. OPEN QUESTIONS (Áp dụng kỹ thuật 06W)
+> Bắt buộc tối thiểu 5 câu hỏi đào sâu kẽ hở kết hợp kỹ thuật 06W.
+
+| # | Mã | Câu hỏi làm rõ cho BA / PO | Thuộc nhóm 06W | Mức độ rủi ro | Trạng thái |
+|:---|:---|:---|:---|:---|:---|
+| 1 | **Q-01** | Khi khách hàng nhập mã có khoảng trắng thừa ở đầu/cuối chuỗi (do copy-paste), hệ thống có tự động cắt tỉa (trim whitespace) không hay báo lỗi không hợp lệ? | **W1 (Input lạ)** | MED | Chờ trả lời |
+| 2 | **Q-02** | Mã giảm giá có phân biệt chữ hoa / chữ thường (Case-sensitive) không? (Ví dụ: `SHOPGO10` vs `shopgo10`). | **W1 (Input lạ)** | LOW | Chờ trả lời |
+| 3 | **Q-03** | Trong lúc khách hàng đang ở màn hình Thanh toán, nếu phiên đăng nhập (Session) hết hạn hoặc tài khoản bị khóa thì khi bấm "Áp dụng" hệ thống hiển thị thông báo gì (modal login tại chỗ hay redirect ra trang Login)? | **W2 (State lạ)** | HIGH | Chờ trả lời |
+| 4 | **Q-04** | Quy tắc làm tròn số tiền chiết khấu đối với mã giảm giá theo phần trăm (%) có kết quả số tiền lẻ thập phân được xử lý như thế nào (làm tròn lên/xuống hay làm tròn đến hàng đơn vị đồng)? | **W3 (Data lạ)** | MED | Chờ trả lời |
+| 5 | **Q-05** | Mốc thời gian hết hạn của mã giảm giá: Hết hạn vào ngày `YYYY-MM-DD` được hiểu chính xác là `00:00:00` hay `23:59:59` theo múi giờ nào (GMT+7)? | **W4 (Timing)** | HIGH | Chờ trả lời |
+| 6 | **Q-06** | Khi khách hàng đã áp mã thành công và đang ở màn hình Thanh toán, nếu mã giảm giá bị Admin vô hiệu hóa/hết hạn hoặc đơn hàng bị thay đổi giá từ server trước khi khách bấm "Đặt hàng", hệ thống có cơ chế Re-validate tại thời điểm chốt đơn không? | **W4 (Timing)** | HIGH | Chờ trả lời |
+| 7 | **Q-07** | Hệ thống có cơ chế phòng chống Brute-force / Rate limit (giới hạn số lần nhập sai mã liên tiếp) để ngăn chặn hành vi dò quét mã voucher tự động không? | **W6 (What happens after)** | HIGH | Chờ trả lời |
+
+---
+
+## 8. BUSINESS CRITICALITY ASSESSMENT
+- **Trạng thái dữ liệu bối cảnh**: `[CONTEXT_MISSING]` (Chưa có đầy đủ dữ liệu SLA, số lượng người dùng đồng thời, giá trị giao dịch trung bình trong `knowledge/_project.md`).
+- **Bối cảnh nghiệp vụ ghi nhận**:
+  - Khách hàng là người mua sắm trực tuyến bán lẻ tại Việt Nam (`INPUT/OVERVIEW.md` §1, §2).
+  - Tính năng Áp dụng Voucher là động lực chuyển đổi mua hàng (Conversion Rate) then chốt ở khâu Thanh toán.
+  - Lỗi tính toán sai tiền khuyến mãi hoặc lỗi không áp được mã sẽ trực tiếp dẫn đến bỏ giỏ hàng (Cart Abandonment) hoặc thất thoát tài chính doanh nghiệp.
+
+---
+
+## 9. MISSING RISK CONTEXT INFORMATION
+
+### 9.1 Chi tiết theo 5 khía cạnh
+1. **Missing User Context**:
+   - *Dữ liệu thiếu*: Tỷ lệ người dùng mới (Guest) so với người dùng trung thành (Registered Customer); phân bổ truy cập Desktop vs Mobile Web.
+   - *Ảnh hưởng*: Khó xác định độ ưu tiên tối ưu giao diện trên Mobile Web và độ nhạy cảm của luồng bắt buộc login đối với Guest.
+   - *Mức độ*: **MED**
+2. **Missing Usage Context**:
+   - *Dữ liệu thiếu*: Lưu lượng truy cập giờ cao điểm (Flash Sale / Ngày hội mua sắm Mega Sale), tần suất nhập mã/giây.
+   - *Ảnh hưởng*: Chưa đủ cơ sở đánh giá rủi ro tranh chấp tài nguyên (Concurrency / Race Condition) khi số lượng voucher có hạn phát hành cùng lúc.
+   - *Mức độ*: **HIGH**
+3. **Missing Financial Context**:
+   - *Dữ liệu thiếu*: Giá trị đơn hàng trung bình (AOV), ngân sách khuyến mãi tối đa cho từng chiến dịch voucher, chính sách bồi hoàn nếu xảy ra lỗi áp mã.
+   - *Ảnh hưởng*: Khó lượng hóa mức độ thiệt hại tài chính tối đa khi xảy ra lỗ hổng áp mã nhiều lần hoặc tính sai công thức giảm giá.
+   - *Mức độ*: **HIGH**
+4. **Missing Operational Context**:
+   - *Dữ liệu thiếu*: Cam kết thời gian phản hồi API voucher (SLA latency), quy trình CSKH xử lý khiếu nại khi khách bị mất mã hoặc mã lỗi.
+   - *Ảnh hưởng*: Khó xác định ngưỡng timeout và kịch bản fallback khi service voucher phản hồi chậm.
+   - *Mức độ*: **MED**
+5. **Missing Criticality Context**:
+   - *Dữ liệu thiếu*: Mức độ ưu tiên xếp hạng của Function D so với các module Core Payment và Quản lý Đơn hàng.
+   - *Ảnh hưởng*: Khó xác định chiến lược kiểm thử khi thời gian release bị thu hẹp (Time-to-market trade-off).
+   - *Mức độ*: **MED**
+
+### 9.2 Tổng hợp bối cảnh rủi ro
+- **Available Context**: Nền tảng Responsive Web, người dùng tại Việt Nam, tiền tệ VNĐ, giao diện Tiếng Việt, loại mã % có Max Cap và mã cố định sàn 0đ, quy tắc 1 lần/user, không cộng dồn, hoàn mã khi hủy đơn.
+- **Missing Context**: Chưa có dữ liệu số lượng tải cao điểm (Mega Sale), ngân sách chiến dịch, SLA kỹ thuật của service voucher, quy chuẩn phân biệt hoa/thường, quy tắc trim whitespace và rate limit.
+- **Risk Analysis Impact**: Các đánh giá Severity và Risk Level về mặt hiệu năng/tài chính tạm thời gắn cờ `[SEVERITY_CONFIDENCE_LOW]` cho tới khi có phản hồi từ PO/BA.
+
+---
+
+## 10. RISK ANALYSIS & PRIORITIZATION
+
+### 10.1 Nguồn đánh giá Risk
+- **Business Rules**: 14 quy tắc nghiệp vụ đã xác nhận (BR-01 → BR-14) bao gồm các điều kiện logic chặt chẽ về Min Order Value, Max Cap, 1 lần/user, thay thế mã.
+- **Gap Analysis**: Các vùng trống logic về bảo mật (Rate limit), xử lý input biên (trim khoảng trắng, case sensitivity), timing (múi giờ hết hạn, re-validate trước khi đặt hàng) thu được từ 7 Open Questions.
+- **Business Criticality Assessment**: Tính năng khuyến mãi ảnh hưởng trực tiếp đến doanh thu và trải nghiệm chốt đơn của khách hàng.
+- **Missing Risk Context Information**: Thiếu thông tin tải cao điểm và ngân sách tối đa đòi hỏi kiểm thử bao quát cả khía cạnh tính đúng đắn lẫn an toàn tài chính.
+
+### 10.2 Ma trận Đánh giá Rủi ro (3x3)
+| Mã rủi ro | Mô tả rủi ro | Likelihood | Impact | Risk Level | Severity | Cờ tin cậy | Lý do (5 yếu tố Impact) |
+|:---|:---|:---|:---|:---|:---|:---|:---|
+| **RK-01** | Lỗ hổng áp mã nhiều lần (Bypass quy tắc 1 lần/user bằng thao tác đồng thời hoặc mở nhiều tab thanh toán) | MED | HIGH | **HIGH** | Critical | `[SEVERITY_CONFIDENCE_LOW]` | Thất thoát ngân sách khuyến mãi trực tiếp, ảnh hưởng lớn tới doanh thu và vận hành nếu bị lợi dụng quy mô lớn. |
+| **RK-02** | Tính toán sai số tiền chiết khấu (vượt Max Cap cho mã % hoặc tính ra số tiền thanh toán âm cho mã số tiền cố định) | LOW | HIGH | **MEDIUM** | Critical | `[SEVERITY_CONFIDENCE_LOW]` | Sai lệch tài chính nghiêm trọng, vi phạm quy tắc kế toán và gây thiệt hại trực tiếp trên mỗi giao dịch. |
+| **RK-03** | Khách hàng sửa giỏ hàng làm giảm tổng tiền dưới Min Order Value nhưng voucher vẫn được giữ nguyên | MED | HIGH | **HIGH** | Major | `[SEVERITY_CONFIDENCE_LOW]` | Khách hàng lách luật Min Order để hưởng chiết khấu không đúng điều kiện chiến dịch. |
+| **RK-04** | Tranh chấp thời gian hết hạn voucher (Mã hết hạn giữa lúc áp mã và lúc bấm Đặt hàng nhưng hệ thống không re-validate) | MED | MED | **MEDIUM** | Major | `[SEVERITY_CONFIDENCE_LOW]` | Gây khiếu nại CSKH gay gắt từ người dùng nếu bị từ chối đơn hàng hoặc gây thiệt hại cho shop. |
+| **RK-05** | Bị Brute-force / Quét tự động danh sách mã giảm giá do thiếu cơ chế Rate Limit | HIGH | MED | **HIGH** | Major | `[SEVERITY_CONFIDENCE_LOW]` | Lộ các mã voucher nội bộ/VIP, gây quá tải hệ thống và thất thoát chiết khấu. |
+| **RK-06** | Khách nhập đúng mã nhưng dính khoảng trắng thừa hoặc chữ thường bị hệ thống báo lỗi không hợp lệ | HIGH | LOW | **MEDIUM** | Minor | `[SEVERITY_CONFIDENCE_HIGH]` | Giảm trải nghiệm người dùng (UX), tăng tỷ lệ bỏ giỏ hàng ngay tại bước cuối cùng. |
+| **RK-07** | Không hoàn lại lượt sử dụng mã khi đơn hàng bị hủy bỏ | MED | MED | **MEDIUM** | Major | `[SEVERITY_CONFIDENCE_LOW]` | Gây mất niềm tin người dùng, phát sinh khối lượng lớn ticket hỗ trợ cho đội ngũ CSKH. |
+
+### 10.3 Đánh giá tác động chiến lược
+- **Impact to Risk Analysis**: Cần sớm làm rõ các câu hỏi trong mục 7 (đặc biệt về Re-validate, Rate limit, Timezone) để nâng mức tin cậy từ `[SEVERITY_CONFIDENCE_LOW]` lên mức High.
+- **Impact to Test Prioritization**:
+  1. *Ưu tiên 1 (Critical/High Risk)*: Kiểm thử tính đúng đắn của công thức tính tiền (Max Cap, sàn 0đ, không trừ phí ship) và kiểm tra ràng buộc 1 lần/user.
+  2. *Ưu tiên 2 (High Risk / State Changing)*: Kiểm thử luồng tự động hủy mã khi giỏ hàng đổi dưới Min Order, luồng hoàn mã khi hủy đơn và luồng áp đè mã.
+  3. *Ưu tiên 3 (Input & Edge Cases)*: Kiểm thử xử lý chuỗi ký tự lạ, khoảng trắng, chữ hoa/thường, mã hết hạn biên `min/max`.
+- **Impact to Coverage Strategy**:
+  - *Deep Testing & Automation*: Áp dụng cho các ca kiểm thử tính toán chiết khấu (Equivalence Partitioning & Boundary Value Analysis), quy tắc ràng buộc trạng thái giỏ hàng và re-validate.
+  - *Exploratory / Sanity*: Áp dụng cho trải nghiệm giao diện responsive trên đa trình duyệt/thiết bị di động và các thông điệp cảnh báo lỗi.
+
+---
 
 ## ASK
 | # | Vị trí | Cần gì | Chuyển cho ai |
-|---|---|---|---|
-| — | Không còn câu hỏi tồn đọng | Toàn bộ 6 Open Questions đã được xác nhận hoàn tất | — |
+|:---|:---|:---|:---|
+| 1 | Mục 7 (Q-01) | Xác nhận hành vi tự động trim khoảng trắng đầu/cuối của ô nhập mã giảm giá | BA / PO |
+| 2 | Mục 7 (Q-02) | Xác nhận quy tắc phân biệt hoa/thường (Case-sensitive) của mã voucher | BA / PO |
+| 3 | Mục 7 (Q-03) | Xác nhận hành vi khi hết hạn phiên / tài khoản bị khóa trong lúc áp mã thanh toán | BA / PO |
+| 4 | Mục 7 (Q-04) | Xác nhận quy tắc làm tròn số tiền chiết khấu lẻ đối với mã phần trăm (%) | BA / PO |
+| 5 | Mục 7 (Q-05) | Xác nhận mốc thời gian hết hạn chính xác và Timezone quy chuẩn | BA / PO |
+| 6 | Mục 7 (Q-06) | Xác nhận cơ chế Re-validate mã voucher tại thời điểm bấm nút Đặt hàng | BA / Tech Lead |
+| 7 | Mục 7 (Q-07) | Xác nhận yêu cầu Rate Limit / Chống brute-force ô nhập voucher | Tech Lead / Security |

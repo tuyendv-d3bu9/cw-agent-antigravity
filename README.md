@@ -53,14 +53,14 @@ Chỉ cần trỏ file, agent tự đọc:
 Đọc shared/QA_STANDARD.md, knowledge/_project.md, agents/qa-analyst/AGENT.md và
 agents/qa-analyst/skills/01-requirement-risk-summary.md.
 Chạy skill 01 với input INPUT/Function D.md.
-Ghi kết quả ra output/function-d/01_requirement_risk_summary.md
+Ghi kết quả ra OUTPUT/function-d/01_requirement_risk_summary.md
 và cập nhật knowledge/function-d.md
 ```
 
 Bước tiếp theo chỉ cần đổi tên skill:
 
 ```
-Chạy agents/qa-analyst/skills/02-missing-rule-06w.md với output/function-d/01_requirement_risk_summary.md
+Chạy agents/qa-analyst/skills/02-missing-rule-06w.md với OUTPUT/function-d/01_requirement_risk_summary.md
 ```
 
 ### Kiểu B · Dán tay vào chat AI (ChatGPT / Claude web / Gemini)
@@ -88,7 +88,7 @@ chat AI không tự ghi file được, mà đây là thứ duy nhất còn lại
 
 | # | Gọi gì | Vào | Ra |
 |---|---|---|---|
-| 1 | `agents/qa-analyst` / `01` | `INPUT/Function D.md` | `output/function-d/01_requirement_risk_summary.md` |
+| 1 | `agents/qa-analyst` / `01` | `INPUT/Function D.md` | `OUTPUT/function-d/01_requirement_risk_summary.md` |
 | 2 | `agents/qa-analyst` / `02` | `01` | `02_missing_rule_report.md` |
 | 3 | `agents/qa-analyst` / `03` | `01` + `02` | `03_viewpoint_report.md` |
 | 4 | `agents/qa-analyst` / `04` | `01` + `03` | `04_test_idea_report.md` |
@@ -98,7 +98,7 @@ chat AI không tự ghi file được, mà đây là thứ duy nhất còn lại
 | — | `agents/qa-exploratory` / `07` | risk area ở `03` | `07_exploratory_charter.md` |
 | — | `agents/qa-ui-review` / `08` | ảnh đính kèm | `08_ui_screenshot_analysis.md` |
 
-Mọi file ra nằm trong `output/<task-slug>/`, kèm `_index.md` liệt kê file + verdict từng bước.
+Mọi file ra nằm trong `OUTPUT/<task-slug>/`, kèm `_index.md` liệt kê file + verdict từng bước.
 
 ---
 
@@ -127,9 +127,9 @@ không tự quyết.
 | Muốn đổi gì | Sửa file nào |
 |---|---|
 | Ràng buộc chung (FACT, verdict, `[GIẢ ĐỊNH]`, chuỗi biên, quy ước output) | `shared/QA_STANDARD.md` — sửa 1 chỗ, áp cho mọi skill |
-| Quyền hạn / ranh giới / human-final của 1 agent | `<agent>/AGENT.md` |
-| Quy trình hoặc format output của 1 bước | `<agent>/skills/<skill>.md` |
-| Thêm bước mới | Tạo `skills/NN-<tên>.md` + khai vào mục "Skill sở hữu" của `AGENT.md` |
+| Quyền hạn / ranh giới / human-final của 1 agent | `agents/<agent>/AGENT.md` |
+| Quy trình hoặc format output của 1 bước | `agents/<agent>/skills/<skill>.md` |
+| Thêm bước mới | Tạo `agents/<agent>/skills/NN-<tên>.md` + khai vào mục "Skill sở hữu" của `AGENT.md` |
 | Registry/technique mới (kỹ thuật, bảng chuẩn) | Dùng bởi **≥2 skill** → `shared/QA_STANDARD.md`. Dùng bởi **1 skill** → nội hoá trong skill đó |
 | Quy ước dự án (format mã, đơn vị tiền, tool test) | `knowledge/_project.md` — điền 1 lần, mọi agent dùng |
 | Dữ kiện 1 tính năng (rule đã chốt, BA trả lời gì) | `knowledge/<feature-slug>.md` — copy từ `knowledge/_template.md` |

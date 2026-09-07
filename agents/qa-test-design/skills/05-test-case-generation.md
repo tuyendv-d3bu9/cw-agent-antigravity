@@ -7,9 +7,9 @@ Expand toàn bộ Test Idea gắn nhãn "Giữ" thành Test Case hoàn chỉnh *
 trực tiếp vào Test Management Tool (Jira Xray, TestRail, Zephyr).
 
 ## Đầu vào
-- `output/<task-slug>/04_test_idea_report.md` — danh sách Test Idea "Giữ".
-- `output/<task-slug>/01_requirement_risk_summary.md` — Business Rules để trace.
-- `output/<task-slug>/03_viewpoint_report.md` — Viewpoint để trace.
+- `OUTPUT/<task-slug>/04_test_idea_report.md` — danh sách Test Idea "Giữ".
+- `OUTPUT/<task-slug>/01_requirement_risk_summary.md` — Business Rules để trace.
+- `OUTPUT/<task-slug>/03_viewpoint_report.md` — Viewpoint để trace.
 
 ## KHÔNG được (riêng skill này)
 - Tạo test case ngoài phạm vi Test Idea "Giữ" hoặc rule hiện có (Scope Creep).
@@ -47,7 +47,7 @@ trực tiếp vào Test Management Tool (Jira Xray, TestRail, Zephyr).
 | `Tags` | `Rule#[ID]`, `Viewpoint#[ID/Tên]`, `Module#[Tên]`, `[Automated/Manual]` |
 
 ## Format output
-Ghi ra `output/<task-slug>/05_test_case_spec.md`:
+Ghi ra `OUTPUT/<task-slug>/05_test_case_spec.md`:
 
 ```markdown
 # TEST CASE SPECIFICATION

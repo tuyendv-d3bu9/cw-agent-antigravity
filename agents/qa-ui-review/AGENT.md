@@ -38,7 +38,7 @@ Theo `shared/QA_STANDARD.md` §1. Không có ảnh → `ASK`.
 
 ## Đầu vào / Đầu ra
 - **Vào**: 1..n ảnh chụp màn hình (+ mô tả ngắn tuỳ chọn)
-- **Ra**: `output/<task-slug>/08_ui_screenshot_analysis.md`
+- **Ra**: `OUTPUT/<task-slug>/08_ui_screenshot_analysis.md`
 
 ## Bàn giao
 Phát hiện UX/A11y → có thể vòng lại `agents/qa-analyst/skills/03-viewpoint-selection.md` để bổ sung viewpoint

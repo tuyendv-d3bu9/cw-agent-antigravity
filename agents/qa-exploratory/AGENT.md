@@ -18,7 +18,7 @@ thực hiện**.
 - **Ghi**: không.
 
 ## Được làm
-- Đọc Risk Area từ `output/<task-slug>/03_viewpoint_report.md` §1, hoặc Requirement Summary,
+- Đọc Risk Area từ `OUTPUT/<task-slug>/03_viewpoint_report.md` §1, hoặc Requirement Summary,
   hoặc chỉ mô tả tính năng.
 - Sinh bộ Charter ưu tiên rủi ro cao trước.
 
@@ -36,7 +36,7 @@ Theo `shared/QA_STANDARD.md` §1.
 
 ## Đầu vào / Đầu ra
 - **Vào**: Risk Area (từ `03_*.md`) và/hoặc `01_*.md` và/hoặc mô tả tính năng
-- **Ra**: `output/<task-slug>/07_exploratory_charter.md`
+- **Ra**: `OUTPUT/<task-slug>/07_exploratory_charter.md`
 
 ## Bàn giao
 Charter set → người test thực thi phiên session-based. Phát hiện từ phiên có thể vòng lại

@@ -1,7 +1,7 @@
 # WORKFLOW — Bản đồ pipeline QA Agent
 
 > File này để **ĐỌC**: hệ thống có gì, chạy theo thứ tự nào, dừng ở đâu.
-> Muốn **CHẠY** một chuỗi cụ thể => dùng runbook trong `workflow/run-*.md`.
+> Muốn **CHẠY** một chuỗi cụ thể => dùng runbook trong `workflows/run-*.md`.
 > Ràng buộc chung nằm ở `shared/QA_STANDARD.md` — file này không nhắc lại.
 
 Cấu trúc thư mục file (sau khi đã gom agent):
@@ -20,12 +20,11 @@ shared/
 knowledge/
     _project.md
     _template.md
-    <task-slug>/
-        <task-slug>.md
-    
+    <task-slug>.md
+
 INPUT/
-output/
-workflow/
+OUTPUT/
+workflows/
 ```
 
 ---
@@ -71,7 +70,7 @@ workflow/
 | 7 | `qa-exploratory` | `07-exploratory-charter` | Risk area ở `03` | `07_exploratory_charter.md` |
 | 8 | `qa-ui-review` | `08-ui-screenshot-review` | Ảnh đính kèm | `08_ui_screenshot_analysis.md` |
 
-Mọi output nằm trong `output/<task-slug>/`, kèm `_index.md`.
+Mọi output nằm trong `OUTPUT/<task-slug>/`, kèm `_index.md`.
 
 ---
 
@@ -103,7 +102,7 @@ Chạy lần 2  =>  01/02 đọc knowledge trước  =>  ít [GIẢ ĐỊNH] hơ
 
 - Chỉ skill `01` và `02` được ghi `knowledge/<slug>.md`.
 - Không xoá dòng cũ — chỉ đổi `Trạng thái`.
-- `output/` vứt được và chạy lại. `knowledge/` mất là mất công hỏi BA lần nữa.
+- `OUTPUT/` vứt được và chạy lại. `knowledge/` mất là mất công hỏi BA lần nữa.
 
 ---
 
@@ -114,7 +113,7 @@ Chạy lần 2  =>  01/02 đọc knowledge trước  =>  ít [GIẢ ĐỊNH] hơ
 | `task-slug` | Trùng `feature-slug`. Vd `function-d`. Một feature một thư mục output. |
 | Nạp trước mọi bước | `shared/QA_STANDARD.md` · `knowledge/_project.md` · `knowledge/<slug>.md` (nếu có) |
 | Một skill | Ghi **đúng một** file output. Không dồn nhiều bước vào một file. |
-| Sau mỗi bước | Cập nhật `output/<task-slug>/_index.md`: tên file + verdict |
+| Sau mỗi bước | Cập nhật `OUTPUT/<task-slug>/_index.md`: tên file + verdict |
 | Không được | Ghi đè `INPUT/` · sửa deliverable của agent khác · chạy bước sau khi bước trước chưa có output |
 
 ---
@@ -123,6 +122,14 @@ Chạy lần 2  =>  01/02 đọc knowledge trước  =>  ít [GIẢ ĐỊNH] hơ
 
 | File | Chạy gì | Dùng khi |
 |---|---|---|
-| `workflow/run-to-testcase.md` | Nhánh A bước `01 => 05` | Từ requirement thô ra test case spec |
+| `workflows/run-to-testcase.md` | Nhánh A `01 => 05` | Từ requirement thô ra test case spec. Dừng trước chốt chặn. |
+| `workflows/run-testcase.md` | Nhánh A `01 => 05`, nhánh B `09 => 12`, rồi `06` | Chạy trọn bộ, cần test suite kèm dataset sẵn sàng execute. |
+| `workflows/re-run-testcase.md` | Chạy lại từ bước bị ảnh hưởng | Đã chạy 1 lần, dừng ở `ASK`/`FIX`, nay đã có câu trả lời BA. Vòng 2 của vòng knowledge (§4). |
+| `workflows/verify-testcase.md` | Chỉ `06` + kiểm tay 4 mũi | Đã có `05`, cần nghiệm thu trước khi bàn giao. Không sinh mới. |
+| `workflows/flow.md` | Kịch bản luồng tự động | Trỏ file để agent tự xác định bước đang kích hoạt. |
 
-Thêm runbook mới: tạo `workflow/run-<mục-tiêu>.md`, khai vào bảng này. Không sửa bản đồ.
+Thêm runbook mới: tạo `workflows/run-<mục-tiêu>.md`, khai vào bảng này. Không sửa bản đồ.
+
+**Thứ tự `06` trong `run-testcase.md`**: `06` chạy **sau** `12`, không phải ngay sau `05`.
+Skill `12` phát hiện test case `CHƯA CÓ DATA` và record mồ côi — đó là đầu vào thật cho gap
+analysis của `06`. Chạy `06` trước `12` thì mất mảng gap dữ liệu.

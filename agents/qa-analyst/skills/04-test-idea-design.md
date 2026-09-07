@@ -10,8 +10,8 @@ cố định — tối ưu độ bao phủ, loại bỏ lãng phí kiểm thử.
 *Test Case* = kịch bản đầy đủ (Precondition / Steps / Test Data / Expected Result) — thuộc `agents/qa-test-design`.
 
 ## Đầu vào
-- `output/<task-slug>/01_requirement_risk_summary.md`
-- `output/<task-slug>/03_viewpoint_report.md` — danh sách viewpoint + In-scope.
+- `OUTPUT/<task-slug>/01_requirement_risk_summary.md`
+- `OUTPUT/<task-slug>/03_viewpoint_report.md` — danh sách viewpoint + In-scope.
 
 ## KHÔNG được (riêng skill này)
 - Mở rộng thành Test Case (Steps, Precondition, Expected Result nhiều dòng).
@@ -54,7 +54,7 @@ Tuyệt đối không bịa vòng đời / điều kiện không tồn tại.
 3. **Xuất bảng tổng hợp**.
 
 ## Format output
-Ghi ra `output/<task-slug>/04_test_idea_report.md`:
+Ghi ra `OUTPUT/<task-slug>/04_test_idea_report.md`:
 
 ```markdown
 ### BẢNG TỔNG HỢP TEST IDEA & FILTER

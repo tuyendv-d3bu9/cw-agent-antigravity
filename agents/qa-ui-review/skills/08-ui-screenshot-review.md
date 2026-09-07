@@ -32,7 +32,7 @@ Quét ảnh chụp màn hình, phát hiện và đặc tả vấn đề UI / Acc
    cross-check bằng mắt.
 
 ## Format output
-Ghi ra `output/<task-slug>/08_ui_screenshot_analysis.md`:
+Ghi ra `OUTPUT/<task-slug>/08_ui_screenshot_analysis.md`:
 
 ```markdown
 # UI SCREENSHOT ANALYSIS — [TÊN MÀN HÌNH]

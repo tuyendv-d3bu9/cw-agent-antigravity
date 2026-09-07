@@ -113,7 +113,7 @@ rỗng/null · ký tự đặc biệt.
 **Output** — mỗi skill ghi kết quả ra **đúng một file**, không dồn nhiều bước vào một file lớn:
 
 ```
-output/<task-slug>/
+OUTPUT/<task-slug>/
   ├─ 01_requirement_risk_summary.md
   ├─ 02_missing_rule_report.md
   ├─ …
@@ -167,6 +167,6 @@ giả định nhiều hơn.
   Lần chạy sau agent dùng luôn kết luận đó, không giả định lại.
 - Không xoá dòng cũ trong knowledge — đổi `Trạng thái` (`New` → `Confirmed` / `TREO` / `Rejected`).
 
-### Phân biệt với `output/`
-`output/` = **kết quả một lần chạy**, có thể bỏ đi và chạy lại.
+### Phân biệt với `OUTPUT/`
+`OUTPUT/` = **kết quả một lần chạy**, có thể bỏ đi và chạy lại.
 `knowledge/` = **thứ tích luỹ được**, chạy lại vẫn còn. Mất `knowledge/` là mất công hỏi BA.

@@ -7,9 +7,9 @@ Chốt chặn kiểm soát chất lượng nội bộ: tự review độc lập 
 soát độ phủ, phát hiện test gap, đánh giá rủi ro business từ góc nhìn QA Lead.
 
 ## Đầu vào
-- `output/<task-slug>/01_requirement_risk_summary.md` — danh sách Business Rules.
-- `output/<task-slug>/05_test_case_spec.md` — test suite.
-- `output/<task-slug>/03_viewpoint_report.md` — ma trận viewpoint.
+- `OUTPUT/<task-slug>/01_requirement_risk_summary.md` — danh sách Business Rules.
+- `OUTPUT/<task-slug>/05_test_case_spec.md` — test suite.
+- `OUTPUT/<task-slug>/03_viewpoint_report.md` — ma trận viewpoint.
 
 ## KHÔNG được (riêng skill này)
 - Đánh số lại / gộp mã Business Rule — dùng đúng mã và thứ tự đã đánh ở skill 01.
@@ -38,7 +38,7 @@ soát độ phủ, phát hiện test gap, đánh giá rủi ro business từ gó
    - `PASS` — CHỈ khi có xác nhận chính thức chấp nhận rủi ro từ người phụ trách kèm lý do kinh doanh.
 
 ## Format output
-Ghi ra `output/<task-slug>/06_coverage_review.md`:
+Ghi ra `OUTPUT/<task-slug>/06_coverage_review.md`:
 
 ```markdown
 # BÁO CÁO COVERAGE REVIEW & TEST SUITE GAP ANALYSIS

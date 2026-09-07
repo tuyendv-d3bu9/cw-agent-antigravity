@@ -8,7 +8,7 @@ thiếu), **implicit rule** (quy tắc ngầm chưa văn bản hoá) và kẽ h�
 Đầu ra là danh sách Missing Rule có cấu trúc + câu hỏi clarification dùng ngay được với BA/PO.
 
 ## Đầu vào
-- `output/<task-slug>/01_requirement_risk_summary.md` — Business Rules + Open Questions từ skill 01.
+- `OUTPUT/<task-slug>/01_requirement_risk_summary.md` — Business Rules + Open Questions từ skill 01.
 - `knowledge/<feature-slug>.md` — mục 7 (gap đã hỏi trước đó) và mục 8 (giả định đã chốt).
 
 > **Không hỏi lại điều đã có câu trả lời**: gap nào ở mục 7 knowledge đã có `Trả lời của BA`
@@ -38,20 +38,22 @@ thiếu), **implicit rule** (quy tắc ngầm chưa văn bản hoá) và kẽ h�
 5. **Tổng hợp** ma trận truy vết 06W + bảng câu hỏi clarification gửi BA/PO.
 
 ## Format output
-Ghi ra `output/<task-slug>/02_missing_rule_report.md`:
+Ghi ra `OUTPUT/<task-slug>/02_missing_rule_report.md`:
 
 ```markdown
 # BÁO CÁO PHÂN TÍCH QUY TẮC NGHIỆP VỤ BỊ THIẾU (MISSING-RULE REPORT)
 
 ## 1. Ma trận Truy vết 06W
-| STT | Câu hỏi 06W | Trọng tâm kiểm tra | Trạng thái | Mã Missing Rule liên quan |
+> Tên W1–W6 lấy đúng `shared/QA_STANDARD.md` §4 — không đổi tên.
+
+| STT | Câu hỏi 06W | Trọng tâm đã quét | Trạng thái | Mã Missing Rule liên quan |
 |:---|:---|:---|:---|:---|
-| W1 | Who/What initiates? | Tác nhân kích hoạt & quyền hạn | [Đã phát hiện / Không phát hiện] | [MR-xx hoặc "Không phát hiện vấn đề qua câu hỏi #W1"] |
-| W2 | What if Invalid/Negative? | Luồng lỗi & ca phủ định | … | … |
-| W3 | Where is Boundary/Limit? | Giá trị biên & ngưỡng | … | … |
-| W4 | When & State Transition? | Trình tự & chuyển trạng thái | … | … |
-| W5 | Which Dependency/Side-effect? | Phụ thuộc & tác động chéo | … | … |
-| W6 | Why & Implicit Expectation? | Kỳ vọng ngầm & toàn vẹn | … | … |
+| W1 | What if input lạ | [trọng tâm đã soi cho feature này] | [Đã phát hiện / Không phát hiện] | [MR-xx hoặc "Không phát hiện vấn đề qua câu hỏi #W1"] |
+| W2 | What if state lạ | … | … | … |
+| W3 | What if data lạ | … | … | … |
+| W4 | What when timing | … | … | … |
+| W5 | Who else actor | … | … | … |
+| W6 | What happens after | … | … | … |
 
 ## 2. Chi tiết Missing Rules
 

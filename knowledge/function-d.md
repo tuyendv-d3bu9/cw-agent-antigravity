@@ -3,7 +3,7 @@
 > **Knowledge = AI DỰA TRÊN TRI THỨC GÌ.** File này là tri thức nền **per-feature** (dữ kiện của 1 tính năng), tích luỹ dần qua các lần chạy.
 > Không chứa các bước thực thi (đó là `skills/`) hay danh tính (đó là `AGENT.md`).
 
-Feature slug: `function-d` · Nguồn: `INPUT/Function D.md`, `INPUT/OVERVIEW.md`, Phản hồi BA/PO (2026-08-23) · Cập nhật lần cuối: `2026-08-23`
+Feature slug: `function-d` · Nguồn: `INPUT/Function D.md`, `INPUT/OVERVIEW.md`, Phản hồi BA/PO · Cập nhật lần cuối: `2026-08-26`
 
 ---
 

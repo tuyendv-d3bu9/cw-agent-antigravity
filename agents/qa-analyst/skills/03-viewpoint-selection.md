@@ -7,8 +7,8 @@ Phân rã tính năng thành các **viewpoint** (góc nhìn kiểm thử) độc
 ranh giới In/Out scope chuẩn xác trước khi thiết kế kịch bản chi tiết.
 
 ## Đầu vào
-- `output/<task-slug>/01_requirement_risk_summary.md` — tổng quan nghiệp vụ, luồng, dữ liệu, risk matrix.
-- `output/<task-slug>/02_missing_rule_report.md` — quy tắc tiềm ẩn, trường hợp biên, lỗ hổng logic.
+- `OUTPUT/<task-slug>/01_requirement_risk_summary.md` — tổng quan nghiệp vụ, luồng, dữ liệu, risk matrix.
+- `OUTPUT/<task-slug>/02_missing_rule_report.md` — quy tắc tiềm ẩn, trường hợp biên, lỗ hổng logic.
 
 ## KHÔNG được (riêng skill này)
 - Sinh test idea chi tiết, test step hay test case — chỉ dừng ở ranh giới & định hướng góc nhìn.
@@ -44,7 +44,7 @@ Không tự thêm/bớt. Cần góc nhìn đặc thù ngoài registry → gắn 
    của viewpoint khác; mọi điểm giao thoa tiềm ẩn phải có quy ước bàn giao ghi ở Out-of-scope.
 
 ## Format output
-Ghi ra `output/<task-slug>/03_viewpoint_report.md`:
+Ghi ra `OUTPUT/<task-slug>/03_viewpoint_report.md`:
 
 ```markdown
 # BÁO CÁO PHÂN TÍCH VIEWPOINT KIỂM THỬ — [TÊN TÍNH NĂNG]

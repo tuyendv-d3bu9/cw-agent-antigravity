@@ -30,7 +30,7 @@ Chuỗi chạy: `09 → 10 → 11 → 12`.
 > mọi hằng số (format mã, khoảng giá trị, đơn vị tiền). Điền `_project.md` một lần, đỡ hẳn.
 
 ## Được làm
-- Đọc `output/<task-slug>/01_*.md` (Business Rules, field list) và `05_*.md` (test suite).
+- Đọc `OUTPUT/<task-slug>/01_*.md` (Business Rules, field list) và `05_*.md` (test suite).
 - Sinh Field Map, dataset, file export, báo cáo validation, traceability matrix.
 - Đề xuất bản sửa cho record lỗi.
 
@@ -51,8 +51,8 @@ Theo `shared/QA_STANDARD.md` §1. Sai format/logic → `FIX`. Thiếu rule để
 - **Quyết định seed vào môi trường nào** và có được phép dùng dữ liệu giống production hay không.
 
 ## Đầu vào / Đầu ra
-- **Vào**: `output/<task-slug>/01_*.md` · `05_*.md`
-- **Ra**: `output/<task-slug>/09_*.md` → `12_*.md` + cập nhật `_index.md`
+- **Vào**: `OUTPUT/<task-slug>/01_*.md` · `05_*.md`
+- **Ra**: `OUTPUT/<task-slug>/09_*.md` → `12_*.md` + cập nhật `_index.md`
 
 ## Bàn giao
 - `09` (Field Map) → `10`, `11`

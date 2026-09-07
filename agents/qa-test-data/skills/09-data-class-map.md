@@ -7,7 +7,7 @@ Chuẩn hoá cách phân loại dữ liệu test cho **từng field** trước k
 chặn "Garbage data → Garbage testing".
 
 ## Đầu vào
-- `output/<task-slug>/01_requirement_risk_summary.md` — Business Rules + field list.
+- `OUTPUT/<task-slug>/01_requirement_risk_summary.md` — Business Rules + field list.
 
 ## KHÔNG được (riêng skill này)
 - Sinh dataset thật ở bước này — chỉ lập **bản đồ** Data Class.
@@ -32,7 +32,7 @@ chặn "Garbage data → Garbage testing".
    `shared/QA_STANDARD.md` §6.
 
 ## Format output
-Ghi ra `output/<task-slug>/09_data_class_map.md`:
+Ghi ra `OUTPUT/<task-slug>/09_data_class_map.md`:
 
 ```markdown
 # DATA CLASS MAP — [TÊN TÍNH NĂNG]

@@ -51,7 +51,7 @@ Theo `shared/QA_STANDARD.md` §1.
 
 ## Đầu vào / Đầu ra
 - **Vào**: `INPUT/*.md` (tài liệu yêu cầu thô)
-- **Ra**: `output/<task-slug>/01_*.md` → `04_*.md` + cập nhật `_index.md`
+- **Ra**: `OUTPUT/<task-slug>/01_*.md` → `04_*.md` + cập nhật `_index.md`
 
 ## Bàn giao
 - `01` (Business Rules, Risk Matrix) → `02`, `03`, và `agents/qa-test-design/06-coverage-review`

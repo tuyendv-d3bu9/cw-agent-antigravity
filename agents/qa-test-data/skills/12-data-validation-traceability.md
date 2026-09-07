@@ -8,9 +8,9 @@ Hai việc chốt chặn cuối của `agents/qa-test-data`:
 2. **Traceability Matrix** — nối mỗi record dữ liệu với test case dùng nó.
 
 ## Đầu vào
-- `output/<task-slug>/10_dataset.md` + `11_boundary_negative_dataset.md` — dataset cần validate.
-- `output/<task-slug>/05_test_case_spec.md` — test suite để trace.
-- `output/<task-slug>/01_requirement_risk_summary.md` — rule để đối chiếu.
+- `OUTPUT/<task-slug>/10_dataset.md` + `11_boundary_negative_dataset.md` — dataset cần validate.
+- `OUTPUT/<task-slug>/05_test_case_spec.md` — test suite để trace.
+- `OUTPUT/<task-slug>/01_requirement_risk_summary.md` — rule để đối chiếu.
 
 ## KHÔNG được (riêng skill này)
 - Tự "sửa ngầm" dataset nguồn — chỉ **đề xuất** bản sửa.
@@ -51,7 +51,7 @@ Nguyên tắc:
 - Test case chưa có data → `CHƯA CÓ DATA`.
 
 ## Format output
-Ghi ra `output/<task-slug>/12_data_validation_traceability.md`:
+Ghi ra `OUTPUT/<task-slug>/12_data_validation_traceability.md`:
 
 ```markdown
 # DATA VALIDATION & TRACEABILITY — [TÊN TÍNH NĂNG]

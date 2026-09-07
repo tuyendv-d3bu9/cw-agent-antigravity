@@ -49,8 +49,8 @@ Theo `shared/QA_STANDARD.md` §1, kèm ngoại lệ của skill `06`.
 - **Priority cuối cùng** của từng test case và quyết định Automated/Manual.
 
 ## Đầu vào / Đầu ra
-- **Vào**: `output/<task-slug>/01_*.md` · `03_*.md` · `04_*.md`
-- **Ra**: `output/<task-slug>/05_test_case_spec.md` · `06_coverage_review.md` + cập nhật `_index.md`
+- **Vào**: `OUTPUT/<task-slug>/01_*.md` · `03_*.md` · `04_*.md`
+- **Ra**: `OUTPUT/<task-slug>/05_test_case_spec.md` · `06_coverage_review.md` + cập nhật `_index.md`
 
 ## Bàn giao
 - `05` (Test Suite) → `06`, và → `agents/qa-test-data` để sinh dataset cho các test case cần data.

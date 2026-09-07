@@ -11,8 +11,8 @@ xuất ra định dạng dùng được ngay: CSV / SQL INSERT / JSON.
 - `volume` — số record mong muốn, do người gọi chỉ định.
 
 ## Đầu vào
-- `output/<task-slug>/09_data_class_map.md` — Field Map.
-- `output/<task-slug>/01_requirement_risk_summary.md` — Business Rules để không vi phạm.
+- `OUTPUT/<task-slug>/09_data_class_map.md` — Field Map.
+- `OUTPUT/<task-slug>/01_requirement_risk_summary.md` — Business Rules để không vi phạm.
 
 ## KHÔNG được (riêng skill này)
 - Dùng placeholder mơ hồ (`V001`, `test`, `abc`, `[email]`) — phải là giá trị thực tế.
@@ -54,7 +54,7 @@ SQL dùng `NULL`, JSON dùng `null` · tên cột/khoá đúng Field Map ở ski
 4. Xuất ra `format` được yêu cầu, đúng cú pháp, import/chạy được không cần sửa tay.
 
 ## Format output
-Ghi ra `output/<task-slug>/10_dataset.md`:
+Ghi ra `OUTPUT/<task-slug>/10_dataset.md`:
 
 ````markdown
 # REALISTIC DATASET — [TÊN TÍNH NĂNG]

@@ -7,8 +7,8 @@ Sinh dataset biên & âm tính **có chủ đích** — mỗi record kiểm đú
 không trùng lặp.
 
 ## Đầu vào
-- `output/<task-slug>/09_data_class_map.md` — Field Map + mốc biên cần phủ.
-- `output/<task-slug>/01_requirement_risk_summary.md` — rule để xác định đâu là "vi phạm".
+- `OUTPUT/<task-slug>/09_data_class_map.md` — Field Map + mốc biên cần phủ.
+- `OUTPUT/<task-slug>/01_requirement_risk_summary.md` — rule để xác định đâu là "vi phạm".
 
 ## KHÔNG được (riêng skill này)
 - Để trống cột `Test Purpose` — mọi record boundary/negative bắt buộc nêu rõ nó test gì.
@@ -31,7 +31,7 @@ không trùng lặp.
 4. Đối chiếu lại: không mốc nào bị bỏ, không edge case nào bị trùng.
 
 ## Format output
-Ghi ra `output/<task-slug>/11_boundary_negative_dataset.md`:
+Ghi ra `OUTPUT/<task-slug>/11_boundary_negative_dataset.md`:
 
 ````markdown
 # BOUNDARY & NEGATIVE DATASET — [TÊN TÍNH NĂNG]
