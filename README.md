@@ -63,6 +63,10 @@ Tạo plan và chạy pipeline cho tính năng function-d từ INPUT/Function D.
   ```bash
   npm run knowledge:new <feature-slug>
   ```
+- **Gộp các lô test case (batch) thành file đặc tả tổng**:
+  ```bash
+  npm run testcases:merge <task-slug>
+  ```
 
 ---
 

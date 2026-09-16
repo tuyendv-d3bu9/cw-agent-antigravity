@@ -91,7 +91,37 @@ Ngày tạo: YYYY-MM-DD · Người lập: <Agent/Tool> · Trạng thái: IN-PRO
 
 ---
 
-## 3. Quy Trình Khởi Tạo & Tích Luỹ Tri Thức Cho Dự Án Mới (`INPUT` ➔ `knowledge/`)
+## 3. Quy Tắc Xử Lý Quy Mô Lớn: Blueprint JSON & Batch Generation (Chống Tràn Token)
+
+Khi số lượng Test Case dự tính vượt quá **50 test cases** (hoặc lên tới hàng trăm, hàng nghìn test cases), **CẤM** cố sinh toàn bộ trong 1 lần (One-shot) vì chắc chắn sẽ bị cắt cụt token hoặc suy giảm chất lượng. Mọi Agent bắt buộc tuân theo quy trình 3 giai đoạn:
+
+```
+[04-test-idea-report] ──► 1. TẠO BLUEPRINT JSON (05_test_blueprint.json)
+                                    │
+                                    ├──► Lô 1 (batch_01.md: TC-001 -> TC-050)
+                                    ├──► Lô 2 (batch_02.md: TC-051 -> TC-100)
+                                    └──► ... Lô N
+                                    │
+                          3. GỘP TỔNG (npm run testcases:merge <slug>)
+                                    ▼
+                          05_test_case_spec.md
+```
+
+1. **Giai đoạn 1 — Bản thiết kế khung (`05_test_blueprint.json`)**:
+   - Sinh danh mục metadata rút gọn cho toàn bộ 500 - 1.000 test case (TC ID, Module, Rule ID, Viewpoint ID, Mục đích kiểm thử, Priority).
+   - Bản thiết kế này nhẹ (~30 token/item), đảm bảo bao quát 100% phạm vi mà không bị đứt đoạn hay trùng lặp.
+2. **Giai đoạn 2 — Chia lô sinh chi tiết (`Chunked Batching`)**:
+   - Chia danh mục thành các lô nhỏ (khuyến nghị **50 test cases / batch**).
+   - Sinh chi tiết 8 trường chuẩn cho từng lô vào `OUTPUT/<task-slug>/testcases/batch_01.md`, `batch_02.md`...
+3. **Giai đoạn 3 — Gộp tổng thể (`Assembly`)**:
+   - Chạy lệnh tiện ích để tự động ghép các lô thành file đặc tả hoàn chỉnh:
+     ```bash
+     npm run testcases:merge <task-slug>
+     ```
+
+---
+
+## 4. Quy Trình Khởi Tạo & Tích Luỹ Tri Thức Cho Dự Án Mới (`INPUT` ➔ `knowledge/`)
 
 Đối với một dự án mới tinh **chưa có tri thức nền**:
 
@@ -110,7 +140,7 @@ Ngày tạo: YYYY-MM-DD · Người lập: <Agent/Tool> · Trạng thái: IN-PRO
 
 ---
 
-## 4. Các Ràng Buộc Bất Biến (Non-Negotiable Rules)
+## 5. Các Ràng Buộc Bất Biến (Non-Negotiable Rules)
 
 1. **Chuẩn FACT 100% (Chống Ảo Giác)**:
    - **Factual**: Mọi kết luận phải dẫn xuất từ `INPUT/` hoặc `knowledge/`. Cấm tự bịa quy tắc.
@@ -128,7 +158,7 @@ Ngày tạo: YYYY-MM-DD · Người lập: <Agent/Tool> · Trạng thái: IN-PRO
 
 ---
 
-## 5. Lệnh Tiện Ích
+## 6. Lệnh Tiện Ích
 
 - Đổi file `.docx` từ BA sang `.md`:
   ```bash
@@ -137,4 +167,8 @@ Ngày tạo: YYYY-MM-DD · Người lập: <Agent/Tool> · Trạng thái: IN-PRO
 - Tạo file tri thức mới cho tính năng:
   ```bash
   npm run knowledge:new <feature-slug>
+  ```
+- Gộp các batch test case thành spec tổng:
+  ```bash
+  npm run testcases:merge <task-slug>
   ```

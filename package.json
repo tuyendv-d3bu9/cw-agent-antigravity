@@ -5,7 +5,8 @@
   "description": "Bo QA Agent (analyst / test-design / test-data / exploratory / ui-review) + tien ich doi tai lieu .docx sang .md cho INPUT/",
   "scripts": {
     "convert": "node agents/tools/convert.js",
-    "knowledge:new": "node agents/tools/new-knowledge.js"
+    "knowledge:new": "node agents/tools/new-knowledge.js",
+    "testcases:merge": "node agents/tools/merge-testcases.js"
   },
   "license": "ISC",
   "type": "commonjs",
