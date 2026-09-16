@@ -40,12 +40,28 @@ Dự án: `ShopGo (Hệ thống Thương mại điện tử Bán lẻ)` · Cập
 | Cách seed data | `SQL trực tiếp` vào database test kết hợp kiểm thử UI Web |
 | Có được dùng dữ liệu giống production? | Có, sử dụng dữ liệu đã ẩn danh hóa (anonymized data) |
 
-## 5. Test Management Tool
-| | Nội dung |
-|---|---|
-| Tool | `Jira Xray` |
-| Format import | `CSV / Markdown` |
-| Trường bắt buộc thêm ngoài 8 trường chuẩn | Tuân thủ 8 trường chuẩn của dự án |
+## 5. Test Management Tool & ALM Integration
+### 5.1. Jira Xray (Khuyến nghị)
+| Thuộc tính | Cấu hình chuẩn ShopGo | Ý nghĩa / Ghi chú |
+|---|---|---|
+| Issue Type | `Test` | Loại issue đại diện cho Test Case trong Xray |
+| Summary Format | `[<TC_ID>] <Title>` | Ví dụ: `[VCHR-001] Verify áp dụng thành công...` |
+| Manual Steps | `Action`, `Data`, `Expected Result` | 3 cột chuẩn của bảng Manual Test Step trong Xray |
+| Preconditions | `Preconditions` (Text/Wiki) | Tiền điều kiện trước khi thực hiện test |
+| Priority | `Blocker`, `Critical`, `High`, `Medium`, `Low` | Mức độ ưu tiên thực thi |
+| Labels | `Rule#BR-xx`, `Viewpoint#VP-xx`, `Module#VCHR` | Phục vụ truy xuất nguồn gốc (Traceability) |
+| File xuất | `OUTPUT/<slug>/export_jira_xray.csv` | Mã hóa UTF-8 BOM, sẵn sàng cho Xray Test Importer |
+
+### 5.2. Redmine
+| Thuộc tính | Cấu hình chuẩn ShopGo | Ý nghĩa / Ghi chú |
+|---|---|---|
+| Tracker | `Test Case` (hoặc `Feature` / `Task`) | Phân loại issue trong Redmine |
+| Subject | `[<TC_ID>] <Title>` | Tiêu đề test case |
+| Priority | `Urgent` (High), `Normal` (Medium), `Low` (Low) | Mức độ ưu tiên chuẩn của Redmine |
+| Category | Mã module (`VCHR`, `CART`, `PAY`...) | Gom nhóm test case theo phân hệ |
+| Status | `New` | Trạng thái ban đầu |
+| Description | Đầy đủ Preconditions, Steps, Data, Expected Result | Định dạng Textile / Markdown của Redmine |
+| File xuất | `OUTPUT/<slug>/export_redmine.csv` | Mã hóa UTF-8 BOM |
 
 ## 6. Ràng buộc riêng của dự án
 - Ô nhập mã tự động `trim()` khoảng trắng ở đầu và cuối chuỗi; không phân biệt chữ hoa/thường (`Case-insensitive`).

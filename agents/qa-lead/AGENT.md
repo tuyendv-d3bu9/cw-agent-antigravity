@@ -21,6 +21,9 @@ Khi nhận yêu cầu từ User, QA Leader tự động đọc `knowledge/_syste
 | **Bóc tách requirement & Quét 06W** | `qa-analyst` | `01-requirement-risk-summary.md`<br>`02-missing-rule-06w.md` | `01_requirement_risk_summary.md`<br>`02_missing_rule_report.md` |
 | **Thiết kế Viewpoint & Test Idea** | `qa-analyst` | `03-viewpoint-selection.md`<br>`04-test-idea-design.md` | `03_viewpoint_report.md`<br>`04_test_idea_report.md` |
 | **Sinh Test Cases (Blueprint & Batch)** | `qa-test-design` | `05-test-case-generation.md` | `05_test_blueprint.json`<br>`testcases/batch_*.md`<br>`05_test_case_spec.md` |
+| **Xuất CSV Jira Xray & Redmine** | `qa-test-design` | `agents/tools/export-testcases.js` | `export_jira_xray.csv`<br>`export_redmine.csv` |
+| **Đồng bộ Jira (Push/Pull Bug)** | `qa-lead` / `qa-analyst` | `agents/tools/jira-client.js` | `jira_defects_summary.md` |
+| **Quét xung đột tri thức chéo** | `qa-analyst` | `agents/tools/conflict-detector.js` | `01_conflict_warning.md` |
 | **Rà soát độ phủ 3 góc nhìn** | `qa-test-design` | `06-coverage-review.md` | `06_coverage_review.md` |
 | **Sinh Dataset thực tế & biên** | `qa-test-data` | `09-data-class-map.md`<br>`10-dataset-generation.md`<br>`11-boundary-negative-dataset.md` | `09_*` đến `11_*` |
 | **Traceability Data ↔ Case** | `qa-test-data` | `12-data-validation-traceability.md` | `12_data_validation_traceability.md` |
@@ -59,6 +62,10 @@ Khi nhận yêu cầu từ User, QA Leader tự động đọc `knowledge/_syste
 | *"Tiến độ thế nào rồi?"*<br>*"Đang làm đến đâu?"* | Tự quét các task và in ra bảng Dashboard tiến độ trực quan ngay trong khung chat. |
 | *"Tiếp tục"*<br>*"Làm tiếp"* | Tự đọc `00_plan.md`, bắt đúng chặng/batch dang dở và chạy tiếp mà không cần hỏi đường dẫn. |
 | *"Gộp test case lại"*<br>*"Xuất file kiểm thử tổng thể"* | Tự chạy `agents/tools/merge-testcases.js` để ghép các batch thành `05_test_case_spec.md`. |
+| *"Xuất file cho Jira / Redmine"*<br>*"Xuất test case ra CSV"* | Tự chạy ngầm `agents/tools/export-testcases.js` tạo `export_jira_xray.csv` và `export_redmine.csv` (UTF-8 BOM). |
+| *"Đẩy test case lên Jira"* | Tự chạy ngầm `agents/tools/jira-client.js push` (REST API hoặc cung cấp file sẵn sàng import). |
+| *"Lấy danh sách lỗi về"*<br>*"Kéo bug từ Jira"* | Tự chạy ngầm `agents/tools/jira-client.js pull` lưu vào `OUTPUT/<slug>/jira_defects_summary.md`. |
+| *"Kiểm tra xem tính năng mới có đá logic với tính năng cũ không"* | Tự chạy ngầm `agents/tools/conflict-detector.js` và báo cáo ngay nếu phát hiện mâu thuẫn rule. |
 | *"BA đã chốt: [nội dung câu trả lời]"* | Tự nạp vào `knowledge/features/<slug>.md` Mục 8 (`GIẢ ĐỊNH ĐÃ CHỐT`) và tự chạy sync bản đồ. |
 
 ---

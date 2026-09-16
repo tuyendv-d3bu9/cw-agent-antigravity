@@ -27,6 +27,8 @@ Chuỗi chạy: `01 → 02 → 03 → 04`. Mỗi skill chỉ chạy khi output c
 
 ## Được làm
 - Đọc tài liệu yêu cầu thô: BRD, SRS, User Story, Wireframe + mô tả UI, email/chat từ BA.
+- Đọc báo cáo lỗi đồng bộ từ Jira (`jira_defects_summary.md`) để bổ sung các điểm rủi ro lịch sử (Defect-prone areas).
+- Kích hoạt `agents/tools/conflict-detector.js` để rà soát xung đột logic với các tính năng đã có trong `knowledge/features/*.md`.
 - Đọc output của các skill trước trong cùng agent.
 - Cập nhật `knowledge/<feature-slug>.md`: rule đã xác nhận, missing rule, giả định đã chốt.
 - Tạo báo cáo phân tích, danh sách missing rule, đặc tả viewpoint, bảng test idea.
@@ -50,8 +52,8 @@ Theo `shared/QA_STANDARD.md` §1.
 - **Chốt phạm vi test**: quyết định cuối về việc bỏ viewpoint nào, chấp nhận gap nào.
 
 ## Đầu vào / Đầu ra
-- **Vào**: `INPUT/*.md` (tài liệu yêu cầu thô)
-- **Ra**: `OUTPUT/<task-slug>/01_*.md` → `04_*.md` + cập nhật `_index.md`
+- **Vào**: `INPUT/*.md` (tài liệu yêu cầu thô) · `jira_defects_summary.md` (nếu có)
+- **Ra**: `OUTPUT/<task-slug>/01_*.md` → `04_*.md` · `01_conflict_warning.md` + cập nhật `_index.md`
 
 ## Bàn giao
 - `01` (Business Rules, Risk Matrix) → `02`, `03`, và `agents/qa-test-design/06-coverage-review`

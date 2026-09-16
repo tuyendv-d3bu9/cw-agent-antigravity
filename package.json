@@ -9,7 +9,11 @@
     "testcases:merge": "node agents/tools/merge-testcases.js",
     "status": "node agents/tools/status.js",
     "map:sync": "node agents/tools/sync-system-map.js",
-    "agent:check": "node agents/tools/agent-doctor.js"
+    "agent:check": "node agents/tools/agent-doctor.js",
+    "testcases:export": "node agents/tools/export-testcases.js",
+    "jira:push": "node agents/tools/jira-client.js push",
+    "jira:pull": "node agents/tools/jira-client.js pull",
+    "knowledge:conflicts": "node agents/tools/conflict-detector.js"
   },
   "license": "ISC",
   "type": "commonjs",
