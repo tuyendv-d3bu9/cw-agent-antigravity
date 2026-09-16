@@ -1,145 +1,74 @@
-# CW QA Agent — Hướng dẫn dùng
+# CW QA Agent — Hướng Dẫn Vận Hành
 
-5 agent QA, mỗi agent gồm 1 file danh tính (`AGENT.md`) + các skill (`skills/*.md`).
-Ràng buộc dùng chung nằm ở `shared/QA_STANDARD.md`.
-
----
-
-## 1. Bản đồ
-
-```
-shared/QA_STANDARD.md      LUẬT CHUNG — verdict · guard · FACT · 06W · risk matrix · chuỗi biên · output · knowledge
-
-knowledge/                  TRI THỨC NỀN — tích luỹ, chạy lại vẫn còn
-  _project.md                   quy ước cả dự án: format mã, ngày/tiền, NULL vs rỗng, môi trường test
-  _template.md                  mẫu để copy cho mỗi feature
-  <feature-slug>.md             rule đã xác nhận · câu trả lời BA · giả định đã chốt · domain constant
-
-agents/qa-analyst/          PIPELINE — phân tích
-  01-requirement-risk-summary   requirement thô  → báo cáo 10 phần + risk matrix
-  02-missing-rule-06w           output 01        → missing rule + câu hỏi cho BA
-  03-viewpoint-selection        output 01+02     → risk area + viewpoint (zero-overlap)
-  04-test-idea-design           output 01+03     → test idea (1 câu) + filter Giữ/Bỏ
-
-agents/qa-test-design/      PIPELINE — thiết kế & kiểm định
-  05-test-case-generation       output 01+03+04  → test case 8 trường
-  06-coverage-review            output 01+03+05  → gap analysis + verdict
-
-agents/qa-test-data/        PIPELINE — dữ liệu (chạy sau 05)
-  09-data-class-map             output 01        → field map + 5 data class
-  10-dataset-generation         output 09        → dataset sát nghiệp vụ + export CSV/SQL/JSON
-  11-boundary-negative-dataset  output 09        → dataset biên/âm tính (mỗi record 1 Test Purpose)
-  12-data-validation-traceability output 10+11+05 → validate + traceability data ↔ test case
-
-agents/qa-exploratory/      ĐỘC LẬP — không thuộc pipeline
-  07-exploratory-charter        risk area (03)   → charter set cho phiên thăm dò
-
-agents/qa-ui-review/        ĐỘC LẬP — cần ảnh đính kèm (Vision)
-  08-ui-screenshot-review       ảnh màn hình     → UI / A11y / UX issues
-```
-
-**Thứ tự chạy**: `01 → 02 → 03 → 04 → 05 → 06`, rồi `09 → 10 → 11 → 12` nếu cần dataset.
-`07` và `08` gọi bất cứ lúc nào.
+Hệ thống Agent QA chuyên sâu gồm 5 nhóm chuyên gia, điều hành tự động theo triết lý **Knowledge-First** và chuẩn **FACT**.
+Toàn bộ quy tắc cốt lõi nằm tại `AGENTS.md` (root) và `agents/core/QA_STANDARD.md`.
 
 ---
 
-## 2. Cách dùng — 2 kiểu
-
-### Kiểu A · Trong Claude Code / antigravity (khuyến nghị)
-
-Chỉ cần trỏ file, agent tự đọc:
+## 1. Bản Đồ Thư Mục Hệ Thống
 
 ```
-Đọc shared/QA_STANDARD.md, knowledge/_project.md, agents/qa-analyst/AGENT.md và
-agents/qa-analyst/skills/01-requirement-risk-summary.md.
-Chạy skill 01 với input INPUT/Function D.md.
-Ghi kết quả ra OUTPUT/function-d/01_requirement_risk_summary.md
-và cập nhật knowledge/function-d.md
+INPUT/                          TÀI LIỆU YÊU CẦU THÔ — BA/PO nạp file .md hoặc .docx vào đây
+OUTPUT/<task-slug>/             KẾT QUẢ & DELIVERABLES — 00_plan.md, báo cáo 01->06, dataset, _index.md
+
+knowledge/                      BỘ NÃO TRI THỨC VĨNH VIỄN (SSOT)
+  _project.md                   Quy ước dự án: format mã, tiền tệ VNĐ, timezone, NULL vs rỗng
+  _glossary.md                  Từ điển thuật ngữ nghiệp vụ thống nhất
+  _template.md                  Mẫu chuẩn tạo tri thức tính năng mới
+  features/<feature-slug>.md    Quy tắc đã chốt · câu trả lời BA · giả định đã chốt · domain constant
+
+agents/                         HỆ THỐNG QA NỘI BỘ
+  core/QA_STANDARD.md           Luật chung: verdict · guard · FACT · 06W · risk matrix
+  workflows/                    Các kịch bản chạy mẫu (run-testcase.md, flow.md...)
+  tools/                        Công cụ convert docx và tạo knowledge mới
+  qa-analyst/                   01->04: Tóm tắt yêu cầu, 06W kẽ hở, viewpoint, test idea
+  qa-test-design/               05->06: Test case 8 trường, rà soát độ phủ 3 góc nhìn
+  qa-test-data/                 09->12: Data class, dataset, validation & traceability
+  qa-exploratory/               07: Thăm dò theo charter
+  qa-ui-review/                 08: Phân tích ảnh màn hình (Vision)
+
+.agents/                        Nơi cài đặt skill mở rộng bên ngoài (caveman, ponytail...)
 ```
 
-Bước tiếp theo chỉ cần đổi tên skill:
-
-```
-Chạy agents/qa-analyst/skills/02-missing-rule-06w.md với OUTPUT/function-d/01_requirement_risk_summary.md
-```
-
-### Kiểu B · Dán tay vào chat AI (ChatGPT / Claude web / Gemini)
-
-Dán theo đúng 4 khối này, mỗi lần chạy 1 skill:
-
-```
-[Khối 1] toàn bộ nội dung shared/QA_STANDARD.md
-[Khối 2] knowledge/_project.md + knowledge/<feature-slug>.md (nếu đã có)
-[Khối 3] toàn bộ nội dung agents/<agent>/AGENT.md
-[Khối 4] toàn bộ nội dung agents/<agent>/skills/<skill>.md
-[Khối 5] === INPUT ===
-         <dán tài liệu yêu cầu, hoặc output của skill trước>
-```
-
-Khối 1 → 3 giống nhau trong cùng một agent → giữ nguyên cuộc chat, các lần sau chỉ đổi Khối 4 + 5.
-Đây là lý do tách `shared/`: bạn dán 1 lần, dùng cho cả 4 skill của `agents/qa-analyst`.
-
-Chạy skill `01` / `02` xong, nhớ **dán kết quả knowledge trở lại file** `knowledge/<feature-slug>.md` —
-chat AI không tự ghi file được, mà đây là thứ duy nhất còn lại sau khi đóng cuộc chat.
+**Thứ tự pipeline**:
+1. Tạo kế hoạch `OUTPUT/<slug>/00_plan.md`
+2. Chạy `01 → 02 → 03 → 04 → 05 → 06`
+3. Chạy `09 → 10 → 11 → 12` (nếu cần dataset)
 
 ---
 
-## 3. Chạy thử trọn pipeline — ví dụ `INPUT/Function D.md`
+## 2. Cách Sử Dụng Với Các AI Agent
 
-| # | Gọi gì | Vào | Ra |
-|---|---|---|---|
-| 1 | `agents/qa-analyst` / `01` | `INPUT/Function D.md` | `OUTPUT/function-d/01_requirement_risk_summary.md` |
-| 2 | `agents/qa-analyst` / `02` | `01` | `02_missing_rule_report.md` |
-| 3 | `agents/qa-analyst` / `03` | `01` + `02` | `03_viewpoint_report.md` |
-| 4 | `agents/qa-analyst` / `04` | `01` + `03` | `04_test_idea_report.md` |
-| 5 | `agents/qa-test-design` / `05` | `01` + `03` + `04` | `05_test_case_spec.md` |
-| 6 | `agents/qa-test-design` / `06` | `01` + `03` + `05` | `06_coverage_review.md` |
-| 7 | `agents/qa-test-data` / `09`→`12` | `01`, `05` | `09_*` → `12_*` |
-| — | `agents/qa-exploratory` / `07` | risk area ở `03` | `07_exploratory_charter.md` |
-| — | `agents/qa-ui-review` / `08` | ảnh đính kèm | `08_ui_screenshot_analysis.md` |
+Nhờ đã cấu hình file hiến pháp `AGENTS.md` ở root, bất kỳ AI Agent nào (**Antigravity IDE, Claude Code, Cursor, Codex, Gemini CLI...**) khi mở thư mục dự án lên đều tự động nắm luật:
 
-Mọi file ra nằm trong `OUTPUT/<task-slug>/`, kèm `_index.md` liệt kê file + verdict từng bước.
+### Lệnh chạy đơn giản:
+```
+Tạo plan và chạy pipeline cho tính năng function-d từ INPUT/Function D.md.
+```
+
+### Quy trình tự động:
+1. Agent tạo ngay file kế hoạch: `OUTPUT/<task-slug>/00_plan.md` để chia nhỏ milestone và chống tràn context.
+2. Agent đọc `knowledge/_project.md`, `knowledge/_glossary.md` và `knowledge/features/<slug>.md`.
+3. Chạy từng bước và cập nhật trạng thái `PASS / FIX / ASK` vào file Plan.
 
 ---
 
-## 4. Đọc kết quả — verdict
+## 3. Các Lệnh Tiện Ích
 
-Mỗi output có `Verdict` ở dòng meta:
-
-| Verdict | Nghĩa | Bạn làm gì |
-|---|---|---|
-| `PASS` | Đủ thông tin, đạt checklist | Chạy bước tiếp |
-| `FIX` | Đủ thông tin nhưng sai format/trace/consistency | Xem bảng FIX cuối file, sửa rồi chạy lại |
-| `ASK` | Thiếu thông tin nghiệp vụ | Xem bảng ASK, hỏi BA/PO rồi bổ sung input |
-
-**Riêng skill `06`**: rà đủ 3 góc nhìn mà không thấy gap nào → verdict là `ASK`, **không phải**
-`PASS`. `PASS` chỉ khi có người phụ trách ký chấp nhận rủi ro. Đây là chủ ý, không phải lỗi.
-
-Các nhãn khác gặp trong output: `[GIẢ ĐỊNH]` (agent tự suy luận — cần bạn xác nhận) ·
-`[CONTEXT_MISSING]` · `[SEVERITY_CONFIDENCE_LOW]` · `CHƯA COVER` · `CHƯA CÓ DATA` ·
-`[GAP — chuyển 06-coverage-review bổ sung]`. Tất cả đều là chỗ **cần người xử lý**, agent cố ý
-không tự quyết.
+- **Chuyển đổi tài liệu .docx từ BA thành .md**:
+  ```bash
+  npm run convert
+  ```
+- **Tạo nhanh file tri thức cho tính năng mới**:
+  ```bash
+  npm run knowledge:new <feature-slug>
+  ```
 
 ---
 
-## 5. Sửa / mở rộng ở đâu
+## 4. Quản Lý Tri Thức Cho Dự Án Mới (`INPUT` ➔ `knowledge/`)
 
-| Muốn đổi gì | Sửa file nào |
-|---|---|
-| Ràng buộc chung (FACT, verdict, `[GIẢ ĐỊNH]`, chuỗi biên, quy ước output) | `shared/QA_STANDARD.md` — sửa 1 chỗ, áp cho mọi skill |
-| Quyền hạn / ranh giới / human-final của 1 agent | `agents/<agent>/AGENT.md` |
-| Quy trình hoặc format output của 1 bước | `agents/<agent>/skills/<skill>.md` |
-| Thêm bước mới | Tạo `agents/<agent>/skills/NN-<tên>.md` + khai vào mục "Skill sở hữu" của `AGENT.md` |
-| Registry/technique mới (kỹ thuật, bảng chuẩn) | Dùng bởi **≥2 skill** → `shared/QA_STANDARD.md`. Dùng bởi **1 skill** → nội hoá trong skill đó |
-| Quy ước dự án (format mã, đơn vị tiền, tool test) | `knowledge/_project.md` — điền 1 lần, mọi agent dùng |
-| Dữ kiện 1 tính năng (rule đã chốt, BA trả lời gì) | `knowledge/<feature-slug>.md` — copy từ `knowledge/_template.md` |
-
-Nguyên tắc 4 tầng:
-`AGENT.md` = **LÀ AI** · `skills/*.md` = **LÀM THẾ NÀO** · `shared/` = **LUẬT CHUNG** ·
-`knowledge/` = **DỰA TRÊN TRI THỨC GÌ**.
-
-Không nhồi ràng buộc chung vào skill, không nhồi các bước vào `AGENT.md`, không nhồi dữ kiện
-feature vào skill.
-
-
-
+- **Bước 1**: Dự án mới chỉ cần có `knowledge/_project.md`. Nạp tài liệu BA vào `INPUT/`.
+- **Bước 2**: Agent phân tích `INPUT/`, tự trích xuất quy tắc vào `knowledge/features/<slug>.md` Mục 3 (`CONFIRMED BUSINESS RULES`) và tìm kẽ hở 06W vào Mục 7 (`OPEN QUESTIONS`).
+- **Bước 3**: BA trả lời các kẽ hở $\to$ Cập nhật vào Mục 8 (`GIẢ ĐỊNH ĐÃ CHỐT`).
+- **Bước 4**: Lần sau chạy lại, Agent tự động kế thừa tri thức này mà không cần hỏi lại.
