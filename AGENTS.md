@@ -82,12 +82,17 @@ Ngày tạo: YYYY-MM-DD · Người lập: <Agent/Tool> · Trạng thái: IN-PRO
 - [ ] **Chặng 5**: Sinh Test Case chi tiết 8 trường (`05`) ➔ Ra `05_test_case_spec.md`
 - [ ] **Chặng 6**: Rà soát độ phủ 3 góc nhìn & Nghiệm thu (`06`) ➔ Ra `06_coverage_review.md`
 
-## 3. Nhật Ký Verdict & Điểm Chặn (Stop-Gates)
-| Bước | Deliverable | Verdict | Ghi chú / Điểm dừng |
-|---|---|---|---|
-| 01 | 01_requirement_risk_summary.md | PASS |  |
-| 02 | 02_missing_rule_report.md | ASK | Chờ BA trả lời MR-06 về làm tròn tiền lẻ |
-```
+### 2.4. Cơ Chế "QA Leader Tự Nắm Tiến Độ" (Zero-Path Typing):
+Người dùng **KHÔNG CẦN** nhớ đường dẫn hay gõ lại `OUTPUT/.../00_plan.md`.
+Khi người dùng gõ các câu thoại ngắn như:
+> *"Tiếp tục"*, *"Làm tiếp"*, *"Tiến độ thế nào"*, *"Hôm nay làm gì tiếp?"*, hoặc *"Chạy tiếp task <slug>"*
+
+Mọi AI Agent **bắt buộc tự động đóng vai QA Leader**:
+1. Tự động quét thư mục `OUTPUT/` để kiểm tra toàn bộ file `00_plan.md` hiện có.
+2. Xác định chính xác: Task nào đang làm dở? Đã xong đến chặng nào? Có đang bị chặn bởi câu hỏi `ASK` cho BA không?
+3. Báo cáo bảng Dashboard tiến độ ngắn gọn và chủ động đề xuất:
+   *"Task `<task-slug>` đã hoàn thành xong Chặng X. Tôi đề xuất làm tiếp Chặng Y [hoặc Batch Z]. Bạn có muốn tiếp tục không?"*
+4. Khi người dùng xác nhận (`OK` / `Tiếp tục`), Agent tự động đọc đúng đầu vào của chặng dang dở để làm tiếp mà không làm lại các bước cũ.
 
 ---
 

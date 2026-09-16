@@ -67,6 +67,10 @@ Tạo plan và chạy pipeline cho tính năng function-d từ INPUT/Function D.
   ```bash
   npm run testcases:merge <task-slug>
   ```
+- **Bảng điều phối tiến độ QA Leader (Dashboard)**:
+  ```bash
+  npm run status
+  ```
 
 ---
 

@@ -6,7 +6,8 @@
   "scripts": {
     "convert": "node agents/tools/convert.js",
     "knowledge:new": "node agents/tools/new-knowledge.js",
-    "testcases:merge": "node agents/tools/merge-testcases.js"
+    "testcases:merge": "node agents/tools/merge-testcases.js",
+    "status": "node agents/tools/status.js"
   },
   "license": "ISC",
   "type": "commonjs",
