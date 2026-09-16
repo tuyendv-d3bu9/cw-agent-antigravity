@@ -1,6 +1,6 @@
 # CW QA Agent — Hướng Dẫn Vận Hành
 
-Hệ thống Agent QA chuyên sâu gồm 5 nhóm chuyên gia, điều hành tự động theo triết lý **Knowledge-First** và chuẩn **FACT**.
+Hệ thống Agent QA chuyên sâu gồm 6 nhóm chuyên gia, điều hành tự động theo triết lý **Knowledge-First** và chuẩn **FACT**.
 Toàn bộ quy tắc cốt lõi nằm tại `AGENTS.md` (root) và `agents/core/QA_STANDARD.md`.
 
 ---
@@ -28,6 +28,7 @@ agents/                         HỆ THỐNG QA NỘI BỘ
   qa-test-data/                 09->12: Data class, dataset, validation & traceability
   qa-exploratory/               07: Thăm dò theo charter
   qa-ui-review/                 08: Phân tích ảnh màn hình (Vision)
+  qa-reporter/                  13: Chuẩn hóa bug notes thành bug report 7 trường (Jira-ready)
 
 .agents/                        Nơi cài đặt skill mở rộng bên ngoài (caveman, ponytail...)
 ```

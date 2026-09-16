@@ -42,6 +42,7 @@ Dự án được tổ chức thành các khu vực chức năng rạch ròi. Ng
 │   ├── 📁 qa-test-data/          # 09 -> 12: Data class, dataset, validation & traceability
 │   ├── 📁 qa-exploratory/        # 07: Thăm dò theo charter
 │   ├── 📁 qa-ui-review/          # 08: Phân tích ảnh màn hình giao diện
+│   ├── 📁 qa-reporter/           # 13: Chuẩn hóa bug notes thành bug report 7 trường (Jira-ready)
 │   ├── 📁 core/                  # QA_STANDARD.md (Luật bất biến & FACT standard)
 │   ├── 📁 workflows/             # Runbooks điều phối quy trình (run-testcase.md...)
 │   ├── 📁 templates/             # Mẫu khung định dạng Agent và Skill

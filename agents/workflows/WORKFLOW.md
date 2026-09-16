@@ -13,6 +13,7 @@ agents/
     qa-test-data/
     qa-exploratory/
     qa-ui-review/
+    qa-reporter/
 
 shared/
     QA_STANDARD.md
@@ -29,15 +30,16 @@ workflows/
 
 ---
 
-## 1. Ba nhánh
+## 1. Các nhánh
 
 | Nhánh | Gồm | Khi nào chạy |
 |---|---|---|
 | **A · Pipeline chính** | `01 => 02 => 03 => 04 => 05 => 06` | Luôn chạy. Đây là xương sống requirement => test case. |
 | **B · Nhánh dữ liệu** | `09 => 10 => 11 => 12` | Chạy **sau** `05`, khi cần dataset để execute. |
 | **C · Độc lập** | `07` (exploratory) · `08` (UI screenshot) | Gọi bất cứ lúc nào, không chặn nhánh A/B. |
+| **D · Báo cáo lỗi** | `13` (gen-bug-report) | Chạy khi Tester có bug notes thô cần chuẩn hóa thành Jira Bug Report. |
 
-`07` cần risk area từ `03`. `08` cần ảnh đính kèm, không cần bước nào trước.
+`07` cần risk area từ `03`. `08` cần ảnh đính kèm, không cần bước nào trước. `13` cần file bug notes thô và file rules.
 
 ---
 
@@ -70,7 +72,13 @@ workflows/
 | 7 | `qa-exploratory` | `07-exploratory-charter` | Risk area ở `03` | `07_exploratory_charter.md` |
 | 8 | `qa-ui-review` | `08-ui-screenshot-review` | Ảnh đính kèm | `08_ui_screenshot_analysis.md` |
 
-Mọi output nằm trong `OUTPUT/<task-slug>/`, kèm `_index.md`.
+### Nhánh D — Báo cáo lỗi (Defect Reporting)
+
+| # | Agent | Skill | Vào | Ra |
+|---|---|---|---|---|
+| 13 | `qa-reporter` | `13-gen-bug-report` | File bug notes + `knowledge/` | `OUTPUT/reports/bug-report-<slug>.md` |
+
+Mọi output nhánh A-C nằm trong `OUTPUT/<task-slug>/`, kèm `_index.md`. Nhánh D ghi tại `OUTPUT/reports/`.
 
 ---
 

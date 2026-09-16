@@ -1,0 +1,17 @@
+Bug note - chức năng Voucher (Function D)
+Người test: Tester A
+Ngày test: 2026-09-16
+Môi trường: Staging (web)
+Trình duyệt: Chrome
+
+Mô tả lỗi:
+Vào màn thanh toán của ShopGo, đơn hàng có 2 món tổng 500.000 VND.
+Nhập mã voucher: EXPIRED2026 (mã này đã hết hạn từ ngày 2026-08-01, cấu hình giảm 10% tối đa 50k).
+Bấm nút "Áp dụng" -> hệ thống lại báo "Áp dụng mã thành công! Bạn được giảm 50.000 VNĐ", tổng tiền thanh toán bị trừ xuống còn 450.000 VNĐ.
+Lỗi này cho phép khách dùng voucher đã hết hạn để giảm tiền thật!
+
+Bằng chứng:
+- UI hiển thị pop-up xanh: "Áp dụng voucher EXPIRED2026 thành công".
+- API call: POST /api/v1/checkout/apply-voucher trả về status 200 OK với body:
+  {"status":"success","discount_amount":50000,"final_total":450000}
+- Ảnh chụp màn hình: screenshot_expired_voucher_applied.png

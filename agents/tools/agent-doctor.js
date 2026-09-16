@@ -127,7 +127,7 @@ console.log('===============================================================');
 console.log('           BÁO CÁO KIỂM TRA TOÀN VẸN HỆ THỐNG AGENT            ');
 console.log('===============================================================\n');
 
-const agentDirs = ['qa-lead', 'qa-analyst', 'qa-test-design', 'qa-test-data', 'qa-exploratory', 'qa-ui-review'];
+const agentDirs = ['qa-lead', 'qa-analyst', 'qa-test-design', 'qa-test-data', 'qa-exploratory', 'qa-ui-review', 'qa-reporter'];
 let totalErrors = 0;
 
 agentDirs.forEach(agentName => {

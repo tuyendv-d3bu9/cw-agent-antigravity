@@ -29,6 +29,7 @@ Khi nhận yêu cầu từ User, QA Leader tự động đọc `knowledge/_syste
 | **Traceability Data ↔ Case** | `qa-test-data` | `12-data-validation-traceability.md` | `12_data_validation_traceability.md` |
 | **Kiểm thử giao diện (Vision/MCP)** | `qa-ui-review` | `08-ui-screenshot-review.md` | `08_ui_screenshot_analysis.md` |
 | **Thăm dò không kịch bản** | `qa-exploratory` | `07-exploratory-charter.md` | `07_exploratory_charter.md` |
+| **Chuẩn hóa Bug Report 7 trường** | `qa-reporter` | `13-gen-bug-report.md` | `OUTPUT/reports/bug-report-<slug>.md` |
 
 ---
 
@@ -67,6 +68,7 @@ Khi nhận yêu cầu từ User, QA Leader tự động đọc `knowledge/_syste
 | *"Lấy danh sách lỗi về"*<br>*"Kéo bug từ Jira"* | Tự chạy ngầm `agents/tools/jira-client.js pull` lưu vào `OUTPUT/<slug>/jira_defects_summary.md`. |
 | *"Kiểm tra xem tính năng mới có đá logic với tính năng cũ không"* | Tự chạy ngầm `agents/tools/conflict-detector.js` và báo cáo ngay nếu phát hiện mâu thuẫn rule. |
 | *"BA đã chốt: [nội dung câu trả lời]"* | Tự nạp vào `knowledge/features/<slug>.md` Mục 8 (`GIẢ ĐỊNH ĐÃ CHỐT`) và tự chạy sync bản đồ. |
+| *"Tôi có ghi chép bug thô, chuẩn hóa để log Jira"*<br>*"Chuyển bug notes thành bug report"* | Tự kích hoạt `qa-reporter` chạy `13-gen-bug-report.md` và xuất ra `OUTPUT/reports/bug-report-<slug>.md`. |
 
 ---
 
