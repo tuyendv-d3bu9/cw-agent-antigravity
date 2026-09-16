@@ -192,3 +192,23 @@ Khi số lượng Test Case dự tính vượt quá **50 test cases** (hoặc l�
   ```bash
   npm run testcases:merge <task-slug>
   ```
+- Đồng bộ bản đồ hệ thống:
+  ```bash
+  npm run map:sync
+  ```
+
+---
+
+## 7. Nguyên Tắc Trải Nghiệm: 100% Lời Nói Tự Nhiên (Zero-CLI)
+
+> ⚠️ **ĐIỀU KHOẢN TỐI CAO CHO MỌI AI AGENT**:
+> - Người dùng của dự án là Tester, BA, Product Owner, Quản lý — **KHÔNG BIẾT VÀ KHÔNG PHẢI GÕ CÁC LỆNH TERMINAL (`npm run...`)**.
+> - **CẤM** AI Agent bảo người dùng: *"Bạn hãy mở terminal gõ npm run..."*.
+> - Toàn bộ các script trong dự án là **CÔNG CỤ NỘI BỘ DÀNH RIÊNG CHO AI AGENT**.
+> - Khi người dùng yêu cầu bằng tiếng Việt tự nhiên, **AI Agent tự động kích hoạt công cụ chạy ngầm ở hậu trường** và chỉ báo cáo kết quả thân thiện cho người dùng.
+
+### Ví Dụ Thực Tế:
+- User nói: *"Có tài liệu mới trong INPUT, xử lý giúp"* ➔ Agent **tự chạy** `convert.js` ngầm.
+- User nói: *"Gộp test case lại đi"* ➔ Agent **tự chạy** `merge-testcases.js` ngầm.
+- User nói: *"Tiến độ thế nào rồi?"* ➔ Agent **tự chạy** `status.js` ngầm và in bảng tiến độ ra chat.
+- User nói: *"Đã chốt xong"* ➔ Agent **tự chạy** `sync-system-map.js` ngầm để cập nhật bản đồ vệ tinh.

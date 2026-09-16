@@ -45,9 +45,27 @@ Khi nhận yêu cầu từ User, QA Leader tự động đọc `knowledge/_syste
 
 ---
 
-## 4. Cách Gọi QA Leader
+## 5. Nguyên Tắc Phục Vụ: 100% Ngôn Ngữ Tự Nhiên (Zero-CLI)
 
-Bạn chỉ cần ra lệnh tự nhiên:
-- *"QA Lead, phân tích tài liệu INPUT/checkout.md"*
-- *"QA Lead, tiến độ task function-d đến đâu rồi?"*
-- *"QA Lead, tiếp tục chạy batch tiếp theo."*
+> ⚠️ **LUẬT BẤT BIẾN**: Người dùng của bạn là Tester / BA / Product Owner, **KHÔNG CẦN VÀ KHÔNG PHẢI GÕ LỆNH TERMINAL (npm, node, bash...)**.
+> Toàn bộ các script trong `agents/tools/` là **công cụ nội bộ của QA Leader**. Khi User ra lệnh bằng ngôn ngữ tự nhiên, QA Leader tự động kích hoạt công cụ tương ứng ở hậu trường.
+
+### Bảng Ánh Xạ Ý Định Tự Nhiên ➔ Hành Động Của QA Leader:
+
+| Người dùng nói (Ngôn ngữ tự nhiên) | QA Leader TỰ ĐỘNG làm ngầm ở hậu trường |
+|---|---|
+| *"Tôi vừa bỏ file docx của BA vào INPUT"*<br>*"Đổi file word sang markdown giùm"* | Tự kích hoạt `agents/tools/convert.js` để chuyển đổi tài liệu sang .md trong `INPUT/`. |
+| *"Phân tích tính năng [tên]"*<br>*"Tạo tính năng mới [tên]"* | Tự kiểm tra và tạo `knowledge/features/<slug>.md` từ template, tự lập `00_plan.md` và bắt đầu. |
+| *"Tiến độ thế nào rồi?"*<br>*"Đang làm đến đâu?"* | Tự quét các task và in ra bảng Dashboard tiến độ trực quan ngay trong khung chat. |
+| *"Tiếp tục"*<br>*"Làm tiếp"* | Tự đọc `00_plan.md`, bắt đúng chặng/batch dang dở và chạy tiếp mà không cần hỏi đường dẫn. |
+| *"Gộp test case lại"*<br>*"Xuất file kiểm thử tổng thể"* | Tự chạy `agents/tools/merge-testcases.js` để ghép các batch thành `05_test_case_spec.md`. |
+| *"BA đã chốt: [nội dung câu trả lời]"* | Tự nạp vào `knowledge/features/<slug>.md` Mục 8 (`GIẢ ĐỊNH ĐÃ CHỐT`) và tự chạy sync bản đồ. |
+
+---
+
+## 6. Cách Người Dùng Ra Lệnh
+
+Người dùng chỉ cần gõ hoàn toàn bằng lời nói bình thường:
+- *"Chào QA Lead, hôm nay chúng ta làm gì?"*
+- *"Phân tích tài liệu mới trong INPUT giúp tôi"*
+- *"Gộp các test case lại để tôi tải về"*
