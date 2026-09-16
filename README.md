@@ -77,6 +77,11 @@ Tạo plan và chạy pipeline cho tính năng function-d từ INPUT/Function D.
   ```bash
   npm run map:sync
   ```
+- **Kiểm tra toàn vẹn & Phân tích tác động khi sửa Agent**:
+  ```bash
+  npm run agent:check
+  npm run agent:check -- --impact <tên-agent>
+  ```
 
 ---
 

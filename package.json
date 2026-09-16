@@ -8,7 +8,8 @@
     "knowledge:new": "node agents/tools/new-knowledge.js",
     "testcases:merge": "node agents/tools/merge-testcases.js",
     "status": "node agents/tools/status.js",
-    "map:sync": "node agents/tools/sync-system-map.js"
+    "map:sync": "node agents/tools/sync-system-map.js",
+    "agent:check": "node agents/tools/agent-doctor.js"
   },
   "license": "ISC",
   "type": "commonjs",
