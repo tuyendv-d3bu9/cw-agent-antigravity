@@ -12,15 +12,17 @@ INPUT/                          TÀI LIỆU YÊU CẦU THÔ — BA/PO nạp file
 OUTPUT/<task-slug>/             KẾT QUẢ & DELIVERABLES — 00_plan.md, báo cáo 01->06, dataset, _index.md
 
 knowledge/                      BỘ NÃO TRI THỨC VĨNH VIỄN (SSOT)
+  _system_map.json              Bản đồ vệ tinh toàn hệ thống (Agent đọc file này đầu tiên)
   _project.md                   Quy ước dự án: format mã, tiền tệ VNĐ, timezone, NULL vs rỗng
   _glossary.md                  Từ điển thuật ngữ nghiệp vụ thống nhất
   _template.md                  Mẫu chuẩn tạo tri thức tính năng mới
   features/<feature-slug>.md    Quy tắc đã chốt · câu trả lời BA · giả định đã chốt · domain constant
 
 agents/                         HỆ THỐNG QA NỘI BỘ
+  qa-lead/AGENT.md              TỔNG CHỈ HUY — Cửa ngõ duy nhất tiếp nhận & điều phối
   core/QA_STANDARD.md           Luật chung: verdict · guard · FACT · 06W · risk matrix
   workflows/                    Các kịch bản chạy mẫu (run-testcase.md, flow.md...)
-  tools/                        Công cụ convert docx và tạo knowledge mới
+  tools/                        Công cụ convert docx, sync map, merge testcases, status
   qa-analyst/                   01->04: Tóm tắt yêu cầu, 06W kẽ hở, viewpoint, test idea
   qa-test-design/               05->06: Test case 8 trường, rà soát độ phủ 3 góc nhìn
   qa-test-data/                 09->12: Data class, dataset, validation & traceability
@@ -70,6 +72,10 @@ Tạo plan và chạy pipeline cho tính năng function-d từ INPUT/Function D.
 - **Bảng điều phối tiến độ QA Leader (Dashboard)**:
   ```bash
   npm run status
+  ```
+- **Đồng bộ bản đồ hệ thống tập trung (System Map)**:
+  ```bash
+  npm run map:sync
   ```
 
 ---

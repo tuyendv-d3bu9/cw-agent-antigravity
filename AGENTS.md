@@ -29,12 +29,14 @@ Dự án được tổ chức thành các khu vực chức năng rạch ròi. Ng
 │       └── _index.md             # Mục lục kết quả & Verdict từng bước
 │
 ├── 📁 knowledge/                 # BỘ NÃO TRI THỨC VĨNH VIỄN CỦA DỰ ÁN (SSOT)
+│   ├── 📄 _system_map.json       # [BẢN ĐỒ VỆ TINH] Radar hệ thống — MỌI Agent đọc file này đầu tiên
 │   ├── 📄 _project.md            # Quy ước toàn dự án (mã, tiền tệ, timezone, auth, error code)
 │   ├── 📄 _glossary.md           # Từ điển thuật ngữ nghiệp vụ thống nhất
 │   ├── 📄 _template.md           # Mẫu chuẩn tạo tri thức tính năng mới
 │   └── 📁 features/              # Tri thức tích luỹ của từng tính năng (<feature-slug>.md)
 │
 ├── 📁 agents/                    # Hệ thống chuyên gia QA & công cụ thực thi nội bộ
+│   ├── 📁 qa-lead/               # [TỔNG CHỈ HUY] Cửa ngõ duy nhất tiếp nhận lệnh & giao việc
 │   ├── 📁 qa-analyst/            # 01 -> 04: Tóm tắt yêu cầu, 06W kẽ hở, viewpoint, test idea
 │   ├── 📁 qa-test-design/        # 05 -> 06: Test case 8 trường, rà soát độ phủ
 │   ├── 📁 qa-test-data/          # 09 -> 12: Data class, dataset, validation & traceability
@@ -43,10 +45,23 @@ Dự án được tổ chức thành các khu vực chức năng rạch ròi. Ng
 │   ├── 📁 core/                  # QA_STANDARD.md (Luật bất biến & FACT standard)
 │   ├── 📁 workflows/             # Runbooks điều phối quy trình (run-testcase.md...)
 │   ├── 📁 templates/             # Mẫu khung định dạng Agent và Skill
-│   └── 📁 tools/                 # Tiện ích chuyển đổi docx và tạo knowledge mới
+│   └── 📁 tools/                 # Tiện ích: convert docx, map sync, testcase merge, status
 │
 └── 📁 .agents/                   # Nơi cài đặt các external skills bổ trợ (caveman, ponytail...)
 ```
+
+### 1.1. Nguyên Tắc "System Map First" (Tuyệt Đối Chống Đọc Dò File & Tiết Kiệm Token):
+- **CẤM** các Agent coding hay QA chạy lệnh quét/tìm kiếm mò mẫm (`list_dir`, `grep_search` toàn dự án) khi vào việc.
+- **BẮT BUỘC**: Mọi Agent trước khi thực thi việc gì phải đọc ngay file:
+  ```
+  knowledge/_system_map.json
+  ```
+- File này chứa đầy đủ: Bảng định tuyến (`routing_table`), vị trí chính xác của từng feature, và trạng thái hiện tại. Đọc xong là mở **ĐÚNG FILE ĐÍCH**, tiết kiệm 80% token tìm kiếm.
+- Lệnh đồng bộ bản đồ: `npm run map:sync`.
+
+### 1.2. Vai Trò Tổng Chỉ Huy Của QA Leader (`agents/qa-lead/`):
+- User **CHỈ CẦN GIAO TIẾP VỚI QA LEADER**. Không cần nhớ hay gọi trực tiếp từng sub-agent con.
+- QA Leader tự động nắm bắt ý định của User, tra cứu `_system_map.json`, lập `00_plan.md` và giao việc cho đúng chuyên gia (`qa-analyst`, `qa-test-design`, `qa-test-data`...).
 
 ---
 

@@ -7,7 +7,8 @@
     "convert": "node agents/tools/convert.js",
     "knowledge:new": "node agents/tools/new-knowledge.js",
     "testcases:merge": "node agents/tools/merge-testcases.js",
-    "status": "node agents/tools/status.js"
+    "status": "node agents/tools/status.js",
+    "map:sync": "node agents/tools/sync-system-map.js"
   },
   "license": "ISC",
   "type": "commonjs",
