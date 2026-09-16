@@ -1,14 +1,20 @@
 {
-  "name": "ai0908",
+  "name": "cw-agent-antigravity",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
+  "description": "Bo QA Agent (analyst / test-design / test-data / exploratory / ui-review) + tien ich doi tai lieu .docx sang .md cho INPUT/",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "convert": "node convert.js"
+    "convert": "node agents/tools/convert.js",
+    "knowledge:new": "node agents/tools/new-knowledge.js",
+    "testcases:merge": "node agents/tools/merge-testcases.js",
+    "status": "node agents/tools/status.js",
+    "map:sync": "node agents/tools/sync-system-map.js",
+    "agent:check": "node agents/tools/agent-doctor.js",
+    "testcases:export": "node agents/tools/export-testcases.js",
+    "jira:push": "node agents/tools/jira-client.js push",
+    "jira:pull": "node agents/tools/jira-client.js pull",
+    "knowledge:conflicts": "node agents/tools/conflict-detector.js"
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {

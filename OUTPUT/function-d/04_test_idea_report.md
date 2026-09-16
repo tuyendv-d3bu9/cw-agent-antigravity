@@ -1,58 +1,62 @@
-# BÁO CÁO THIẾT KẾ & SÀNG LỌC TEST IDEA — ÁP DỤNG MÃ GIẢM GIÁ (VOUCHER) · function-d
-Owner: qa-analyst/04-test-idea-design · Nguồn: OUTPUT/function-d/01_requirement_risk_summary.md, OUTPUT/function-d/03_viewpoint_report.md · Verdict: PASS
+# BÁO CÁO THIẾT KẾ Ý TƯỞNG KIỂM THỬ (TEST IDEA REPORT) · function-d
+Owner: qa-analyst/04-test-idea-design · Nguồn: OUTPUT/function-d/01_requirement_risk_summary.md, 03_viewpoint_report.md · Verdict: PASS
 
 ---
 
 ### BẢNG TỔNG HỢP TEST IDEA & FILTER
 
 | # | Test Idea | Viewpoint | Kỹ thuật | Giữ/Bỏ | Lý do filter |
-|:---|:---|:---|:---:|:---:|:---|
-| **TI-01** | Áp dụng thành công mã giảm số tiền cố định (VNĐ) khi giá trị đơn hàng lớn hơn mức tối thiểu quy định. | Happy Path | EP | **Giữ** | `Kiểm tra business rule đã xác định` |
-| **TI-02** | Áp dụng thành công mã giảm theo tỷ lệ % khi số tiền giảm tính toán chưa chạm mức trần tối đa (Max Discount Cap). | Happy Path | EP | **Giữ** | `Kiểm tra business rule đã xác định` |
-| **TI-03** | Áp dụng thành công mã giảm theo tỷ lệ % khi số tiền giảm tính toán vượt quá mức trần tối đa và hệ thống ghi nhận đúng giá trị trần Max Cap. | Happy Path | BVA | **Giữ** | `Kiểm tra business rule đã xác định` |
-| **TI-04** | Áp dụng thành công mã giảm giá trên giao diện mobile web với đơn hàng đạt điều kiện. | Happy Path | EP | **Bỏ** | `Trùng lặp hoàn toàn` |
-| **TI-05** | Nhập mã giảm giá không tồn tại trong hệ thống và bấm Áp dụng để kiểm tra thông báo lỗi hiển thị. | Negative | EP | **Giữ** | `Kiểm tra business rule đã xác định` |
-| **TI-06** | Nhập mã giảm giá đã qua ngày hết hạn và bấm Áp dụng để kiểm tra hệ thống từ chối và báo lỗi hết hạn. | Negative | EP | **Giữ** | `Kiểm tra business rule đã xác định` |
-| **TI-07** | Nhập mã giảm giá khi tổng giá trị đơn hàng chưa đạt mức tối thiểu quy định để kiểm tra thông báo lỗi chưa đủ điều kiện. | Negative | EP | **Giữ** | `Kiểm tra business rule đã xác định` |
-| **TI-08** | Nhập mã giảm giá mà tài khoản khách hàng hiện tại đã từng sử dụng thành công trước đó để kiểm tra thông báo lỗi mã đã qua sử dụng. | Negative | Decision Table | **Giữ** | `Rủi ro cao` |
-| **TI-09** | Nhập mã giảm giá thứ hai khi đơn hàng đang có mã áp dụng sẵn để kiểm tra hệ thống áp đè thay thế mã mới và hủy mã cũ. | Negative | Decision Table | **Giữ** | `Kiểm tra business rule đã xác định` |
-| **TI-10** | Thay đổi số lượng sản phẩm trong giỏ hàng làm tổng tiền giảm xuống dưới mức tối thiểu của voucher đang áp dụng để kiểm tra hệ thống cảnh báo và tự động hủy voucher. | Negative | State Transition | **Giữ** | `Rủi ro cao` |
-| **TI-11** | Nhập mã giảm giá với ô nhập liệu hoàn toàn để trống hoặc chỉ toàn ký tự khoảng trắng để kiểm tra thông báo lỗi trường bắt buộc. | Negative | EP | **Giữ** | `Viết được expected rõ ràng` |
-| **TI-12** | Nhập mã giảm giá khi giỏ hàng chưa có bất kỳ sản phẩm nào. | Negative | EP | **Bỏ** | `Ngoài scope (đối chiếu Out of Scope)` |
-| **TI-13** | Áp dụng mã giảm giá với tổng giá trị đơn hàng đúng bằng mức tối thiểu quy định (Min Order Value) để kiểm tra mã được áp dụng thành công. | Boundary | BVA | **Giữ** | `Kiểm tra business rule đã xác định` |
-| **TI-14** | Áp dụng mã giảm giá với tổng giá trị đơn hàng thấp hơn 1 VNĐ so với mức tối thiểu quy định (Min - 1 VNĐ) để kiểm tra hệ thống từ chối áp mã. | Boundary | BVA | **Giữ** | `Kiểm tra business rule đã xác định` |
-| **TI-15** | Áp dụng mã giảm giá với tổng giá trị đơn hàng cao hơn 1 VNĐ so với mức tối thiểu quy định (Min + 1 VNĐ) để kiểm tra hệ thống áp mã thành công. | Boundary | BVA | **Giữ** | `Chưa case nào cover` |
-| **TI-16** | Áp dụng mã giảm số tiền cố định có giá trị giảm đúng bằng tổng tiền đơn hàng để kiểm tra tổng tiền thanh toán hiển thị đúng 0 VNĐ. | Boundary | BVA | **Giữ** | `Kiểm tra business rule đã xác định` |
-| **TI-17** | Áp dụng mã giảm số tiền cố định có giá trị giảm lớn hơn tổng tiền đơn hàng để kiểm tra tổng tiền thanh toán được chặn ở mức sàn 0 VNĐ và không phát sinh tiền âm. | Boundary | BVA | **Giữ** | `Rủi ro cao` |
-| **TI-18** | Áp dụng mã giảm theo tỷ lệ % với đơn hàng có số tiền giảm tính toán thấp hơn mức Max Cap 1 VNĐ để kiểm tra hệ thống giảm đúng theo tỷ lệ %. | Boundary | BVA | **Giữ** | `Chưa case nào cover` |
-| **TI-19** | Áp dụng mã giảm theo tỷ lệ % với đơn hàng có số tiền giảm tính toán cao hơn mức Max Cap 1 VNĐ để kiểm tra hệ thống giới hạn ở mức Max Cap. | Boundary | BVA | **Giữ** | `Kiểm tra business rule đã xác định` |
-| **TI-20** | Nhập mã giảm giá có độ dài đúng 30 ký tự hợp lệ để kiểm tra hệ thống tiếp nhận đầy đủ chuỗi ký tự. | Boundary | BVA | **Giữ** | `Viết được expected rõ ràng` |
-| **TI-21** | Nhập mã giảm giá có độ dài vượt quá 30 ký tự để kiểm tra ô nhập liệu chặn không cho nhập tiếp hoặc cắt ngắn ký tự thừa. | Boundary | BVA | **Giữ** | `Viết được expected rõ ràng` |
-| **TI-22** | Áp dụng mã giảm giá tại thời điểm 23:59:59 của ngày hết hạn để kiểm tra mã vẫn được chấp nhận hợp lệ. | Boundary | BVA | **Giữ** | `Rủi ro cao` |
-| **TI-23** | Áp dụng mã giảm giá tại thời điểm 00:00:00 của ngày ngay sau ngày hết hạn để kiểm tra hệ thống từ chối do hết hạn. | Boundary | BVA | **Giữ** | `Rủi ro cao` |
-| **TI-24** | Áp dụng mã giảm giá cho đơn hàng có giá trị cực lớn lên đến 100 tỷ VNĐ. | Boundary | BVA | **Bỏ** | `Trivial` |
-| **TI-25** | Nhập sai mã giảm giá liên tiếp 5 lần để kiểm tra hệ thống kích hoạt cơ chế Rate Limit khóa tạm thời tính năng nhập mã. | Security | EP | **Giữ** | `Rủi ro cao` |
-| **TI-26** | Nhập chuỗi chứa mã script XSS (`<script>alert(1)</script>`) vào ô nhập mã để kiểm tra hệ thống mã hóa an toàn và không thực thi mã độc. | Security | EP | **Giữ** | `Rủi ro cao` |
-| **TI-27** | Nhập payload SQL Injection (`' OR '1'='1`) vào ô nhập mã để kiểm tra hệ thống xử lý an toàn và chỉ coi là chuỗi văn bản không hợp lệ. | Security | EP | **Giữ** | `Rủi ro cao` |
-| **TI-28** | Đăng nhập cùng 1 tài khoản trên 2 trình duyệt đồng thời để áp cùng 1 mã duy nhất cho 2 đơn hàng khác nhau nhằm kiểm tra hệ thống chặn dùng lặp. | Security | Decision Table | **Giữ** | `Rủi ro cao` |
-| **TI-29** | Sử dụng tài khoản đang ở trạng thái bị khóa (Banned) để thực hiện áp mã tại màn hình thanh toán nhằm kiểm tra hệ thống chặn realtime. | Security | EP | **Giữ** | `Viết được expected rõ ràng` |
-| **TI-30** | Nhập mã giảm giá có chứa khoảng trắng thừa ở đầu và cuối chuỗi (ví dụ: `" SALE10 "`) để kiểm tra hệ thống tự động cắt bỏ khoảng trắng và áp mã thành công. | UX/Usability | EP | **Giữ** | `Kiểm tra business rule đã xác định` |
-| **TI-31** | Nhập mã giảm giá bằng chữ thường (ví dụ: `"sale10"`) trong khi mã gốc viết hoa (`"SALE10"`) để kiểm tra hệ thống không phân biệt chữ hoa/thường. | UX/Usability | EP | **Giữ** | `Kiểm tra business rule đã xác định` |
-| **TI-32** | Kiểm tra nội dung thông báo lỗi hiển thị rõ ràng và phân biệt chính xác nguyên nhân thất bại cho từng trường hợp mã không hợp lệ, hết hạn, chưa đủ tiền đơn hoặc đã qua sử dụng. | UX/Usability | EP | **Giữ** | `Viết được expected rõ ràng` |
-| **TI-33** | Kiểm tra dòng hiển thị chiết khấu giảm giá và tổng tiền thanh toán mới sau khi áp mã thành công được cập nhật rõ ràng, nổi bật. | UX/Usability | EP | **Giữ** | `Kiểm tra business rule đã xác định` |
-| **TI-34** | Thay đổi kích thước font chữ và màu sắc nút Áp dụng theo thẩm mỹ riêng của người dùng. | UX/Usability | EP | **Bỏ** | `Mơ hồ không định nghĩa được expected` |
-| **TI-35** | Đo thời gian phản hồi từ khi nhấn nút "Áp dụng" đến khi hiển thị kết quả chiết khấu trên giao diện trong điều kiện mạng bình thường (yêu cầu < 1 giây). | Performance | EP | **Giữ** | `Viết được expected rõ ràng` |
-| **TI-36** | Nhấn liên tiếp nhiều lần vào nút "Áp dụng" trong lúc hệ thống đang kiểm tra mã để đảm bảo nút bị disable và không gửi request trùng lặp. | Performance | State Transition | **Giữ** | `Rủi ro cao` |
-| **TI-37** | Nhấn phím Enter trên bàn phím khi đang focus tại ô nhập mã để kích hoạt hành động Áp dụng tương đương như bấm nút chuột. | Accessibility | EP | **Giữ** | `Viết được expected rõ ràng` |
-| **TI-38** | Kiểm tra độ tương phản màu sắc của thông điệp báo lỗi màu đỏ và thông báo thành công màu xanh lá đáp ứng tiêu chuẩn trực quan dễ nhìn. | Accessibility | EP | **Giữ** | `Viết được expected rõ ràng` |
-| **TI-39** | Áp dụng mã giảm giá cho đơn hàng có phát sinh phí vận chuyển để kiểm tra số tiền giảm chỉ trừ vào tiền sản phẩm mà không làm thay đổi phí vận chuyển. | Integration | Decision Table | **Giữ** | `Kiểm tra business rule đã xác định` |
-| **TI-40** | Áp dụng mã giảm giá kết hợp chọn thanh toán phần tiền còn lại bằng số dư Ví ShopGo để kiểm tra thứ tự trừ tiền chính xác. | Integration | Decision Table | **Giữ** | `Kiểm tra business rule đã xác định` |
-| **TI-41** | Thực hiện hủy đơn hàng đã áp mã giảm giá từ màn hình Quản lý đơn hàng để kiểm tra lượt sử dụng mã được hoàn lại cho tài khoản khách hàng. | Integration | State Transition | **Giữ** | `Kiểm tra business rule đã xác định` |
-| **TI-42** | Giữ màn hình thanh toán đã áp mã qua thời điểm mã hết hạn rồi mới bấm Đặt hàng để kiểm tra hệ thống kiểm tra lại tính hợp lệ của mã trước khi tạo đơn. | Integration | State Transition | **Giữ** | `Rủi ro cao` |
+|:---|:---|:---|:---|:---:|:---|
+| **TI-01** | Kiểm tra áp dụng thành công mã giảm số tiền cố định (VNĐ) khi giá trị đơn hàng lớn hơn mức tối thiểu quy định. | VP-01 (Happy Path) | EP | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-02** | Kiểm tra áp dụng thành công mã giảm theo tỷ lệ phần trăm (%) với mức giảm tính ra nhỏ hơn mức trần Max Cap. | VP-01 (Happy Path) | EP | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-03** | Kiểm tra áp dụng thành công mã giảm theo tỷ lệ phần trăm (%) với mức giảm tính ra đạt chính xác mức trần Max Cap. | VP-01 (Happy Path) | BVA | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-04** | Kiểm tra hệ thống hủy mã cũ và áp dụng mã mới thay thế khi nhập mã hợp lệ khác trong lúc đang áp sẵn một mã. | VP-01 (Happy Path) | Decision Table | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-05** | Kiểm tra khách hàng đặt hàng thành công sau khi đã áp dụng mã giảm giá hợp lệ và tổng tiền thanh toán được cập nhật chính xác. | VP-01 (Happy Path) | EP | **Giữ** | Viết được expected rõ ràng |
+| **TI-06** | Kiểm tra bấm Áp dụng nhiều lần liên tiếp với cùng một mã giảm giá đã được áp dụng thành công. | VP-01 (Happy Path) | EP | **Bỏ** | Trùng lặp hoàn toàn |
+| **TI-07** | Kiểm tra hệ thống từ chối và báo lỗi khi nhập mã giảm giá không tồn tại trong cơ sở dữ liệu. | VP-02 (Negative) | EP | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-08** | Kiểm tra hệ thống từ chối và báo lỗi khi nhập mã giảm giá đã quá thời hạn sử dụng. | VP-02 (Negative) | EP | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-09** | Kiểm tra hệ thống từ chối và báo lỗi khi tổng giá trị đơn hàng chưa đạt mức tối thiểu quy định của mã giảm giá. | VP-02 (Negative) | EP | **Giữ** | Rủi ro cao |
+| **TI-10** | Kiểm tra hệ thống từ chối và báo lỗi khi khách hàng nhập lại mã giảm giá mà tài khoản này đã từng sử dụng thành công trước đó. | VP-02 (Negative) | Decision Table | **Giữ** | Rủi ro cao |
+| **TI-11** | Kiểm tra hệ thống cảnh báo yêu cầu nhập mã khi bấm nút Áp dụng trong khi ô nhập mã đang để trống. | VP-02 (Negative) | EP | **Giữ** | Viết được expected rõ ràng |
+| **TI-12** | Kiểm tra khách vãng lai chưa đăng nhập bị yêu cầu đăng nhập khi tiến hành thanh toán để sử dụng mã giảm giá. | VP-02 (Negative) | Decision Table | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-13** | Kiểm tra giao diện nút Áp dụng hiển thị hiệu ứng hover chuyển màu. | VP-02 (Negative) | EP | **Bỏ** | Trivial |
+| **TI-14** | Kiểm tra áp dụng thành công mã giảm giá khi tổng giá trị đơn hàng bằng đúng giá trị tối thiểu quy định (`min`). | VP-03 (Boundary) | BVA | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-15** | Kiểm tra hệ thống từ chối khi tổng giá trị đơn hàng thấp hơn 1 đồng so với giá trị tối thiểu quy định (`min - 1 VNĐ`). | VP-03 (Boundary) | BVA | **Giữ** | Chưa case nào cover |
+| **TI-16** | Kiểm tra áp dụng thành công khi tổng giá trị đơn hàng cao hơn 1 đồng so với giá trị tối thiểu quy định (`min + 1 VNĐ`). | VP-03 (Boundary) | BVA | **Giữ** | Chưa case nào cover |
+| **TI-17** | Kiểm tra số tiền giảm của mã phần trăm (%) khi giá trị tính toán vượt quá mức trần Max Cap (`MaxCap + 1 VNĐ`) thì hệ thống chốt đúng bằng Max Cap. | VP-03 (Boundary) | BVA | **Giữ** | Rủi ro cao |
+| **TI-18** | Kiểm tra số tiền giảm của mã phần trăm (%) khi giá trị tính toán thấp hơn 1 đồng so với mức trần (`MaxCap - 1 VNĐ`) thì hệ thống giảm đúng giá trị tính toán. | VP-03 (Boundary) | BVA | **Giữ** | Chưa case nào cover |
+| **TI-19** | Kiểm tra mã giảm số tiền cố định có giá trị giảm bằng đúng tổng giá trị đơn hàng thì tổng tiền thanh toán hiển thị đúng 0 VNĐ. | VP-03 (Boundary) | BVA | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-20** | Kiểm tra mã giảm số tiền cố định có giá trị giảm lớn hơn tổng giá trị đơn hàng thì tổng tiền thanh toán giảm tối đa về sàn 0 VNĐ không bị âm tiền. | VP-03 (Boundary) | BVA | **Giữ** | Rủi ro cao |
+| **TI-21** | Kiểm tra quy tắc làm tròn tiền chiết khấu lẻ của mã phần trăm (%) được làm tròn xuống hàng đơn vị đồng VNĐ gần nhất. | VP-03 (Boundary) | BVA | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-22** | Kiểm tra hệ thống từ chối khi nhập mã giảm giá có độ dài 2 ký tự (dưới ngưỡng tối thiểu 3 ký tự). | VP-03 (Boundary) | BVA | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-23** | Kiểm tra áp dụng thành công mã giảm giá có độ dài đúng 3 ký tự (ngưỡng min hợp lệ). | VP-03 (Boundary) | BVA | **Giữ** | Chưa case nào cover |
+| **TI-24** | Kiểm tra áp dụng thành công mã giảm giá có độ dài đúng 20 ký tự (ngưỡng max hợp lệ). | VP-03 (Boundary) | BVA | **Giữ** | Chưa case nào cover |
+| **TI-25** | Kiểm tra hệ thống từ chối khi nhập mã giảm giá có độ dài 21 ký tự (vượt quá ngưỡng tối đa 20 ký tự). | VP-03 (Boundary) | BVA | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-26** | Kiểm tra mã giảm giá vẫn áp dụng hợp lệ tại thời điểm 23:59:59 của ngày hết hạn theo giờ Việt Nam (GMT+7). | VP-03 (Boundary) | BVA | **Giữ** | Rủi ro cao |
+| **TI-27** | Kiểm tra mã giảm giá bị từ chối hết hạn tại thời điểm 00:00:00 của ngày liền kề sau ngày hết hạn theo giờ Việt Nam (GMT+7). | VP-03 (Boundary) | BVA | **Giữ** | Rủi ro cao |
+| **TI-28** | Kiểm tra hệ thống tạm khóa ô nhập mã trong 15 phút sau khi người dùng nhập sai mã liên tiếp 5 lần trong vòng 5 phút. | VP-04 (Security) | Decision Table | **Giữ** | Rủi ro cao |
+| **TI-29** | Kiểm tra hệ thống từ chối thao tác ngay lập tức nếu người dùng cố tình nhập mã ở lần thứ 6 trong thời gian bị tạm khóa. | VP-04 (Security) | Decision Table | **Giữ** | Rủi ro cao |
+| **TI-30** | Kiểm tra hệ thống tự động mở lại ô nhập mã bình thường sau khi hết thời gian tạm khóa 15 phút. | VP-04 (Security) | Decision Table | **Giữ** | Viết được expected rõ ràng |
+| **TI-31** | Kiểm tra hệ thống từ chối và chặn khi nhập các ký tự đặc biệt hoặc mã độc script/HTML vào ô mã giảm giá. | VP-04 (Security) | EP | **Giữ** | Rủi ro cao |
+| **TI-32** | Kiểm tra hệ thống từ chối áp dụng voucher và vô hiệu hóa đặt hàng khi tài khoản khách hàng bị khóa trạng thái trong lúc thao tác. | VP-04 (Security) | Decision Table | **Giữ** | Rủi ro cao |
+| **TI-33** | Kiểm tra khả năng chịu tải của hệ thống khi 10.000 user cùng áp mã trong 1 giây. | VP-04 (Security) | EP | **Bỏ** | Ngoài scope (đối chiếu Out of Scope) |
+| **TI-34** | Kiểm tra hệ thống tự động cắt bỏ khoảng trắng ở đầu và cuối chuỗi nhập mã (`trim()`) và áp dụng thành công nếu mã hợp lệ. | VP-05 (UX/Usability) | EP | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-35** | Kiểm tra hệ thống báo lỗi mã không hợp lệ khi chuỗi nhập chứa khoảng trắng ở giữa các ký tự. | VP-05 (UX/Usability) | EP | **Giữ** | Viết được expected rõ ràng |
+| **TI-36** | Kiểm tra hệ thống tự động chuyển đổi chữ thường thành chữ in hoa và đối soát hợp lệ (`Case-insensitive`). | VP-05 (UX/Usability) | EP | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-37** | Kiểm tra hệ thống bật modal đăng nhập tại chỗ khi session hết hạn và giữ nguyên giỏ hàng cùng mã đang nhập sau khi login lại thành công. | VP-05 (UX/Usability) | State Transition | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-38** | Kiểm tra hệ thống hiển thị chính xác các câu thông báo lỗi theo đúng danh sách mẫu chuẩn cho từng ca lỗi. | VP-05 (UX/Usability) | EP | **Giữ** | Viết được expected rõ ràng |
+| **TI-39** | Kiểm tra thứ tự trừ tiền khi kết hợp Ví ShopGo: trừ tiền chiết khấu của voucher trước trên tổng đơn, số tiền còn lại mới trừ vào số dư Ví. | VP-06 (Integration) | Decision Table | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-40** | Kiểm tra khi khách hàng chỉnh sửa giỏ hàng làm tổng giá trị đơn giảm xuống dưới mức tối thiểu thì hệ thống cảnh báo và tự động gỡ bỏ voucher. | VP-06 (Integration) | State Transition | **Giữ** | Rủi ro cao |
+| **TI-41** | Kiểm tra khi máy chủ cập nhật giá sản phẩm hoặc hết hàng làm đơn hàng không còn đủ giá trị tối thiểu thì hệ thống cảnh báo và tự gỡ voucher. | VP-06 (Integration) | Decision Table | **Giữ** | Rủi ro cao |
+| **TI-42** | Kiểm tra hệ thống re-validate tính hợp lệ của voucher tại thời điểm bấm Đặt hàng: nếu voucher bị hết hạn/hết lượt trong lúc thao tác thì chặn đặt hàng. | VP-06 (Integration) | Decision Table | **Giữ** | Rủi ro cao |
+| **TI-43** | Kiểm tra lượt sử dụng voucher được tự động hoàn lại cho tài khoản khách hàng khi đơn hàng đã áp voucher bị hủy. | VP-06 (Integration) | State Transition | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-44** | Kiểm tra mã giảm giá chỉ giảm trừ trên tổng tiền sản phẩm trong đơn hàng, không áp dụng giảm trừ vào phí vận chuyển. | VP-06 (Integration) | EP | **Giữ** | Kiểm tra business rule đã xác định |
+| **TI-45** | Kiểm tra tích hợp sâu cổng thanh toán Visa thanh toán thành công đơn hàng sau khi giảm giá. | VP-06 (Integration) | EP | **Bỏ** | Ngoài scope (đối chiếu Out of Scope) |
 
 ---
 
-### Tổng kết Sàng lọc Test Idea
-- **Tổng số Test Idea khởi tạo**: 42 ý tưởng
-- **Số lượng Test Idea GIỮ**: 38 ý tưởng (Bao phủ toàn diện 8/8 Viewpoint, sẵn sàng chuyển giao cho `qa-test-design`)
-- **Số lượng Test Idea BỎ**: 4 ý tưởng (Loại bỏ triệt để case trùng lặp, trivial, out of scope hoặc mơ hồ)
+## TỔNG KẾT SÀNG LỌC
+- **Tổng số Test Idea được sinh**: 45
+- **Số Test Idea được GIỮ**: 41
+- **Số Test Idea bị BỎ**: 4 (Lý do: 1 Trùng lặp hoàn toàn, 1 Trivial, 2 Ngoài scope)
+- **100% Test Idea GIỮ** có lý do trích nguyên văn từ checklist chuẩn, phân loại kỹ thuật rõ ràng và bao phủ trọn vẹn toàn bộ 26 Business Rules.
