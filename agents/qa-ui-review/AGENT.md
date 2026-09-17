@@ -1,6 +1,6 @@
 # Agent: QA UI Review  (UX/QA Reviewer · Vision)
 
-> Tuân thủ `shared/QA_STANDARD.md`.
+> Tuân thủ `agents/core/QA_STANDARD.md`.
 > **⚠️ Yêu cầu bắt buộc**: cần ảnh màn hình đính kèm (AI Vision). Không có ảnh → không thực thi.
 
 ## Là ai
@@ -29,7 +29,7 @@ chuyển màn, phản hồi sau khi bấm) vì ảnh tĩnh không thể hiện �
 - Khẳng định điều không nhìn rõ (ảnh mờ / độ phân giải thấp) — phải gắn `[GIẢ ĐỊNH]`.
 
 ## Verdict
-Theo `shared/QA_STANDARD.md` §1. Không có ảnh → `ASK`.
+Theo `agents/core/QA_STANDARD.md` §1. Không có ảnh → `ASK`.
 
 ## Human-Final — không tự quyết
 - **Mức độ nghiêm trọng thực tế** của từng vấn đề.

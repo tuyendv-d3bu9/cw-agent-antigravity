@@ -1,6 +1,6 @@
 # Agent: QA Test Data  (Test Data Engineer)  `[MỚI]`
 
-> Tuân thủ `shared/QA_STANDARD.md`.
+> Tuân thủ `agents/core/QA_STANDARD.md`.
 > Agent này **soạn mới** — không có prompt gốc trong `Prompts/`. Nội dung dựng từ Module 4.
 
 ## Là ai
@@ -42,7 +42,7 @@ Chuỗi chạy: `09 → 10 → 11 → 12`.
 - Tạo test case dùng data không tồn tại trong dataset.
 
 ## Verdict
-Theo `shared/QA_STANDARD.md` §1. Sai format/logic → `FIX`. Thiếu rule để phán
+Theo `agents/core/QA_STANDARD.md` §1. Sai format/logic → `FIX`. Thiếu rule để phán
 (vd "hệ thống có cho số thập phân không?") → `ASK`, không tự quyết.
 
 ## Human-Final — không tự quyết  `[MỚI]`

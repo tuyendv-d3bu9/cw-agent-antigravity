@@ -1,6 +1,13 @@
+---
+name: requirement-risk-summary
+description: >
+  Bóc tách tài liệu yêu cầu thô (BRD/SRS/User Story) thành Requirement Summary 7 phần và
+  Business Criticality & Risk Analysis 3 phần. Là cửa ngõ đầu tiên của pipeline QA.
+---
+
 # Skill: requirement-risk-summary
 
-> Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT · 06W · risk matrix 3x3).
+> Tuân thủ `agents/core/QA_STANDARD.md` (verdict · guard · FACT · 06W · risk matrix 3x3).
 
 ## Mục đích
 Chuyển requirement thô thành **Requirement Summary 7 phần** + **Business Criticality & Risk
@@ -11,7 +18,7 @@ Analysis 3 phần**. Là cửa ngõ đầu tiên của pipeline — mọi bướ
 
 ## Đầu vào
 - Tài liệu yêu cầu thô: BRD / SRS / User Story / Wireframe + mô tả UI / email-chat từ BA.
-- `knowledge/_project.md` · `knowledge/<feature-slug>.md` nếu đã có (xem `shared/QA_STANDARD.md` §8).
+- `knowledge/_project.md` · `knowledge/<feature-slug>.md` nếu đã có (xem `agents/core/QA_STANDARD.md` §8).
 
 > **Knowledge thắng giả định**: Bước 8/9 dưới đây chỉ gắn `[CONTEXT_MISSING]` cho khía cạnh mà
 > **cả** tài liệu đầu vào **và** `knowledge/_project.md` §3 đều không có. Đã có trong knowledge
@@ -147,8 +154,9 @@ nếu chưa có):
 | 9 Domain constant | hằng số nghiệp vụ trích được (format mã, khoảng giá trị, đơn vị) |
 | 10 Traceability | nguồn của từng `BR-xx` |
 
-## Chốt chặn
-- Đủ 10 phần, đúng thứ tự, không gộp.
-- **Clarification Gate**: Bắt buộc dừng lại khi có Open Questions / điểm chưa rõ. Cập nhật câu trả lời vào file OUTPUT trước khi tiến hành phân tích tiếp theo.
-- **Strict Anti-Bypass**: Nếu người dùng cố tình bỏ qua (skip), tiếp tục dừng lại ở lượt tiếp theo và yêu cầu trả lời, tuyệt đối không đi tiếp.
-- Hoàn thành trọn vẹn báo cáo này và giải quyết Open Questions **trước khi** chuyển sang skill 02.
+## Chốt chặn nghiệm thu (Quality Gates)
+- [ ] Đủ 100% 10 phần cấu trúc bắt buộc, đúng thứ tự, không được gộp.
+- [ ] Mọi quy tắc nghiệp vụ trích xuất được gắn mã `BR-xx` duy nhất và liên tục.
+- [ ] **Clarification Gate**: Bắt buộc ra Verdict `ASK` và dừng lại khi có Open Questions / điểm chưa rõ. Cập nhật câu trả lời vào file OUTPUT và knowledge trước khi tiến hành phân tích tiếp theo.
+- [ ] **Strict Anti-Bypass**: Nếu người dùng cố tình bỏ qua (skip), tiếp tục dừng lại ở lượt tiếp theo và yêu cầu trả lời, tuyệt đối không đi tiếp.
+- [ ] Hoàn thành trọn vẹn báo cáo này và giải quyết Open Questions **trước khi** chuyển sang missing-rule-06w.

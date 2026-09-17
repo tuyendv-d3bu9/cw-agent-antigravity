@@ -1,6 +1,13 @@
+---
+name: dataset-generation
+description: >
+  Sinh dataset sát nghiệp vụ (Realistic Data) cho các ca kiểm thử hợp lệ (Valid),
+  đa dạng hóa dữ liệu và xuất ra định dạng dùng được ngay (CSV, SQL INSERT, JSON).
+---
+
 # Skill: dataset-generation
 
-> Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT).
+> Tuân thủ `agents/core/QA_STANDARD.md` (verdict · guard · FACT).
 
 ## Mục đích
 Sinh dataset **sát nghiệp vụ** (giống dữ liệu thật của dự án, không phải placeholder vô hồn) và
@@ -18,7 +25,7 @@ xuất ra định dạng dùng được ngay: CSV / SQL INSERT / JSON.
 - Dùng placeholder mơ hồ (`V001`, `test`, `abc`, `[email]`) — phải là giá trị thực tế.
 - Bịa rule / campaign / domain assumption ngoài Requirement → gắn `[GIẢ ĐỊNH]`.
 - Đổi tên field/khoá so với Field Map hoặc schema.
-- Sinh record biên/âm tính ở đây — đó là skill `11`.
+- Sinh record biên/âm tính ở đây — đó là skill `boundary-negative-dataset`.
 
 ## Nguyên tắc "sát nghiệp vụ"
 - Mã/định danh đúng **format thật của dự án**, không dùng tên giả kiểu `V001`.
@@ -45,7 +52,7 @@ xuất ra định dạng dùng được ngay: CSV / SQL INSERT / JSON.
 | **JSON** | API testing (Postman) | Key khớp API schema; nested object cho rule lồng nhau |
 
 **Quy ước chung**: date thống nhất `YYYY-MM-DD` (không mix định dạng) · NULL → CSV để ô trống,
-SQL dùng `NULL`, JSON dùng `null` · tên cột/khoá đúng Field Map ở skill 09.
+SQL dùng `NULL`, JSON dùng `null` · tên cột/khoá đúng Field Map ở skill `data-class-map`.
 
 ## Các bước
 1. Đọc Field Map, xác định field nào cần sinh và khoảng giá trị hợp lệ.
@@ -84,6 +91,8 @@ Ghi ra `OUTPUT/<task-slug>/10_dataset.md`:
 | Thiếu edge tự nhiên | [x] | … |
 ````
 
-## Chốt chặn
-- Không lỗi cú pháp, escape đầy đủ ký tự đặc biệt (FACT — A).
-- Dữ liệu ở dạng máy tiêu thụ được ngay: provider / seed / API (FACT — T).
+## Chốt chặn nghiệm thu (Quality Gates)
+- [ ] Không lỗi cú pháp, escape đầy đủ ký tự đặc biệt (FACT — A).
+- [ ] Dữ liệu ở dạng máy tiêu thụ được ngay: provider / seed / API (FACT — T).
+- [ ] Đã tự soi đủ 5 bẫy sinh dữ liệu và ghi kết quả đối chiếu.
+- [ ] File xuất ra tại `OUTPUT/<task-slug>/10_dataset.md`.

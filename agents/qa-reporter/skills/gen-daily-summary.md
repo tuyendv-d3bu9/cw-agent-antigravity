@@ -1,3 +1,10 @@
+---
+name: gen-daily-summary
+description: >
+  Chuyển đổi dữ liệu sprint thô ở dạng JSON thành Daily QA Summary chuẩn hóa 4 section cố định
+  (Tiến độ hôm nay, Outstanding Issues, Blocker, Next Action) cho đối tượng Dev hoặc PM.
+---
+
 # Skill: gen-daily-summary
 
 > Tuân thủ `agents/core/QA_STANDARD.md` (verdict · guard · FACT standard).

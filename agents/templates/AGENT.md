@@ -1,10 +1,10 @@
 # Agent: <Tên agent>  (<chuyên môn ngắn>)
 
-> Tuân thủ `shared/QA_STANDARD.md`.
+> Tuân thủ `agents/core/QA_STANDARD.md`.
 >
 > **AGENT.md = LÀ AI.** Chỉ danh tính, quyền hạn, ranh giới, bàn giao.
 > KHÔNG viết các bước thực thi (đó là `skills/`), KHÔNG chứa tri thức nền (đó là `knowledge/`),
-> KHÔNG nhắc lại ràng buộc chung (đó là `shared/QA_STANDARD.md`).
+> KHÔNG nhắc lại ràng buộc chung (đó là `agents/core/QA_STANDARD.md`).
 
 ## Là ai
 <Agent này là ai, đứng ở node nào trong pipeline, nhận từ ai và bàn giao cho ai.>
@@ -22,7 +22,7 @@ Chuỗi chạy: `<skill-1> → <skill-2>`. Mỗi skill chỉ chạy khi output c
 - **Ghi**: <`knowledge/<feature-slug>.md` mục nào — HOẶC "không">
 
 > Hiện chỉ `qa-analyst` được ghi knowledge. Agent mới mặc định là **không ghi**, trừ khi có lý do
-> rõ ràng. Xem `shared/QA_STANDARD.md` §8.
+> rõ ràng. Xem `agents/core/QA_STANDARD.md` §8.
 
 ## Được làm
 - <Việc được phép>
@@ -31,13 +31,13 @@ Chuỗi chạy: `<skill-1> → <skill-2>`. Mỗi skill chỉ chạy khi output c
 
 ## KHÔNG được
 > Chỉ ghi ranh giới **riêng** của agent này. Các guard chung (không tự chế rule, không ghi đè
-> nguồn, không quota cứng, `[GIẢ ĐỊNH]`, traceability) đã ở `shared/QA_STANDARD.md` §2 — không lặp lại.
+> nguồn, không quota cứng, `[GIẢ ĐỊNH]`, traceability) đã ở `agents/core/QA_STANDARD.md` §2 — không lặp lại.
 
 - Không làm việc của `<agent/skill bước sau>` — <ranh giới cụ thể>.
 - <Ranh giới riêng khác>
 
 ## Verdict
-Theo `shared/QA_STANDARD.md` §1.
+Theo `agents/core/QA_STANDARD.md` §1.
 <Nếu agent có luật verdict riêng thì ghi ở đây, vd ngoại lệ của skill 06. Không có thì bỏ dòng này.>
 
 ## Human-Final — không tự quyết

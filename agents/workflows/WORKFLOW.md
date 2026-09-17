@@ -2,7 +2,7 @@
 
 > File này để **ĐỌC**: hệ thống có gì, chạy theo thứ tự nào, dừng ở đâu.
 > Muốn **CHẠY** một chuỗi cụ thể => dùng runbook trong `workflows/run-*.md`.
-> Ràng buộc chung nằm ở `shared/QA_STANDARD.md` — file này không nhắc lại.
+> Ràng buộc chung nằm ở `agents/core/QA_STANDARD.md` — file này không nhắc lại.
 
 Cấu trúc thư mục file (sau khi đã gom agent):
 
@@ -121,7 +121,7 @@ Chạy lần 2  =>  01/02 đọc knowledge trước  =>  ít [GIẢ ĐỊNH] hơ
 | Mục | Quy ước |
 |---|---|
 | `task-slug` | Trùng `feature-slug`. Vd `function-d`. Một feature một thư mục output. |
-| Nạp trước mọi bước | `shared/QA_STANDARD.md` · `knowledge/_project.md` · `knowledge/<slug>.md` (nếu có) |
+| Nạp trước mọi bước | `agents/core/QA_STANDARD.md` · `knowledge/_project.md` · `knowledge/<slug>.md` (nếu có) |
 | Một skill | Ghi **đúng một** file output. Không dồn nhiều bước vào một file. |
 | Sau mỗi bước | Cập nhật `OUTPUT/<task-slug>/_index.md`: tên file + verdict |
 | Không được | Ghi đè `INPUT/` · sửa deliverable của agent khác · chạy bước sau khi bước trước chưa có output |

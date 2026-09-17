@@ -1,3 +1,10 @@
+---
+name: gen-bug-report
+description: >
+  Chuyển đổi ghi chép lỗi thô (Raw Bug Notes) của Tester thành Bug Report kỹ thuật 7 trường Jira-ready,
+  đối soát Expected Result với Business Rules (BR-xx), đánh giá Severity kỹ thuật và đề xuất Priority.
+---
+
 # Skill: gen-bug-report
 
 > Tuân thủ `agents/core/QA_STANDARD.md` (verdict · guard · FACT standard · ma trận rủi ro §5).

@@ -1,6 +1,13 @@
+---
+name: data-class-map
+description: >
+  Chuẩn hoá cách phân loại dữ liệu test cho từng field (Valid, Boundary, Invalid, Null, Special)
+  và lập bản đồ mốc biên cần phủ trước khi sinh dataset chi tiết.
+---
+
 # Skill: data-class-map
 
-> Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT · chuỗi biên §6).
+> Tuân thủ `agents/core/QA_STANDARD.md` (verdict · guard · FACT · chuỗi biên §6).
 
 ## Mục đích
 Chuẩn hoá cách phân loại dữ liệu test cho **từng field** trước khi sinh dataset. Đây là bước
@@ -29,7 +36,7 @@ chặn "Garbage data → Garbage testing".
 3. **Map Data Class** cần test cho từng field. Mọi field áp dụng được đều phải có map — không bỏ
    sót field. Field không rõ rule → `[GIẢ ĐỊNH]` + ghi câu hỏi cho BA.
 4. **Đối chiếu chuỗi biên** — field có min/max hoặc rule độ dài phải ghi rõ các mốc cần phủ theo
-   `shared/QA_STANDARD.md` §6.
+   `agents/core/QA_STANDARD.md` §6.
 
 ## Format output
 Ghi ra `OUTPUT/<task-slug>/09_data_class_map.md`:
@@ -48,6 +55,8 @@ Ghi ra `OUTPUT/<task-slug>/09_data_class_map.md`:
 | [tên field] | [rule/khoảng giá trị chưa rõ] | `[GIẢ ĐỊNH]` [nội dung] | [câu hỏi] |
 ```
 
-## Chốt chặn
-- Kiểu dữ liệu & rule bám đúng Requirement gốc, không suy diễn (FACT — F).
-- Phủ đủ các lớp áp dụng được cho từng field (FACT — C).
+## Chốt chặn nghiệm thu (Quality Gates)
+- [ ] Kiểu dữ liệu & rule bám đúng Requirement gốc, không suy diễn (FACT — F).
+- [ ] Phủ đủ 5 Data Class áp dụng được cho từng field (Valid, Boundary, Invalid, Null, Special) (FACT — C).
+- [ ] Các field có min/max xác định rõ mốc chuỗi biên cần phủ theo `agents/core/QA_STANDARD.md` §6.
+- [ ] File xuất ra tại `OUTPUT/<task-slug>/09_data_class_map.md`.

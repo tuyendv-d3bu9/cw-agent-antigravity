@@ -1,6 +1,13 @@
+---
+name: test-case-generation
+description: >
+  Mở rộng toàn bộ Test Idea "Giữ" thành Test Case hoàn chỉnh 8 trường chuẩn Jira Xray/TestRail.
+  Hỗ trợ Scale Detection và mô hình 3 giai đoạn (Blueprint JSON -> Chunked Batching -> Assembly Merge) cho quy mô lớn.
+---
+
 # Skill: test-case-generation
 
-> Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT · chuỗi biên §6).
+> Tuân thủ `agents/core/QA_STANDARD.md` (verdict · guard · FACT · chuỗi biên §6).
 
 ## Mục đích
 Expand toàn bộ Test Idea gắn nhãn "Giữ" thành Test Case hoàn chỉnh **8 trường**, sẵn sàng import
@@ -48,7 +55,7 @@ Ghi danh mục toàn bộ Test Ideas đã duyệt vào `OUTPUT/<task-slug>/05_te
 - Mỗi test case trong batch được expand đầy đủ **8 trường chuẩn**, không viết tắt, không placeholder.
 
 #### Giai đoạn 5.3: Gộp tổng thể (`Assembly`)
-- Chạy lệnh tiện ích để tự động gộp các file `batch_*.md` thành `05_test_case_spec.md`:
+- Kích hoạt công cụ nội bộ gộp các batch:
   ```bash
   npm run testcases:merge <task-slug>
   ```
@@ -84,3 +91,10 @@ Ghi danh mục toàn bộ Test Ideas đã duyệt vào `OUTPUT/<task-slug>/05_te
 - **Priority**: [High/Medium/Low]
 - **Tags**: Rule#[ID], Viewpoint#[ID/Tên], Module#[Tên], [Automated/Manual]
 ```
+
+## Chốt chặn nghiệm thu (Quality Gates)
+- [ ] 100% Test Case có đủ 8 trường chuẩn, không trường nào bị bỏ trống.
+- [ ] Tiêu đề (Title) bắt đầu đúng quy chuẩn bằng `Verify` / `Validate` / `Confirm`.
+- [ ] Test Data mang giá trị cụ thể, sát nghiệp vụ, cấm dùng placeholder chung chung.
+- [ ] Tags bắt buộc trích dẫn mã Rule (`Rule#BR-xx`) và Viewpoint (`Viewpoint#VP-xx`).
+- [ ] Test Case file xuất ra tại `OUTPUT/<task-slug>/05_test_case_spec.md`.

@@ -1,6 +1,13 @@
+---
+name: coverage-review
+description: >
+  Chốt chặn kiểm soát chất lượng: review độc lập test suite theo Coverage Framework 3 góc nhìn
+  (Requirement Matrix, Viewpoint Balance, Boundary Completeness), phát hiện gap và ra Verdict nghiệm thu.
+---
+
 # Skill: coverage-review
 
-> Tuân thủ `shared/QA_STANDARD.md` (verdict + **ngoại lệ §1** · guard · FACT · chuỗi biên §6).
+> Tuân thủ `agents/core/QA_STANDARD.md` (verdict + **ngoại lệ §1** · guard · FACT · chuỗi biên §6).
 
 ## Mục đích
 Chốt chặn kiểm soát chất lượng nội bộ: tự review độc lập test suite trước khi bàn giao — đối
@@ -12,7 +19,7 @@ soát độ phủ, phát hiện test gap, đánh giá rủi ro business từ gó
 - `OUTPUT/<task-slug>/03_viewpoint_report.md` — ma trận viewpoint.
 
 ## KHÔNG được (riêng skill này)
-- Đánh số lại / gộp mã Business Rule — dùng đúng mã và thứ tự đã đánh ở skill 01.
+- Đánh số lại / gộp mã Business Rule — dùng đúng mã và thứ tự đã đánh ở skill requirement-risk-summary.
 - Để trống ô `Test Case IDs cover` — chưa cover thì điền **`CHƯA COVER`**.
 - Kết luận chung chung ("thiếu test case", "cần bổ sung coverage") — mọi gap phải gắn `Rule#` cụ thể.
 - Tự kết luận `PASS` khi chưa có biên bản chấp nhận rủi ro từ người phụ trách.
@@ -25,7 +32,7 @@ soát độ phủ, phát hiện test gap, đánh giá rủi ro business từ gó
    |---|---|
    | 1 — Requirement ↔ Test Suite Matrix | Đối soát 2 chiều giữa từng Business Rule và Test Case ID |
    | 2 — Viewpoint Balance | Cân bằng giữa Functional, Boundary, Exception/Negative, Security/Authorization, State Transition, Data Integrity |
-   | 3 — Boundary Completeness | Tính triệt để của giá trị biên theo `shared/QA_STANDARD.md` §6 cho từng rule |
+   | 3 — Boundary Completeness | Tính triệt để của giá trị biên theo `agents/core/QA_STANDARD.md` §6 cho từng rule |
 
 2. **Map ma trận Rule ↔ Test Case ID** — liệt kê toàn bộ rule theo đúng mã gốc, ánh xạ TC ID
    cover từng rule, thiếu thì điền `CHƯA COVER`.
@@ -41,7 +48,8 @@ soát độ phủ, phát hiện test gap, đánh giá rủi ro business từ gó
 Ghi ra `OUTPUT/<task-slug>/06_coverage_review.md`:
 
 ```markdown
-# BÁO CÁO COVERAGE REVIEW & TEST SUITE GAP ANALYSIS
+# BÁO CÁO COVERAGE REVIEW & TEST SUITE GAP ANALYSIS · <task-slug>
+Owner: agents/qa-test-design/coverage-review · Nguồn: OUTPUT/<task-slug>/05_test_case_spec.md · Verdict: <FIX/ASK/PASS>
 
 ## 1. Tổng quan 3 Góc nhìn
 - **Góc nhìn 1 (Requirement ↔ Test Suite)**: [hiện trạng bao phủ requirement]
@@ -73,3 +81,9 @@ Ghi ra `OUTPUT/<task-slug>/06_coverage_review.md`:
 - **Review Verdict**: `[FIX / ASK / PASS]`
 - **Lý do chi tiết**: [căn cứ logic theo kết quả rà 3 góc nhìn]
 ```
+
+## Chốt chặn nghiệm thu (Quality Gates)
+- [ ] Rà soát đầy đủ cả 3 góc nhìn của Coverage Framework, không bỏ qua góc nhìn nào.
+- [ ] Đối soát 100% các mã Business Rule (`BR-xx`) từ requirement-risk-summary, không tự ý gộp hay bỏ sót rule.
+- [ ] Mọi ô bảng không có test case phải điền rõ nhãn `CHƯA COVER`, không để trống.
+- [ ] Tuân thủ luật ngoại lệ Verdict: Nếu không phát hiện gap nào thì verdict bắt buộc là `ASK` (nghi ngờ bỏ sót), cấm tự ý kết luận `PASS`.

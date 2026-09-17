@@ -33,7 +33,7 @@ Thiếu `12` thì vẫn chạy được, nhưng mảng gap dữ liệu sẽ khô
 
 ```
 Đọc trước:
-  shared/QA_STANDARD.md
+  agents/core/QA_STANDARD.md
   knowledge/_project.md
   knowledge/function-d.md
   workflows/WORKFLOW.md
@@ -74,7 +74,7 @@ Sau đó: cập nhật OUTPUT/function-d/_index.md và in verdict.
 |---|---|---|---|
 | 1 | **Traceability ngược** | Chọn ngẫu nhiên 3 test case, đi ngược 5 chặng (§4) | Không đứt chặng nào |
 | 2 | **Traceability xuôi** | Chọn ngẫu nhiên 3 `BR-xx` trong `01`, tìm test case cover | Mỗi rule có TC, hoặc được ghi `CHƯA COVER` ở `06` |
-| 3 | **Biên** | Chọn 1 field có min/max, đối chiếu `shared/QA_STANDARD.md` §6 | Có đủ `min-1`, `min`, `min+1`, `max-1`, `max`, `max+1` |
+| 3 | **Biên** | Chọn 1 field có min/max, đối chiếu `agents/core/QA_STANDARD.md` §6 | Có đủ `min-1`, `min`, `min+1`, `max-1`, `max`, `max+1` |
 | 4 | **Expected Result đo được** | Chọn 3 test case negative | Mỗi cái nêu thông điệp/trạng thái cụ thể, không dùng từ mơ hồ |
 
 Mũi nào **không đạt** → đó là gap `06` đã bỏ sót. Ghi thêm vào bảng FIX của `06_coverage_review.md`
@@ -124,8 +124,8 @@ vào test suite scripted.
 
 | Hiện tượng | Nguyên nhân | Xử lý |
 |---|---|---|
-| `06` kết luận `PASS` mà không có biên bản | Agent bỏ luật ngoại lệ | `shared/QA_STANDARD.md` §1 — verdict đúng phải là `ASK` |
+| `06` kết luận `PASS` mà không có biên bản | Agent bỏ luật ngoại lệ | `agents/core/QA_STANDARD.md` §1 — verdict đúng phải là `ASK` |
 | `06` tự thêm test case vào `05` | Vượt quyền runbook nghiệm thu | Hoàn nguyên `05`; test case bổ sung chỉ được nằm ở mục 3 của báo cáo `06` |
 | `06` đánh số lại `BR` | Không dùng mã gốc của bước `01` | `agents/qa-test-design/skills/06` mục "KHÔNG được" |
 | Gap ghi chung chung "thiếu test case" | Không gắn `Rule#` cụ thể | Bắt agent gắn mã rule cho từng gap |
-| Ô `Test Case IDs cover` để trống | Không điền `CHƯA COVER` | `shared/QA_STANDARD.md` §2 luật 7 — không để trống ô bảng |
+| Ô `Test Case IDs cover` để trống | Không điền `CHƯA COVER` | `agents/core/QA_STANDARD.md` §2 luật 7 — không để trống ô bảng |

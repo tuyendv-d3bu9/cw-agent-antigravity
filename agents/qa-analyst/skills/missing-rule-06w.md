@@ -1,6 +1,13 @@
+---
+name: missing-rule-06w
+description: >
+  Đại diện Tester đặt câu hỏi phản biện 06W (W1-W6) để phát hiện triệt để missing rules,
+  implicit rules và kẽ hở logic trong tài liệu yêu cầu. Xuất danh sách 8 trường và câu hỏi clarification cho BA/PO.
+---
+
 # Skill: missing-rule-06w
 
-> Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT · 06W).
+> Tuân thủ `agents/core/QA_STANDARD.md` (verdict · guard · FACT · 06W).
 
 ## Mục đích
 Đại diện Tester đặt câu hỏi phản biện đa chiều để phát hiện triệt để **missing rule** (quy tắc
@@ -8,8 +15,8 @@ thiếu), **implicit rule** (quy tắc ngầm chưa văn bản hoá) và kẽ h�
 Đầu ra là danh sách Missing Rule có cấu trúc + câu hỏi clarification dùng ngay được với BA/PO.
 
 ## Đầu vào
-- `OUTPUT/<task-slug>/01_requirement_risk_summary.md` — Business Rules + Open Questions từ skill 01.
-- `knowledge/<feature-slug>.md` — mục 7 (gap đã hỏi trước đó) và mục 8 (giả định đã chốt).
+- `OUTPUT/<task-slug>/01_requirement_risk_summary.md` — Business Rules + Open Questions từ requirement-risk-summary.
+- `knowledge/features/<feature-slug>.md` (hoặc `knowledge/<feature-slug>.md`) — mục 7 (gap đã hỏi trước đó) và mục 8 (giả định đã chốt).
 
 > **Không hỏi lại điều đã có câu trả lời**: gap nào ở mục 7 knowledge đã có `Trả lời của BA`
 > và trạng thái `Confirmed`/`Rejected` thì KHÔNG đưa vào báo cáo như missing rule mới — nó đã
@@ -17,11 +24,11 @@ thiếu), **implicit rule** (quy tắc ngầm chưa văn bản hoá) và kẽ h�
 
 ## KHÔNG được (riêng skill này)
 - Sinh test case / scenario / steps / test data / expected result.
-- Sao chép nguyên văn Open Questions của skill 01 — phải **chuyển hoá và đào sâu** thành kẽ hở
+- Sao chép nguyên văn Open Questions của requirement-risk-summary — phải **chuyển hoá và đào sâu** thành kẽ hở
   quy tắc nghiệp vụ cụ thể.
 
 ## Các bước
-1. **Quét 06W** — áp đủ W1→W6 theo `shared/QA_STANDARD.md` §4 lên toàn bộ tài liệu đầu vào.
+1. **Quét 06W** — áp đủ W1→W6 theo `agents/core/QA_STANDARD.md` §4 lên toàn bộ tài liệu đầu vào.
 2. **Ghi nhận truy vết** — W nào ra kẽ hở → lập bản ghi Missing Rule. W nào không ra → ghi
    `"Không phát hiện vấn đề qua câu hỏi #W[X]"`. Không bỏ trống câu hỏi nào.
 3. **Phân loại** mỗi missing rule vào đúng 1 trong 5 nhóm:
@@ -42,9 +49,10 @@ Ghi ra `OUTPUT/<task-slug>/02_missing_rule_report.md`:
 
 ```markdown
 # BÁO CÁO PHÂN TÍCH QUY TẮC NGHIỆP VỤ BỊ THIẾU (MISSING-RULE REPORT)
+Owner: agents/qa-analyst/missing-rule-06w · Nguồn: OUTPUT/<task-slug>/01_requirement_risk_summary.md · Verdict: <PASS/ASK>
 
 ## 1. Ma trận Truy vết 06W
-> Tên W1–W6 lấy đúng `shared/QA_STANDARD.md` §4 — không đổi tên.
+> Tên W1–W6 lấy đúng `agents/core/QA_STANDARD.md` §4 — không đổi tên.
 
 | STT | Câu hỏi 06W | Trọng tâm đã quét | Trạng thái | Mã Missing Rule liên quan |
 |:---|:---|:---|:---|:---|
@@ -76,11 +84,13 @@ Ghi ra `OUTPUT/<task-slug>/02_missing_rule_report.md`:
 ```
 
 ## Ghi knowledge
-Cập nhật `knowledge/<feature-slug>.md`:
+Cập nhật `knowledge/features/<feature-slug>.md`:
 - Mục **7** — thêm mỗi `MR-xx` thành một dòng, trạng thái `New`, cột `Trả lời của BA` để trống.
 - Mục **8** — khi BA/PO trả lời, người duyệt chuyển kết luận xuống đây kèm ai chốt + ngày.
 - **Không xoá** dòng cũ, chỉ đổi `Trạng thái` (`New` → `Confirmed` / `TREO` / `Rejected`).
 
-## Chốt chặn
-- Câu hỏi gửi BA/PO phải viết trực diện, kèm giả định/phương án đề xuất để BA/PO trả lời
-  Có/Không hoặc chọn giải pháp ngay — không đặt câu hỏi mở chung chung.
+## Chốt chặn nghiệm thu (Quality Gates)
+- [ ] Quét đủ 6 câu hỏi W1→W6, không bỏ trống bất kỳ câu hỏi nào trong Ma trận 06W.
+- [ ] Mỗi Missing Rule mô tả đủ 8 trường bắt buộc, có mã `MR-xx` tăng dần.
+- [ ] Câu hỏi gửi BA/PO viết trực diện, kèm giả định/phương án đề xuất để BA/PO trả lời Có/Không hoặc chọn giải pháp ngay — không đặt câu hỏi mở chung chung.
+- [ ] Nếu có kẽ hở chưa chốt từ BA/PO ➔ Verdict bắt buộc là `ASK` (dừng lại để người dùng chốt).

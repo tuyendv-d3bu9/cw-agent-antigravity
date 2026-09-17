@@ -57,7 +57,7 @@ Xác định xong thì mọi bước **sau** bước đó cũng phải chạy l�
 
 ```
 Đọc trước:
-  shared/QA_STANDARD.md
+  agents/core/QA_STANDARD.md
   knowledge/_project.md
   knowledge/function-d.md          <-- đã cập nhật ở §1
   workflows/WORKFLOW.md
@@ -107,4 +107,4 @@ Kiểm dòng "Đọc trước" trong khối lệnh trước khi kết luận là
 | Agent hỏi lại đúng câu BA đã trả lời | Không đọc `knowledge/<slug>.md`, hoặc trạng thái vẫn `New` | Kiểm dòng "Đọc trước" + kiểm cột `Trạng thái` |
 | Mất output lần 1 để so sánh | Chạy lại mà không backup | Luôn backup sang `OUTPUT/<slug>.bak/` trước khi chạy |
 | Chạy lại từ `01` cho mọi thay đổi | Không tra bảng §2 | Đổi trạng thái mục 7 thì chỉ cần từ `02` |
-| Rule cũ bị mất khỏi knowledge | Agent hoặc người xoá dòng thay vì đổi trạng thái | `shared/QA_STANDARD.md` §8 — luật ghi: không xoá dòng cũ |
+| Rule cũ bị mất khỏi knowledge | Agent hoặc người xoá dòng thay vì đổi trạng thái | `agents/core/QA_STANDARD.md` §8 — luật ghi: không xoá dòng cũ |

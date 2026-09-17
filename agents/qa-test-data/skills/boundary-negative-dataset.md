@@ -1,6 +1,13 @@
+---
+name: boundary-negative-dataset
+description: >
+  Sinh dataset kiểm thử biên (Boundary) và âm tính (Negative/Invalid/Null/Special) có chủ đích,
+  đảm bảo mỗi record kiểm đúng một edge case và phủ trọn vẹn chuỗi biên min/max.
+---
+
 # Skill: boundary-negative-dataset
 
-> Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT · **chuỗi biên §6**).
+> Tuân thủ `agents/core/QA_STANDARD.md` (verdict · guard · FACT · **chuỗi biên §6**).
 
 ## Mục đích
 Sinh dataset biên & âm tính **có chủ đích** — mỗi record kiểm đúng một edge case khác nhau,
@@ -56,6 +63,8 @@ Ghi ra `OUTPUT/<task-slug>/11_boundary_negative_dataset.md`:
 ```
 ````
 
-## Chốt chặn
-- Phủ đủ biên trong/ngoài + null + invalid + special theo bản chất field (FACT — C).
-- Mỗi record có `Test Purpose` rõ để biết pass/fail (FACT — T).
+## Chốt chặn nghiệm thu (Quality Gates)
+- [ ] Phủ đủ biên trong/ngoài + null + invalid + special theo bản chất field (FACT — C).
+- [ ] Mỗi record có `Test Purpose` rõ để biết pass/fail (FACT — T).
+- [ ] Bảng đối chiếu độ phủ biên không có ô nào để trống (phải ghi mã record, N/A hoặc CHƯA PHỦ).
+- [ ] File xuất ra tại `OUTPUT/<task-slug>/11_boundary_negative_dataset.md`.

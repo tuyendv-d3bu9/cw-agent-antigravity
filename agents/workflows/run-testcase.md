@@ -35,7 +35,7 @@
 
 ```
 Đọc trước:
-  shared/QA_STANDARD.md
+  agents/core/QA_STANDARD.md
   knowledge/_project.md
   knowledge/function-d.md
   workflows/WORKFLOW.md
@@ -140,8 +140,8 @@ Test Case  →  12_data_validation_traceability.md  (record nào cấp data cho 
 
 | Hiện tượng | Nguyên nhân | Xử lý |
 |---|---|---|
-| `06` báo `PASS` khi không thấy gap | Agent bỏ qua luật ngoại lệ | `shared/QA_STANDARD.md` §1 — bắt agent đọc lại, verdict đúng phải là `ASK` |
+| `06` báo `PASS` khi không thấy gap | Agent bỏ qua luật ngoại lệ | `agents/core/QA_STANDARD.md` §1 — bắt agent đọc lại, verdict đúng phải là `ASK` |
 | Nhánh B toàn `[GIẢ ĐỊNH]` | `knowledge/_project.md` còn trống | Điền §1, §2 của `_project.md` rồi chạy lại `09 → 12` |
 | `12` báo hàng loạt `CHƯA CÓ DATA` | `11` chưa phủ hết biên, hoặc `05` sinh test case ngoài phạm vi data | Đọc bảng đối chiếu biên ở `11`, bổ sung record trước khi chạy lại `12` |
 | Chạy `06` trước `12` | Sai thứ tự khối lệnh §2 | Chạy lại `06` sau khi có `12` |
-| Agent dồn nhiều bước vào 1 file | Mất ràng buộc "một skill một file" | `shared/QA_STANDARD.md` §7 |
+| Agent dồn nhiều bước vào 1 file | Mất ràng buộc "một skill một file" | `agents/core/QA_STANDARD.md` §7 |

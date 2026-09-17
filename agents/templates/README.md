@@ -12,7 +12,7 @@ _agent_template/
 
 **Không có template cho knowledge.** Knowledge per-feature dùng `knowledge/_template.md`
 (copy thành `knowledge/<feature-slug>.md`). Quy ước dự án dùng `knowledge/_project.md`.
-Xem `shared/QA_STANDARD.md` §8 để biết loại tri thức nào ở đâu.
+Xem `agents/core/QA_STANDARD.md` §8 để biết loại tri thức nào ở đâu.
 
 ---
 
@@ -22,13 +22,13 @@ Xem `shared/QA_STANDARD.md` §8 để biết loại tri thức nào ở đâu.
 |---|---|---|
 | **LÀ AI** | `agents/<agent>/AGENT.md` | Danh tính · skill sở hữu · được/không được làm · human-final · bàn giao |
 | **LÀM THẾ NÀO** | `agents/<agent>/skills/NN-*.md` | Tham số · đầu vào · các bước · format output |
-| **LUẬT CHUNG** | `shared/QA_STANDARD.md` | Verdict · guard · FACT · 06W · risk matrix · chuỗi biên · quy ước output · luật knowledge |
+| **LUẬT CHUNG** | `agents/core/QA_STANDARD.md` | Verdict · guard · FACT · 06W · risk matrix · chuỗi biên · quy ước output · luật knowledge |
 | **TRI THỨC** | `knowledge/` | `_project.md` (cả dự án) · `<feature-slug>.md` (một tính năng) |
 
 Sai tầng là lỗi hay gặp nhất. Ba câu tự kiểm:
 
-- Ràng buộc này **mọi** skill đều phải tuân? → `shared/QA_STANDARD.md`, không viết vào skill.
-- Bảng chuẩn này có **≥2 skill** dùng? → `shared/QA_STANDARD.md`. Chỉ 1 skill? → để trong skill đó.
+- Ràng buộc này **mọi** skill đều phải tuân? → `agents/core/QA_STANDARD.md`, không viết vào skill.
+- Bảng chuẩn này có **≥2 skill** dùng? → `agents/core/QA_STANDARD.md`. Chỉ 1 skill? → để trong skill đó.
 - Đây là **dữ kiện của một tính năng cụ thể**? → `knowledge/<feature-slug>.md`, không nhét vào skill.
 
 ---
@@ -55,7 +55,7 @@ Sai tầng là lỗi hay gặp nhất. Ba câu tự kiểm:
 - [ ] `## Skill sở hữu` khớp đúng tên file trong `skills/`
 - [ ] Mọi đường dẫn dùng `OUTPUT/` (hoa), `shared/`, `workflows/`, `agents/qa-*/` — không phải
       `output/`, `_shared/`, `workflow/`
-- [ ] Không copy lại bảng Verdict, FACT, 06W, chuỗi biên vào skill — chỉ trỏ tới `shared/QA_STANDARD.md`
+- [ ] Không copy lại bảng Verdict, FACT, 06W, chuỗi biên vào skill — chỉ trỏ tới `agents/core/QA_STANDARD.md`
 - [ ] Mỗi skill ghi **đúng một** file output, có dòng meta `Owner · Nguồn · Verdict`
 - [ ] `AGENT.md` có mục `Human-Final` — nêu rõ quyết định nào không giao cho agent
 - [ ] Đã khai vào `workflows/WORKFLOW.md`

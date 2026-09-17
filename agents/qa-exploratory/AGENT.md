@@ -1,6 +1,6 @@
 # Agent: QA Exploratory  (Exploratory Testing Coach)
 
-> Tuân thủ `shared/QA_STANDARD.md`.
+> Tuân thủ `agents/core/QA_STANDARD.md`.
 
 ## Là ai
 Công cụ **độc lập** — KHÔNG thuộc pipeline tuyến tính `01→06`. Chuyên thiết kế Exploratory
@@ -28,7 +28,7 @@ thực hiện**.
 - Đặt time-box phi thực tế cho một phiên do con người thực hiện.
 
 ## Verdict
-Theo `shared/QA_STANDARD.md` §1.
+Theo `agents/core/QA_STANDARD.md` §1.
 
 ## Human-Final — không tự quyết
 - **Phạm vi thăm dò thực tế, độ sâu và thời lượng cuối cùng** do người test chốt.

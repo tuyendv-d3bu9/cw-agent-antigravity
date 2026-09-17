@@ -1,6 +1,13 @@
+---
+name: viewpoint-selection
+description: >
+  Phân rã tính năng thành các Viewpoint (góc nhìn kiểm thử) độc lập theo rủi ro dựa trên registry 8 viewpoint chuẩn.
+  Thiết lập ranh giới In/Out scope và kiểm chéo ma trận Zero-Overlap.
+---
+
 # Skill: viewpoint-selection
 
-> Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT · risk matrix 3x3).
+> Tuân thủ `agents/core/QA_STANDARD.md` (verdict · guard · FACT · risk matrix 3x3).
 
 ## Mục đích
 Phân rã tính năng thành các **viewpoint** (góc nhìn kiểm thử) độc lập theo rủi ro, thiết lập
@@ -92,3 +99,9 @@ Ghi ra `OUTPUT/<task-slug>/03_viewpoint_report.md`:
 - [ ] In/Out scope không trùng lặp.
 - [ ] Không sinh test idea/test case chi tiết.
 ```
+
+## Chốt chặn nghiệm thu (Quality Gates)
+- [ ] File output lưu tại `OUTPUT/<task-slug>/03_viewpoint_report.md`.
+- [ ] 100% Risk Area ưu tiên cao từ output 01 và 02 được liên kết với ít nhất một Viewpoint.
+- [ ] Ma trận Zero-Overlap phân định ranh giới rõ ràng, không có sự chồng lấn In-scope giữa các Viewpoint.
+- [ ] Mọi viewpoint ngoài registry 8 chuẩn bắt buộc gắn nhãn `[GIẢ ĐỊNH]` kèm giải trình kỹ thuật.

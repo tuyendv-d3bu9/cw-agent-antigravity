@@ -1,6 +1,13 @@
+---
+name: ui-screenshot-review
+description: >
+  Phân tích ảnh chụp màn hình UI bằng AI Vision để phát hiện và đặc tả các vấn đề về
+  UI Inconsistency, Accessibility và UX Problem nhìn thấy được.
+---
+
 # Skill: ui-screenshot-review
 
-> Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT).
+> Tuân thủ `agents/core/QA_STANDARD.md` (verdict · guard · FACT).
 > **Cần ảnh đính kèm (Vision). Không có ảnh → DỪNG, yêu cầu cung cấp ảnh.**
 
 ## Mục đích
@@ -36,6 +43,7 @@ Ghi ra `OUTPUT/<task-slug>/08_ui_screenshot_analysis.md`:
 
 ```markdown
 # UI SCREENSHOT ANALYSIS — [TÊN MÀN HÌNH]
+Owner: agents/qa-ui-review/ui-screenshot-review · Nguồn: Ảnh chụp màn hình đính kèm · Verdict: <PASS/ASK>
 
 ## Ảnh [n]: [mô tả ngắn màn hình]
 
@@ -57,6 +65,8 @@ Ghi ra `OUTPUT/<task-slug>/08_ui_screenshot_analysis.md`:
 > **Ghi chú độ tin cậy**: [các nhận định gắn [GIẢ ĐỊNH] cần cross-check bằng mắt, nếu có]
 ```
 
-## Chốt chặn
-- Đã quét đủ 3 nhóm cho **từng** ảnh, không bỏ nhóm nào.
-- Mỗi đề xuất sửa đủ cụ thể để verify lại sau khi fix.
+## Chốt chặn nghiệm thu (Quality Gates)
+- [ ] Bắt buộc có file ảnh đính kèm; nếu không có ảnh phải dừng lại ngay với Verdict `ASK`.
+- [ ] Đã quét đủ 3 nhóm (UI Inconsistency, Accessibility, UX Problem) cho từng ảnh, không bỏ nhóm nào.
+- [ ] Mọi nhận định dựa trên ảnh mờ hoặc phỏng đoán bắt buộc gắn nhãn `[GIẢ ĐỊNH]`.
+- [ ] Mỗi đề xuất sửa đủ cụ thể để Dev/Designer có thể verify lại sau khi sửa.

@@ -1,6 +1,13 @@
+---
+name: test-idea-design
+description: >
+  Chuyển đổi Viewpoint thành các Test Idea súc tích (mỗi idea đúng 1 câu) và sàng lọc Giữ/Bỏ
+  theo 4 kỹ thuật Test Design (EP, BVA, Decision Table, State Transition) và checklist tiêu chuẩn.
+---
+
 # Skill: test-idea-design
 
-> Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT).
+> Tuân thủ `agents/core/QA_STANDARD.md` (verdict · guard · FACT).
 
 ## Mục đích
 Chuyển viewpoint thành **Test Idea** (mỗi ý tưởng đúng 01 câu) và sàng lọc Giữ/Bỏ theo checklist
@@ -47,7 +54,7 @@ Tuyệt đối không bịa vòng đời / điều kiện không tồn tại.
 4. `Mơ hồ không định nghĩa được expected`
 
 ## Các bước
-1. **Sinh Test Idea** — với mỗi viewpoint từ skill 03, sinh idea bao phủ đầy đủ toàn bộ khía
+1. **Sinh Test Idea** — với mỗi viewpoint từ viewpoint-selection, sinh idea bao phủ đầy đủ toàn bộ khía
    cạnh In-scope. Mỗi idea đúng 01 câu, nêu rõ hành vi/trường hợp cần kiểm chứng. Chọn và áp
    dụng đúng kỹ thuật theo bảng trên.
 2. **Sàng lọc** từng idea theo checklist cố định.
@@ -57,6 +64,9 @@ Tuyệt đối không bịa vòng đời / điều kiện không tồn tại.
 Ghi ra `OUTPUT/<task-slug>/04_test_idea_report.md`:
 
 ```markdown
+# BÁO CÁO Ý TƯỞNG KIỂM THỬ (TEST IDEA REPORT) · <task-slug>
+Owner: agents/qa-analyst/test-idea-design · Nguồn: OUTPUT/<task-slug>/03_viewpoint_report.md · Verdict: <PASS/ASK>
+
 ### BẢNG TỔNG HỢP TEST IDEA & FILTER
 
 | # | Test Idea | Viewpoint | Kỹ thuật | Giữ/Bỏ | Lý do filter |
@@ -65,6 +75,8 @@ Ghi ra `OUTPUT/<task-slug>/04_test_idea_report.md`:
 | TI-02 | [đúng 01 câu] | [tên/mã viewpoint] | […] | Bỏ | [trích chính xác từ checklist Bỏ] |
 ```
 
-## Chốt chặn
-- Mọi viewpoint In-scope đều phải có Test Idea bao phủ — không sót khía cạnh nghiệp vụ.
-- Mọi idea `Giữ` phải là tiền đề khả thi để viết được Expected Result đo lường được ở skill 05.
+## Chốt chặn nghiệm thu (Quality Gates)
+- [ ] Mỗi Test Idea bắt buộc chỉ dài đúng 01 câu, không viết rườm rà.
+- [ ] Mọi viewpoint In-scope đều phải có Test Idea bao phủ — không sót khía cạnh nghiệp vụ.
+- [ ] Cột `Lý do filter` trích nguyên văn tiêu chí từ Checklist Giữ/Bỏ, không tự chế văn phong.
+- [ ] Mọi idea `Giữ` phải là tiền đề khả thi để viết được Expected Result đo lường được ở khâu Test Design.

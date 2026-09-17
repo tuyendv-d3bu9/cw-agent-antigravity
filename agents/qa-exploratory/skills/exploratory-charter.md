@@ -1,6 +1,13 @@
+---
+name: exploratory-charter
+description: >
+  Chuyển đổi Risk Area thành bộ Exploratory Charter 5 trường (Mission, Area, Risk, Time-box, Notes)
+  có mục tiêu rõ ràng và giới hạn thời gian cho các phiên kiểm thử thăm dò do con người thực hiện.
+---
+
 # Skill: exploratory-charter
 
-> Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT · risk matrix 3x3 §5).
+> Tuân thủ `agents/core/QA_STANDARD.md` (verdict · guard · FACT · risk matrix 3x3 §5).
 
 ## Mục đích
 Chuyển Risk Area thành Exploratory Charter có mục tiêu rõ ràng và giới hạn thời gian, định hướng
@@ -36,10 +43,11 @@ Ghi ra `OUTPUT/<task-slug>/07_exploratory_charter.md`:
 
 ```markdown
 # EXPLORATORY CHARTER SET — [TÊN TÍNH NĂNG]
+Owner: agents/qa-exploratory/exploratory-charter · Nguồn: OUTPUT/<task-slug>/03_viewpoint_report.md · Verdict: <PASS/ASK>
 
 ## 1. Bảng tổng hợp Charter theo rủi ro
 | # | Charter (tóm tắt Mission) | Risk nhắm tới | Mức rủi ro | Time-box |
-|:---|:---|:---|:---:|:---:|
+|:---|:---|:---|:---|:---|
 | CH-01 | [tóm tắt] | [risk] | [Cao/TB/Thấp] | [vd 60'] |
 
 ## 2. Chi tiết từng Charter
@@ -53,5 +61,8 @@ Ghi ra `OUTPUT/<task-slug>/07_exploratory_charter.md`:
 *(Lặp lại — mỗi Charter một rủi ro khác nhau, ưu tiên rủi ro cao trước)*
 ```
 
-## Chốt chặn
-- Mission phải đủ rõ để người test biết cần khám phá gì và khi nào coi là "đã đủ".
+## Chốt chặn nghiệm thu (Quality Gates)
+- [ ] Mỗi Charter tập trung duy nhất một rủi ro trọng tâm, không gộp nhiều rủi ro.
+- [ ] Mission bắt đầu bằng cú pháp chuẩn: `Khám phá [đối tượng] để phát hiện [vấn đề tiềm ẩn]`.
+- [ ] Time-box thực tế nằm trong khoảng 30–90 phút.
+- [ ] Tuyệt đối không viết steps dạng scripted kịch bản hoá như test case.

@@ -13,7 +13,7 @@
 | `input-files` | `INPUT/Function D.md`, `INPUT/OVERVIEW.md` | Tài liệu yêu cầu thô đầu vào |
 | `knowledge-file` | `knowledge/function-d.md` | File tích luỹ tri thức nền của tính năng |
 | `project-knowledge`| `knowledge/_project.md` | Tri thức dùng chung toàn dự án |
-| `standard` | `shared/QA_STANDARD.md` | Quy chuẩn kiểm thử & tiêu chí chất lượng (FACT, 06W, Verdict) |
+| `standard` | `agents/core/QA_STANDARD.md` | Quy chuẩn kiểm thử & tiêu chí chất lượng (FACT, 06W, Verdict) |
 
 ---
 
@@ -23,7 +23,7 @@
 * **Agent thực thi**: `agents/qa-analyst/AGENT.md`
 * **Skill sử dụng**: `agents/qa-analyst/skills/requirement-risk-summary.md`
 * **Tài liệu nạp trước**:
-  * `shared/QA_STANDARD.md`
+  * `agents/core/QA_STANDARD.md`
   * `knowledge/_project.md`
   * `knowledge/<task-slug>.md` (nếu đã có)
 * **Đầu vào (Input)**:
@@ -78,7 +78,7 @@
 ### Lệnh thực thi tự động Bước 1:
 
 1. Đọc tài liệu chuẩn hóa và tri thức:
-   - shared/QA_STANDARD.md
+   - agents/core/QA_STANDARD.md
    - knowledge/_project.md
    - knowledge/<task-slug>.md (nếu có)
    - agents/qa-analyst/AGENT.md

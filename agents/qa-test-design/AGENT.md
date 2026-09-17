@@ -1,6 +1,6 @@
 # Agent: QA Test Design  (đặc tả test case · kiểm định độ phủ)
 
-> Tuân thủ `shared/QA_STANDARD.md`.
+> Tuân thủ `agents/core/QA_STANDARD.md`.
 
 ## Là ai
 Agent thiết kế và tự kiểm định test suite. Nhận Test Idea "Giữ" + Business Rules + Viewpoints từ
@@ -33,12 +33,12 @@ Chuỗi chạy: `05 → 06`. `06` là chốt chặn cuối trước khi bàn gia
 - Sinh test case ngoài phạm vi Test Idea đã được duyệt "Giữ" (trừ mục đề xuất bổ sung ở skill 06,
   vốn là *đề xuất* chờ người duyệt).
 - Đánh số lại hoặc gộp mã Business Rule đã đánh ở skill 01.
-- Tự kết luận `PASS` khi không tìm thấy gap — xem `shared/QA_STANDARD.md` §1 (ngoại lệ).
+- Tự kết luận `PASS` khi không tìm thấy gap — xem `agents/core/QA_STANDARD.md` §1 (ngoại lệ).
 - Sinh dataset test — việc của `agents/qa-test-data`.
 - Ghi đè deliverable của `agents/qa-analyst`.
 
 ## Verdict
-Theo `shared/QA_STANDARD.md` §1, kèm ngoại lệ của skill `06`.
+Theo `agents/core/QA_STANDARD.md` §1, kèm ngoại lệ của skill `06`.
 
 ## Human-Final — không tự quyết  `[MỚI]`
 - **Business Criticality**: mức quan trọng sống còn của rule với mục tiêu kinh doanh thực tế.

@@ -29,7 +29,7 @@
 
 ```
 Đọc trước:
-  shared/QA_STANDARD.md
+  agents/core/QA_STANDARD.md
   knowledge/_project.md
   knowledge/function-d.md
   workflows/WORKFLOW.md

@@ -1,6 +1,13 @@
+---
+name: data-validation-traceability
+description: >
+  Validate tính toàn vẹn và logic của dataset trước khi seed/dùng,
+  đồng thời lập Traceability Matrix nối từng record dữ liệu với Test Case tương ứng.
+---
+
 # Skill: data-validation-traceability
 
-> Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT).
+> Tuân thủ `agents/core/QA_STANDARD.md` (verdict · guard · FACT).
 
 ## Mục đích
 Hai việc chốt chặn cuối của `agents/qa-test-data`:
@@ -43,7 +50,7 @@ gợi ý sửa. Sai format/logic → `FIX`. Thiếu rule để phán → `ASK`.
 ## Phần B — Traceability Matrix
 
 Workflow tổng của agent:
-`Requirement → 09 Data Class → 10 Realistic Dataset → Export → 11 Boundary/Negative → 12 Validation → Traceability Matrix → Test Execution`
+`Requirement → Data Class Map → Realistic Dataset → Export → Boundary/Negative Dataset → Validation → Traceability Matrix → Test Execution`
 
 Nguyên tắc:
 - Mỗi test case cần data phải trace về **một record cụ thể** (mã hoặc `#`).
@@ -90,6 +97,8 @@ Ghi ra `OUTPUT/<task-slug>/12_data_validation_traceability.md`:
 |---|---|---|---|
 ```
 
-## Chốt chặn
-- Mọi test case cần data đều được map (FACT — C).
-- Record map được nêu rõ để tái hiện đúng ca kiểm (FACT — T).
+## Chốt chặn nghiệm thu (Quality Gates)
+- [ ] 100% Test Case cần data đều được nối với record cụ thể trong Traceability Matrix (FACT — C).
+- [ ] Record map được nêu rõ giá trị để tái hiện đúng ca kiểm (FACT — T).
+- [ ] Không có issue mức FIX/ASK bị bỏ qua mà chưa có giải pháp hoặc câu hỏi tương ứng.
+- [ ] File xuất ra tại `OUTPUT/<task-slug>/12_data_validation_traceability.md`.
