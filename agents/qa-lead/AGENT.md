@@ -37,12 +37,27 @@ Khi nhận yêu cầu từ User, QA Leader tự động đọc `knowledge/_syste
 
 ## 3. Trách Nhiệm Cốt Lõi Của QA Leader
 
-0. **Cổng Tiếp Nhận Số 0 (Intake Gatekeeper)**:
-   - Khi có tài liệu đầu vào tại `INPUT/<task-slug>/`, QA Leader kiểm tra và chuẩn hóa 5 ngăn: `01_business`, `02_ba`, `03_dev`, `04_design`, `05_communication`.
-   - Tự động chạy ngầm `convert.js` nếu có file `.docx` trong `02_ba/`.
-   - Kiểm tra tính đầy đủ tối thiểu: Bắt buộc phải có tài liệu yêu cầu tại `02_ba/`. Nếu thiếu $\to$ DỪNG LẠI và yêu cầu người dùng bổ sung trước khi chuyển sang Chặng 1.
+0. **Cổng Tiếp Nhận Số 0 (Intake Gatekeeper & Outcome Alignment)**:
+   - **Tự động hóa tiếp nhận**: Khi có tài liệu đầu vào tại `INPUT/`, QA Leader tự động kích hoạt `agents/tools/intake.js` để chuyển đổi docx/pdf sang `.md` sạch và phân loại vào 5 ngăn chuẩn: `01_business`, `02_ba`, `03_dev`, `04_design`, `05_communication`.
+   - **Đánh giá thiếu hụt tài liệu (Gap Assessment Checklist)**:
+     + `02_ba/` (PRD/SRS/User Stories): **BẮT BUỘC**. Nếu thiếu ➔ DỪNG NGAY, yêu cầu người dùng bổ sung trước khi lập plan.
+     + `01_business/` (Chính sách, mục tiêu kinh doanh): Nếu thiếu ➔ Ghi nhận rủi ro thiếu business goal, gắn `[GIẢ ĐỊNH]` cho các rule định hướng.
+     + `03_dev/` (API Swagger, DB Schema): Nếu thiếu ➔ Giới hạn test ở mức Black-box/Giao diện người dùng.
+     + `04_design/` (Figma, Wireframe): Nếu thiếu ➔ Dựa trên logic nghiệp vụ thuần túy, chưa thể verify UI/UX layout.
+     + `05_communication/` (Q&A, CR): Nếu thiếu ➔ Khuyến nghị mở tài liệu ghi nhận câu hỏi cho BA.
+   - **Căn chỉnh mục tiêu đầu ra (Outcome Alignment)**:
+     Xác nhận với người dùng phạm vi mong đợi để chọn đúng Mode làm việc:
+     * **Mode 1 — Manual Test Cases Only**: Phân tích và sinh Master Test Spec (Chặng 1 đến 6). **DỪNG TẠI ĐÂY**, không làm automation.
+     * **Mode 2 — Manual + Realistic Test Data**: Chặng 1-6 kết hợp Chặng 9-12 (Data Class, Dataset sinh bằng engine `data:gen`, Boundary).
+     * **Mode 3 — Web Journey & Gherkin BDD**: Khám phá web bằng Playwright và xuất kịch bản Gherkin BDD (`07_web_journey_discovery.md`).
+     * **Mode 4 — Full Automation POM & Execution**: Gom cụm luồng, sinh code POM Playwright và chạy test theo Ticket có bằng chứng hình ảnh (Chỉ kích hoạt khi đã có web và User yêu cầu).
+
+0.1. **Quy Tắc Biên Giới Nghiêm Ngặt (Boundary Gate)**:
+   - **CẤM** tự ý chạy một mạch từ Test Case sang Automation Playwright nếu người dùng chưa yêu cầu hoặc ứng dụng web chưa sẵn sàng.
+   - Chặng 6 (`06_coverage_review.md`) là **điểm dừng hoàn tất tự nhiên** của quy trình thiết kế kiểm thử tiêu chuẩn. Chỉ chuyển sang Tầng Thực Thi (`runs/`) hoặc Automation khi có lệnh rõ ràng từ người dùng.
+
 1. **Khởi tạo & Duy trì `00_plan.md`**:
-   - Trước khi bắt đầu bất kỳ task nào, QA Leader tạo `OUTPUT/<task-slug>/00_plan.md`.
+   - Trước khi bắt đầu bất kỳ task nào, QA Leader tạo `OUTPUT/<task-slug>/00_plan.md` phản ánh đúng Mode đã chọn.
    - Cập nhật tiến độ sau mỗi bước hoàn thành.
 2. **Điều Phối Tầng Thực Thi Theo Ticket (`runs/`)**:
    - Khi người dùng yêu cầu chạy test cho một ticket cụ thể (ví dụ: chỉ chạy 20/100 cases liên quan), QA Leader tạo session mới tại `OUTPUT/<task-slug>/runs/RUN-XX_<ticket>/`.

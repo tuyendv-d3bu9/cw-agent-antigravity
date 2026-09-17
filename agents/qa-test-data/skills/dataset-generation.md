@@ -54,11 +54,20 @@ xuất ra định dạng dùng được ngay: CSV / SQL INSERT / JSON.
 **Quy ước chung**: date thống nhất `YYYY-MM-DD` (không mix định dạng) · NULL → CSV để ô trống,
 SQL dùng `NULL`, JSON dùng `null` · tên cột/khoá đúng Field Map ở skill `data-class-map`.
 
+## Nguyên tắc Tiết kiệm Token (Engine-First)
+- Khi cần sinh dữ liệu số lượng lớn (> 10 records), **CẤM** AI tự gõ text từng record vì gây tràn token context.
+- Thay vào đó, AI chỉ thiết kế **Schema JSON ngắn gọn** (~30 token) và gọi công cụ hậu trường:
+  ```bash
+  npm run data:gen -- --slug <task-slug> --schema <schema.json> --count 50 --output OUTPUT/<slug>/10_dataset.md
+  ```
+- Schema JSON hỗ trợ các generator: `vietnamese_name`, `phone_vn`, `email`, `voucher_code`, `currency_vnd`, `date_vn`, `boundary`, `enum`, `negative`.
+
 ## Các bước
-1. Đọc Field Map, xác định field nào cần sinh và khoảng giá trị hợp lệ.
-2. Sinh bảng dataset **Valid** theo nguyên tắc "sát nghiệp vụ" + đa dạng hoá.
-3. Tự soi lại theo bảng 5 bẫy.
-4. Xuất ra `format` được yêu cầu, đúng cú pháp, import/chạy được không cần sửa tay.
+1. Đọc Field Map (`09_data_class_map.md`), xác định field nào cần sinh và khoảng giá trị hợp lệ.
+2. Thiết kế file `dataset_schema.json` chứa định nghĩa kiểu dữ liệu.
+3. Kích hoạt engine sinh dữ liệu: `node agents/tools/generate-dataset.js ...` để tự động điền bảng.
+4. Tự soi lại theo bảng 5 bẫy.
+5. Xuất ra `OUTPUT/<task-slug>/10_dataset.md` (kèm file `.csv` hoặc `.json` nếu cần).
 
 ## Format output
 Ghi ra `OUTPUT/<task-slug>/10_dataset.md`:

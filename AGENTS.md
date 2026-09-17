@@ -16,14 +16,17 @@ Dự án được phân định rạch ròi thành 4 khu vực chức năng. Age
 | `knowledge/` | Bộ não tri thức vĩnh viễn của dự án (SSOT) | Bắt buộc đọc `_system_map.json` đầu tiên để định tuyến vị trí tính năng và conventions. |
 | `agents/` | Hệ thống chuyên gia QA & công cụ thực thi nội bộ | Giao tiếp qua QA Leader (`agents/qa-lead/`), không gọi rời rạc. |
 
-### 1.1. Cổng Tiếp Nhận Số 0 (QA Leader Intake Gate) & 5 Ngăn Tài Liệu:
+### 1.1. Cổng Tiếp Nhận Số 0 (QA Leader Intake Gate & Outcome Alignment):
 - Mọi tài liệu đầu vào được tổ chức theo 5 đối tác:
   1. `01_business/`: Định hướng, bài toán kinh doanh, chính sách cấp cao.
   2. `02_ba/`: [BẮT BUỘC] PRD, SRS, User Stories, Use Cases (.docx, .md).
   3. `03_dev/`: API Swagger/OpenAPI, DB Schema, Technical specs.
   4. `04_design/`: Figma links, wireframes, screenshots giao diện.
   5. `05_communication/`: Q&A log, biên bản họp, Change Requests (CR).
-- **QA Leader gác cổng số 0**: Tự động phân loại, convert ngầm docx sang md, kiểm tra bắt buộc phải có `02_ba/` mới cho phép lập `00_plan.md` sang Chặng 1.
+- **QA Leader gác cổng số 0**:
+  + Tự động kích hoạt `agents/tools/intake.js` phân loại và convert docx/pdf sang `.md` sạch.
+  + Đánh giá sự thiếu hụt tài liệu (**Gap Assessment**): Kiểm tra bắt buộc phải có `02_ba/`. Nếu thiếu tài liệu các ngăn khác, ghi nhận rủi ro và các giả định tương ứng.
+  + Căn chỉnh mục tiêu đầu ra (**Outcome Alignment**): Xác nhận Mode làm việc (Mode 1: Manual Test Cases Only; Mode 2: Manual + Test Data; Mode 3: Web Journey & Gherkin; Mode 4: Full Automation E2E).
 
 ### 1.2. Phân Tầng Thực Thi Độc Lập (`OUTPUT/<task-slug>/runs/`):
 - **Master Spec (`01_` đến `06_`)**: Là kho tài liệu thiết kế kiểm thử gốc (ví dụ: 100 test cases). Cố định và không bị bẩn.
@@ -43,6 +46,11 @@ Dự án được phân định rạch ròi thành 4 khu vực chức năng. Age
 ### 1.4. Vai Trò Tổng Chỉ Huy Của QA Leader (`agents/qa-lead/`):
 - User **CHỈ CẦN GIAO TIẾP VỚI QA LEADER**. Không cần nhớ hay gọi trực tiếp từng sub-agent con.
 - QA Leader tự động nắm bắt ý định của User, tra cứu `_system_map.json`, lập `00_plan.md` và giao việc cho đúng chuyên gia (`qa-analyst`, `qa-test-design`, `qa-automation`...).
+
+### 1.5. Quy Tắc Biên Giới Nghiêm Ngặt (Boundary Gate — Không Tự Ý Sinh Automation):
+- **CẤM** tự ý chạy một mạch từ thiết kế Test Cases sang viết script Automation Playwright nếu ứng dụng web chưa sẵn sàng hoặc người dùng chỉ yêu cầu thiết kế Test Case Manual.
+- **Điểm Dừng Chuẩn**: Chặng 6 (`06_coverage_review.md`) là điểm hoàn tất tự nhiên của quy trình thiết kế kiểm thử.
+- Chỉ kích hoạt Tầng Thực Thi (`runs/`) hoặc Automation khi có yêu cầu rõ ràng từ người dùng kèm URL môi trường cụ thể.
 
 ---
 
@@ -121,6 +129,21 @@ Khi số lượng Test Case dự tính vượt quá **50 test cases** (hoặc l�
      npm run testcases:merge <task-slug>
      ```
 
+### 3.1. Engine Sinh Dữ Liệu Tự Động (Data Generator Engine — 0 Token LLM):
+- **CẤM** AI gõ tay từng dòng dữ liệu test khi số lượng lớn (> 10 records) vì gây lãng phí token và hallucinate.
+- **Quy trình chuẩn**:
+  1. AI chỉ định nghĩa `dataset_schema.json` siêu nhẹ (~30 token) chứa các loại generator: `vietnamese_name`, `phone_vn`, `email`, `voucher_code`, `currency_vnd`, `date_vn`, `boundary`, `enum`, `negative`.
+  2. Kích hoạt engine nội bộ `agents/tools/generate-dataset.js` (`npm run data:gen`) sinh hàng trăm/nghìn dòng trong 0.05s với 0 token LLM.
+  3. Xuất bảng dữ liệu chuẩn markdown hoặc CSV/JSON vào `OUTPUT/<task-slug>/10_dataset.md`.
+
+### 3.2. Chuẩn Hóa Gherkin BDD (`Given - When - Then`) Cho Luồng Mò Web:
+- Khi Agent thực hiện khám phá ứng dụng web (`qa-exploratory` với skill `web-journey-discovery`), toàn bộ hành trình người dùng **BẮT BUỘC** được chuẩn hóa thành kịch bản **Gherkin BDD** (`.feature`).
+- **Cấu trúc chuẩn**:
+  + `Given`: Tiền điều kiện môi trường, trạng thái đăng nhập, dữ liệu giỏ hàng.
+  + `When`: Hành động của người dùng (click nút, nhập mã voucher, chuyển trang).
+  + `Then`: Kỳ vọng kiểm chứng được (hiển thị toast thành công, cập nhật số tiền, báo lỗi đỏ).
+- Kèm theo bảng **Metadata Ánh Xạ Step ➔ Playwright Locator** (`getByRole`, `getByTestId`, `getByPlaceholder`) để phục vụ sinh Page Object Model (POM) cho tầng Automation.
+
 ---
 
 ## 4. Quy Trình Khởi Tạo & Tích Luỹ Tri Thức Cho Dự Án Mới (`INPUT` ➔ `knowledge/`)
@@ -162,6 +185,14 @@ Khi số lượng Test Case dự tính vượt quá **50 test cases** (hoặc l�
 
 ## 6. Lệnh Tiện Ích
 
+- Cổng tiếp nhận và phân loại thông minh tài liệu đầu vào:
+  ```bash
+  npm run intake
+  ```
+- Sinh dữ liệu kiểm thử tốc độ cao (0 token LLM):
+  ```bash
+  npm run data:gen -- --slug <slug> --schema <schema.json> --count 50
+  ```
 - Đổi file `.docx` từ BA sang `.md`:
   ```bash
   npm run convert
@@ -190,7 +221,9 @@ Khi số lượng Test Case dự tính vượt quá **50 test cases** (hoặc l�
 > - Khi người dùng yêu cầu bằng tiếng Việt tự nhiên, **AI Agent tự động kích hoạt công cụ chạy ngầm ở hậu trường** và chỉ báo cáo kết quả thân thiện cho người dùng.
 
 ### Ví Dụ Thực Tế:
-- User nói: *"Có tài liệu mới trong INPUT, xử lý giúp"* ➔ Agent **tự chạy** `convert.js` ngầm.
+- User nói: *"Có tài liệu mới trong INPUT, xử lý giúp"* ➔ Agent **tự chạy** `intake.js` ngầm.
+- User nói: *"Sinh cho tôi 50 bộ dữ liệu test"* ➔ Agent **tự chạy** `generate-dataset.js` ngầm.
 - User nói: *"Gộp test case lại đi"* ➔ Agent **tự chạy** `merge-testcases.js` ngầm.
 - User nói: *"Tiến độ thế nào rồi?"* ➔ Agent **tự chạy** `status.js` ngầm và in bảng tiến độ ra chat.
 - User nói: *"Đã chốt xong"* ➔ Agent **tự chạy** `sync-system-map.js` ngầm để cập nhật bản đồ vệ tinh.
+

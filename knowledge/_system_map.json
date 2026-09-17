@@ -102,6 +102,16 @@
       "status": "IN-PROGRESS",
       "total_testcases": 0,
       "last_verdict": "UNKNOWN"
+    },
+    "vouchers": {
+      "name": "vouchers",
+      "input_file": "INPUT/vouchers.md",
+      "knowledge_file": "knowledge/features/vouchers.md",
+      "output_dir": "OUTPUT/vouchers/",
+      "plan_file": "OUTPUT/vouchers/00_plan.md",
+      "status": "IN-PROGRESS",
+      "total_testcases": 0,
+      "last_verdict": "UNKNOWN"
     }
   }
 }
