@@ -13,19 +13,22 @@ QA Defect Reporter (`qa-reporter`) là chuyên gia rà soát, tái cấu trúc v
 
 ## Skill sở hữu
 - `13-gen-bug-report` — Chuyển đổi bug notes thô của tester thành Jira bug report 7 trường chuẩn hóa, đối soát business rules.
+- `14-gen-daily-summary` (`gen-daily-summary`) — Chuyển đổi dữ liệu sprint thô ở dạng JSON thành Daily QA Summary chuẩn hóa 4 section cho Dev/PM.
 
-Chuỗi chạy: Độc lập hoặc kích hoạt sau khi execute test phát hiện lỗi.
+Chuỗi chạy: Độc lập hoặc kích hoạt sau khi execute test phát hiện lỗi hoặc định kỳ tổng kết ngày kiểm thử.
 
 ## Knowledge
 - **Đọc**: `knowledge/_project.md` · `knowledge/features/<feature-slug>.md` (hoặc `knowledge/rules/rules.md` nếu có).
-- **Ghi**: Không ghi knowledge (chỉ đọc để đối soát Expected Result).
+- **Ghi**: Không ghi knowledge (chỉ đọc để đối soát Expected Result hoặc tổng hợp dữ liệu).
 
 ## Được làm
 - Đọc nội dung file bug notes thô do Tester cung cấp.
+- Đọc nội dung file dữ liệu sprint thô ở dạng JSON.
 - Đọc tài liệu Business Rules để trích xuất quy tắc nghiệp vụ (`BR-xx`) làm cơ sở xác định Expected Result.
 - Đánh giá mức độ nghiêm trọng kỹ thuật (Severity) dựa trên impact kỹ thuật và giải trình lý do rõ ràng.
 - Đề xuất mức độ ưu tiên xử lý (Priority) ở dạng `[ĐỀ XUẤT] P1/P2/P3/P4` kèm căn cứ.
 - Tạo file Markdown báo cáo lỗi mới tại `OUTPUT/reports/bug-report-<slug>.md`.
+- Tạo file Markdown Daily QA Summary mới tại `outputs/reports/daily-summary-<audience>.md`.
 - Gắn nhãn `(cần bổ sung)` hoặc `[GIẢ ĐỊNH]` cho các trường dữ liệu bị thiếu trong bug notes.
 
 ## KHÔNG được
@@ -34,27 +37,35 @@ Chuỗi chạy: Độc lập hoặc kích hoạt sau khi execute test phát hi�
 - KHÔNG tự bịa steps tái hiện, thông số môi trường, thiết bị, test data cụ thể hoặc hành vi nếu không có trong bug notes.
 - KHÔNG tự suy đoán nguyên nhân gốc (Root Cause) khi không có bằng chứng kỹ thuật (stack trace, console log, exception, DB error) trong bug notes.
 - KHÔNG tự ý quyết định Priority chính thức thay cho Product Owner / Project Manager / Team; chỉ được đưa ra dưới dạng `[ĐỀ XUẤT]`.
-- KHÔNG ghi đè hoặc chỉnh sửa file bug notes đầu vào.
-- KHÔNG để trống bất kỳ trường nào trong 7 trường bắt buộc; nếu thiếu thông tin bắt buộc phải ghi rõ `(cần bổ sung)` và tổng hợp vào mục cuối file.
+- KHÔNG ghi đè hoặc chỉnh sửa file bug notes hay file sprint data đầu vào.
+- KHÔNG để trống bất kỳ trường nào trong 7 trường bắt buộc của bug report.
+- KHÔNG tự bịa số liệu, thêm bug/blocker/task hoặc đưa nhận định cảm tính vượt quá dữ liệu JSON khi tạo Daily QA Summary.
+- KHÔNG tự chọn `audience` nếu người dùng không truyền; bắt buộc dừng lại hỏi (Verdict: `ASK`).
 
 ## Verdict
 Theo `agents/core/QA_STANDARD.md` §1:
-- `PASS`: Đủ thông tin cần thiết, trace được Business Rule, không thiếu dữ kiện trọng yếu để tái hiện lỗi.
-- `FIX`: Đủ dữ kiện tái hiện nhưng sai format, thiếu mã rule hoặc chưa chuẩn hóa slug.
-- `ASK`: Thiếu thông tin nghiêm trọng (không rõ hành vi lỗi thực tế, không có các bước tối thiểu để tái hiện) ➔ DỪNG LẠI và yêu cầu Tester bổ sung trước khi xuất bản Jira-ready report.
+- `PASS`: Đủ thông tin cần thiết, đối soát số liệu chuẩn xác 100%, trace được Business Rule, không thiếu dữ kiện trọng yếu.
+- `FIX`: Đủ dữ kiện nhưng sai format, sai công thức pass rate, thiếu mã rule hoặc chưa chuẩn hóa slug.
+- `ASK`: Thiếu thông tin nghiêm trọng (không rõ hành vi lỗi, file sprint data lỗi/thiếu, hoặc chưa chỉ định `audience`) ➔ DỪNG LẠI và yêu cầu bổ sung trước khi xuất bản.
 
 ## Human-Final — không tự quyết
 - **Priority chính thức**: PO / PM / QA Lead chốt mức ưu tiên xử lý (P1/P2/P3/P4).
 - **Xác nhận Rule Trace**: Kiểm tra và phê duyệt tính chính xác của Business Rule được trích dẫn cho Expected Result.
 - **Quyết định Log Jira**: Phê duyệt bản nháp report để chính thức tạo ticket/issue trên hệ thống Jira.
+- **Phê duyệt Blocker & Daily Summary**: PM / QA Lead rà soát kỹ lưỡng section Blocker trước khi gửi toàn bộ báo cáo Daily Summary cho team.
 
 ## Đầu vào / Đầu ra
-- **Vào**: Đường dẫn file bug notes thô (Tester) + `knowledge/features/<feature-slug>.md` (hoặc `knowledge/rules/rules.md`).
-- **Ra**: File Markdown mới tại `OUTPUT/reports/bug-report-<slug>.md`.
+- **Vào**:
+  - Đường dẫn file bug notes thô (Tester) + file rules.
+  - Đường dẫn file sprint data JSON + tham số `audience` (`dev` | `pm`).
+- **Ra**:
+  - File Markdown Bug Report tại `OUTPUT/reports/bug-report-<slug>.md`.
+  - File Markdown Daily Summary tại `outputs/reports/daily-summary-<audience>.md`.
 
 ## Bàn giao
 - `13` (Bug Report) ➔ `Tester / QA Lead / PM` (Human-Final Review) ➔ Jira Issue Tracker.
+- `14` (Daily QA Summary) ➔ `QA Lead / PM` (Human-Final Review Blocker) ➔ Đội ngũ Dev / Management.
 
 ## Cách gọi
-- Theo agent: "QA Reporter, chuẩn hóa file bug notes [đường dẫn] giúp tôi."
-- Theo skill: "Chạy `13-gen-bug-report` với bug notes [đường dẫn]."
+- Theo agent: "QA Reporter, chuẩn hóa file bug notes [đường dẫn] giúp tôi." hoặc "QA Reporter, tạo daily summary từ sprint data [đường dẫn] cho [dev/pm]."
+- Theo skill: "Chạy `13-gen-bug-report` với bug notes [đường dẫn]." hoặc "Chạy `gen-daily-summary` (hoặc `14-gen-daily-summary`) với sprint data [đường dẫn], audience [dev/pm]."

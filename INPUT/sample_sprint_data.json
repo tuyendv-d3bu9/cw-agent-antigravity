@@ -1,0 +1,72 @@
+{
+  "sprint_name": "Sprint 24 - Checkout & Voucher Flow",
+  "date": "2026-09-16",
+  "project": "ShopGo",
+  "metrics": {
+    "executed": 40,
+    "passed": 32,
+    "failed": 6,
+    "blocked": 2
+  },
+  "features_covered": [
+    "Function D - Voucher Apply",
+    "Checkout Payment Gateway",
+    "Cart Total Calculation"
+  ],
+  "defects": [
+    {
+      "id": "BUG-101",
+      "related_testcase_id": "TC-014",
+      "feature": "Function D - Voucher Apply",
+      "severity": "Critical",
+      "status": "Open",
+      "title": "Voucher hết hạn vẫn trừ tiền thành công khi bấm submit nhiều lần",
+      "technical_details": "POST /api/v1/vouchers/apply thiếu validate hạn dùng ở server-side trong luồng xử lý concurrency; request 1 fail nhưng request 2 ghi nhận status 200",
+      "business_impact": "Khách hàng sử dụng được voucher đã hết hạn, gây sai lệch doanh thu và thất thoát ngân sách khuyến mãi"
+    },
+    {
+      "id": "BUG-102",
+      "related_testcase_id": "TC-022",
+      "feature": "Cart Total Calculation",
+      "severity": "Major",
+      "status": "In Progress",
+      "title": "Làm tròn sai số lẻ khi áp dụng thuế VAT 8% cho đơn hàng nhiều sản phẩm",
+      "technical_details": "Hàm calculateSubtotal bị mất độ chính xác dấu phẩy động trong JS (0.1 + 0.2 != 0.3), sai lệch 1 VNĐ ở tổng hóa đơn",
+      "business_impact": "Tổng tiền hiển thị tại giỏ hàng lệch 1 VNĐ so với số tiền gửi sang cổng thanh toán"
+    },
+    {
+      "id": "BUG-103",
+      "related_testcase_id": "TC-035",
+      "feature": "Checkout Payment Gateway",
+      "severity": "Medium",
+      "status": "Open",
+      "title": "Không hiển thị thông báo lỗi khi số thẻ quốc tế không đủ 16 số",
+      "technical_details": "Client-side validation trigger sự kiện blur nhưng thiếu style border đỏ và chuỗi lỗi i18n ERR_INVALID_CARD_LENGTH",
+      "business_impact": "Người dùng không hiểu lý do nút Thanh toán bị disable khi nhập thiếu số thẻ"
+    }
+  ],
+  "blockers": [
+    {
+      "issue": "Sandbox Cổng Thanh toán VNPay phản hồi HTTP 503 Service Unavailable",
+      "impact": "Chặn toàn bộ 2 test case thanh toán qua thẻ nội địa (TC-038, TC-039)",
+      "action_required": "DevOps liên hệ đầu mối kỹ thuật VNPay để khôi phục môi trường Sandbox Staging trước 09:00 ngày mai"
+    }
+  ],
+  "next_actions": [
+    {
+      "task": "Kiểm thử lại (Retest) bản vá concurrency voucher BUG-101 sau khi Dev deploy",
+      "assignee": "Nguyen Van A (Tester)",
+      "target_date": "2026-09-17"
+    },
+    {
+      "task": "Chạy tiếp 15 test case hồi quy cho giỏ hàng sau khi fix lỗi làm tròn VAT",
+      "assignee": "Tran Thi B (Tester)",
+      "target_date": "2026-09-17"
+    },
+    {
+      "task": "Rà soát lại toàn bộ test case payment ngay khi VNPay Sandbox hoạt động trở lại",
+      "assignee": "Nguyen Van A (Tester)",
+      "target_date": "2026-09-17"
+    }
+  ]
+}

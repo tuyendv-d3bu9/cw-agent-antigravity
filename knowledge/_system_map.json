@@ -22,7 +22,8 @@
     "create_feature_knowledge_command": "npm run knowledge:new <slug>",
     "merge_testcases_command": "npm run testcases:merge <slug>",
     "sync_system_map_command": "npm run map:sync",
-    "generate_bug_report": "agents/qa-reporter/skills/13-gen-bug-report.md"
+    "generate_bug_report": "agents/qa-reporter/skills/13-gen-bug-report.md",
+    "generate_daily_summary": "agents/qa-reporter/skills/14-gen-daily-summary.md"
   },
   "specialized_agents": {
     "qa_lead": {
@@ -57,7 +58,7 @@
     "qa_reporter": {
       "path": "agents/qa-reporter/AGENT.md",
       "skills_path": "agents/qa-reporter/skills/",
-      "role": "13: Chuẩn hóa raw bug notes thành bug report 7 trường Jira-ready, đối soát rules"
+      "role": "13->14: Chuẩn hóa bug notes (13) & sinh Daily QA Summary chuẩn hóa 4 section cho Dev/PM (14)"
     }
   },
   "features_inventory": {
