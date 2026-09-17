@@ -1,6 +1,6 @@
 # CW QA Agent — Hướng Dẫn Vận Hành
 
-Hệ thống Agent QA chuyên sâu gồm 6 nhóm chuyên gia, điều hành tự động theo triết lý **Knowledge-First** và chuẩn **FACT**.
+Hệ thống Agent QA chuyên sâu gồm **8 nhóm chuyên gia**, điều hành tự động theo triết lý **Knowledge-First**, **Zero-CLI**, và chuẩn **FACT**.
 Toàn bộ quy tắc cốt lõi nằm tại `AGENTS.md` (root) và `agents/core/QA_STANDARD.md`.
 
 ---
@@ -8,8 +8,19 @@ Toàn bộ quy tắc cốt lõi nằm tại `AGENTS.md` (root) và `agents/core/
 ## 1. Bản Đồ Thư Mục Hệ Thống
 
 ```
-INPUT/                          TÀI LIỆU YÊU CẦU THÔ — BA/PO nạp file .md hoặc .docx vào đây
-OUTPUT/<task-slug>/             KẾT QUẢ & DELIVERABLES — 00_plan.md, báo cáo 01->06, dataset, _index.md
+INPUT/<task-slug>/              TÀI LIỆU ĐẦU VÀO 5 NGĂN ĐỐI TÁC:
+  01_business/                  Yêu cầu chiến lược, bài toán kinh doanh, chính sách cấp cao
+  02_ba/                        [BẮT BUỘC] PRD, SRS, User Stories, Use Cases (.docx, .md)
+  03_dev/                       API Swagger/OpenAPI, DB Schema, Technical Specs
+  04_design/                    Figma links, wireframes, screenshots UI
+  05_communication/             Q&A log, biên bản họp, Change Requests (CR)
+
+OUTPUT/<task-slug>/             KHO THIẾT KẾ GỐC & TẦNG THỰC THI (RUNS):
+  00_plan.md                    Kế hoạch tổng thể của tính năng
+  01_ -> 06_                    Báo cáo phân tích, viewpoint, test idea, testcase gốc
+  _index.md                     Bảng điều khiển tổng hợp (Dashboard)
+  runs/                         TẦNG THỰC THI THEO TICKET / VERSION:
+    RUN-XX_<ticket>/            Session chạy độc lập: run_plan.md, run_result.md, evidence/
 
 knowledge/                      BỘ NÃO TRI THỨC VĨNH VIỄN (SSOT)
   _system_map.json              Bản đồ vệ tinh toàn hệ thống (Agent đọc file này đầu tiên)
@@ -18,25 +29,23 @@ knowledge/                      BỘ NÃO TRI THỨC VĨNH VIỄN (SSOT)
   _template.md                  Mẫu chuẩn tạo tri thức tính năng mới
   features/<feature-slug>.md    Quy tắc đã chốt · câu trả lời BA · giả định đã chốt · domain constant
 
-agents/                         HỆ THỐNG QA NỘI BỘ
-  qa-lead/AGENT.md              TỔNG CHỈ HUY — Cửa ngõ duy nhất tiếp nhận & điều phối
+agents/                         HỆ THỐNG 8 CHUYÊN GIA QA NỘI BỘ
+  qa-lead/AGENT.md              TỔNG CHỈ HUY — Cổng số 0 tiếp nhận & điều phối toàn bộ
   core/QA_STANDARD.md           Luật chung: verdict · guard · FACT · 06W · risk matrix
-  workflows/                    Các kịch bản chạy mẫu (run-testcase.md, flow.md...)
-  tools/                        Công cụ convert docx, sync map, merge testcases, status
   qa-analyst/                   01->04: Tóm tắt yêu cầu, 06W kẽ hở, viewpoint, test idea
   qa-test-design/               05->06: Test case 8 trường, rà soát độ phủ 3 góc nhìn
   qa-test-data/                 09->12: Data class, dataset, validation & traceability
-  qa-exploratory/               07: Thăm dò theo charter
+  qa-exploratory/               07: Thăm dò theo charter & Mò web quét DOM thực tế
   qa-ui-review/                 08: Phân tích ảnh màn hình (Vision)
-  qa-reporter/                  13: Chuẩn hóa bug notes thành bug report 7 trường (Jira-ready)
-
-.agents/                        Nơi cài đặt skill mở rộng bên ngoài (caveman, ponytail...)
+  qa-reporter/                  13: Chuẩn hóa bug report 7 trường & Daily QA summary
+  qa-automation/                Playwright E2E: Gom cụm luồng, sinh POM, chạy test & chụp evidence
+  tools/                        Công cụ convert docx, sync map, merge testcases, doctor, export, jira
 ```
 
-**Thứ tự pipeline**:
-1. Tạo kế hoạch `OUTPUT/<slug>/00_plan.md`
-2. Chạy `01 → 02 → 03 → 04 → 05 → 06`
-3. Chạy `09 → 10 → 11 → 12` (nếu cần dataset)
+**Thứ tự quy trình**:
+1. **Cổng 0**: QA Leader kiểm duyệt và chuẩn hóa 5 ngăn `INPUT/<task-slug>/`.
+2. **Thiết kế**: Tạo `00_plan.md` $\to$ Chạy pipeline thiết kế `01 → 06`.
+3. **Thực thi**: Khi có Ticket cần test $\to$ Tạo session `runs/RUN-XX/` $\to$ `qa-automation` chạy Playwright và chụp bằng chứng vào `evidence/`.
 
 ---
 
@@ -56,8 +65,14 @@ Tạo plan và chạy pipeline cho tính năng function-d từ INPUT/Function D.
 
 ---
 
-## 3. Các Lệnh Tiện Ích
-
+- **Tiếp nhận, convert mọi định dạng thô (.docx, .pdf, .txt) & tự phân loại vào 5 ngăn INPUT (Cổng 0)**:
+  ```bash
+  npm run intake -- <file-hoặc-thư-mục> [--slug <task-slug>]
+  ```
+- **Tự khởi tạo bộ não tri thức ban đầu cho dự án mới (Self-Bootstrap)**:
+  ```bash
+  npm run knowledge:init
+  ```
 - **Chuyển đổi tài liệu .docx từ BA thành .md**:
   ```bash
   npm run convert
@@ -70,6 +85,19 @@ Tạo plan và chạy pipeline cho tính năng function-d từ INPUT/Function D.
   ```bash
   npm run testcases:merge <task-slug>
   ```
+- **Xuất test cases ra CSV chuẩn Jira Xray & Redmine**:
+  ```bash
+  npm run testcases:export <task-slug>
+  ```
+- **Đồng bộ hai chiều với Jira qua REST API**:
+  ```bash
+  npm run jira:push <task-slug>   # Đẩy test cases lên Jira
+  npm run jira:pull <task-slug>   # Kéo bug về phân tích rủi ro
+  ```
+- **Quét xung đột tri thức chéo giữa các tính năng**:
+  ```bash
+  npm run knowledge:conflicts
+  ```
 - **Bảng điều phối tiến độ QA Leader (Dashboard)**:
   ```bash
   npm run status
@@ -78,7 +106,7 @@ Tạo plan và chạy pipeline cho tính năng function-d từ INPUT/Function D.
   ```bash
   npm run map:sync
   ```
-- **Kiểm tra toàn vẹn & Phân tích tác động khi sửa Agent**:
+- **Kiểm tra toàn vẹn & Phân tích tác động khi sửa Agent (Agent Doctor)**:
   ```bash
   npm run agent:check
   npm run agent:check -- --impact <tên-agent>

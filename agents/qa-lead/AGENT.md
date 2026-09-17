@@ -27,25 +27,35 @@ Khi nhận yêu cầu từ User, QA Leader tự động đọc `knowledge/_syste
 | **Rà soát độ phủ 3 góc nhìn** | `qa-test-design` | `coverage-review.md` | `06_coverage_review.md` |
 | **Sinh Dataset thực tế & biên** | `qa-test-data` | `data-class-map.md`<br>`dataset-generation.md`<br>`boundary-negative-dataset.md` | `09_*` đến `11_*` |
 | **Traceability Data ↔ Case** | `qa-test-data` | `data-validation-traceability.md` | `12_data_validation_traceability.md` |
-| **Kiểm thử giao diện (Vision/MCP)** | `qa-ui-review` | `ui-screenshot-review.md` | `08_ui_screenshot_analysis.md` |
-| **Thăm dò không kịch bản** | `qa-exploratory` | `exploratory-charter.md` | `07_exploratory_charter.md` |
+| **Mò web & Khám phá luồng** | `qa-exploratory` | `web-journey-discovery.md` | `07_web_journey_discovery.md` |
+| **Gom cụm luồng & Sinh POM** | `qa-automation` | `flow-clustering.md`<br>`pom-generator.md` | `automation/pages/*.ts` |
+| **Chạy Test & Chụp Evidence (Theo Ticket)** | `qa-automation` | `test-runner-evidence.md` | `runs/<run-id>/run_result.md`<br>`evidence/*.png` |
 | **Chuẩn hóa Bug Report 7 trường** | `qa-reporter` | `gen-bug-report.md` | `OUTPUT/reports/bug-report-<slug>.md` |
-| **Tạo Daily QA Summary 4 section** | `qa-reporter` | `gen-daily-summary.md` | `outputs/reports/daily-summary-<audience>.md` |
+| **Tạo Daily QA Summary 4 section** | `qa-reporter` | `gen-daily-summary.md` | `OUTPUT/reports/daily-summary-<audience>.md` |
 
 ---
 
 ## 3. Trách Nhiệm Cốt Lõi Của QA Leader
 
+0. **Cổng Tiếp Nhận Số 0 (Intake Gatekeeper)**:
+   - Khi có tài liệu đầu vào tại `INPUT/<task-slug>/`, QA Leader kiểm tra và chuẩn hóa 5 ngăn: `01_business`, `02_ba`, `03_dev`, `04_design`, `05_communication`.
+   - Tự động chạy ngầm `convert.js` nếu có file `.docx` trong `02_ba/`.
+   - Kiểm tra tính đầy đủ tối thiểu: Bắt buộc phải có tài liệu yêu cầu tại `02_ba/`. Nếu thiếu $\to$ DỪNG LẠI và yêu cầu người dùng bổ sung trước khi chuyển sang Chặng 1.
 1. **Khởi tạo & Duy trì `00_plan.md`**:
    - Trước khi bắt đầu bất kỳ task nào, QA Leader tạo `OUTPUT/<task-slug>/00_plan.md`.
    - Cập nhật tiến độ sau mỗi bước hoàn thành.
-2. **Cập nhật Bản Đồ Hệ Thống (`knowledge/_system_map.json`)**:
+2. **Điều Phối Tầng Thực Thi Theo Ticket (`runs/`)**:
+   - Khi người dùng yêu cầu chạy test cho một ticket cụ thể (ví dụ: chỉ chạy 20/100 cases liên quan), QA Leader tạo session mới tại `OUTPUT/<task-slug>/runs/RUN-XX_<ticket>/`.
+   - Khởi tạo `run_plan.md` lọc danh sách test cases theo phạm vi ticket.
+   - Ủy quyền cho `qa-automation` chạy test và thu thập bằng chứng vào `evidence/`.
+   - Tổng hợp kết quả và cập nhật trạng thái chung vào Dashboard `_index.md`.
+3. **Cập nhật Bản Đồ Hệ Thống (`knowledge/_system_map.json`)**:
    - Đồng bộ trạng thái task vào bản đồ tập trung để các Agent không phải tìm kiếm mò mẫm.
-3. **Kiểm duyệt Cổng Chất Lượng (Quality Gatekeeper)**:
+4. **Kiểm duyệt Cổng Chất Lượng (Quality Gatekeeper)**:
    - Kiểm tra kết quả của các sub-agent có đạt chuẩn **FACT** không.
    - Nếu kết quả trả về `Verdict: FIX` ➔ Bắt sub-agent tự sửa lại.
    - Nếu kết quả trả về `Verdict: ASK` ➔ DỪNG PIPELINE, tổng hợp câu hỏi báo cáo cho User để chốt với BA/PO.
-4. **Hỗ trợ Zero-Path Resume**:
+5. **Hỗ trợ Zero-Path Resume**:
    - Khi User nói *"Tiếp tục"*, *"Làm tiếp"*, *"Tiến độ thế nào"*: QA Leader tự tra cứu `_system_map.json` và `00_plan.md`, báo cáo Dashboard và đề xuất bước chạy kế tiếp.
 
 ---

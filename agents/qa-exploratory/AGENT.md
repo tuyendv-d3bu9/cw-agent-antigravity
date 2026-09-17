@@ -12,6 +12,7 @@ thực hiện**.
 
 ## Skill sở hữu
 - `exploratory-charter` — Risk Area → Charter 5 trường (Mission/Area/Risk/Time-box/Notes)
+- `web-journey-discovery` — Sử dụng Playwright MCP "mò web", quét DOM & Accessibility Snapshot phục vụ sinh POM
 
 ## Knowledge
 - **Đọc**: `knowledge/_project.md` · `knowledge/<feature-slug>.md` (nếu có)

@@ -64,7 +64,8 @@ const PIPELINE_DEPENDENCIES = {
     produces: '05_test_case_spec.md & 05_test_blueprint.json',
     consumed_by: [
       { step: '06', name: 'qa-test-design/coverage-review', reason: 'Đánh giá độ phủ thực tế của từng Test Case' },
-      { step: '12', name: 'qa-test-data/data-validation-traceability', reason: 'Ánh xạ dữ liệu test vào từng mã TC_ID' }
+      { step: '12', name: 'qa-test-data/data-validation-traceability', reason: 'Ánh xạ dữ liệu test vào từng mã TC_ID' },
+      { step: 'automation', name: 'qa-automation/flow-clustering & pom-generator', reason: 'Gom cụm luồng, sinh POM và chạy test Playwright E2E' }
     ]
   },
   '09': {
@@ -127,7 +128,7 @@ console.log('===============================================================');
 console.log('           BÁO CÁO KIỂM TRA TOÀN VẸN HỆ THỐNG AGENT            ');
 console.log('===============================================================\n');
 
-const agentDirs = ['qa-lead', 'qa-analyst', 'qa-test-design', 'qa-test-data', 'qa-exploratory', 'qa-ui-review', 'qa-reporter'];
+const agentDirs = ['qa-lead', 'qa-analyst', 'qa-test-design', 'qa-test-data', 'qa-exploratory', 'qa-ui-review', 'qa-reporter', 'qa-automation'];
 let totalErrors = 0;
 
 agentDirs.forEach(agentName => {

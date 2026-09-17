@@ -11,12 +11,27 @@ Dự án được phân định rạch ròi thành 4 khu vực chức năng. Age
 
 | Khu vực | Chức năng duy nhất | Nguyên tắc hoạt động của Agent |
 |---|---|---|
-| `INPUT/` | Chứa tài liệu yêu cầu nguồn từ BA/PO (.docx, .md) | **Chỉ ĐỌC** (trừ tiện ích chuyển đổi file tự động). |
-| `OUTPUT/<task-slug>/` | Lưu kế hoạch (`00_plan.md`) & toàn bộ deliverables | **Nơi DUY NHẤT được phép xuất file kết quả**. Tuyệt đối không sinh file rác ở thư mục gốc. |
+| `INPUT/<task-slug>/` | Chứa tài liệu nguồn 5 đối tác: `01_business`, `02_ba`, `03_dev`, `04_design`, `05_communication` | **Chỉ ĐỌC** (trừ tiện ích chuyển đổi file tự động). |
+| `OUTPUT/<task-slug>/` | Lưu Master Spec (`00`->`06`) và Tầng thực thi các đợt chạy (`runs/`) | **Nơi DUY NHẤT được phép xuất kết quả**. Tuyệt đối không sinh file rác ở root. |
 | `knowledge/` | Bộ não tri thức vĩnh viễn của dự án (SSOT) | Bắt buộc đọc `_system_map.json` đầu tiên để định tuyến vị trí tính năng và conventions. |
 | `agents/` | Hệ thống chuyên gia QA & công cụ thực thi nội bộ | Giao tiếp qua QA Leader (`agents/qa-lead/`), không gọi rời rạc. |
 
-### 1.1. Nguyên Tắc "System Map First" (Tuyệt Đối Chống Đọc Dò File & Tiết Kiệm Token):
+### 1.1. Cổng Tiếp Nhận Số 0 (QA Leader Intake Gate) & 5 Ngăn Tài Liệu:
+- Mọi tài liệu đầu vào được tổ chức theo 5 đối tác:
+  1. `01_business/`: Định hướng, bài toán kinh doanh, chính sách cấp cao.
+  2. `02_ba/`: [BẮT BUỘC] PRD, SRS, User Stories, Use Cases (.docx, .md).
+  3. `03_dev/`: API Swagger/OpenAPI, DB Schema, Technical specs.
+  4. `04_design/`: Figma links, wireframes, screenshots giao diện.
+  5. `05_communication/`: Q&A log, biên bản họp, Change Requests (CR).
+- **QA Leader gác cổng số 0**: Tự động phân loại, convert ngầm docx sang md, kiểm tra bắt buộc phải có `02_ba/` mới cho phép lập `00_plan.md` sang Chặng 1.
+
+### 1.2. Phân Tầng Thực Thi Độc Lập (`OUTPUT/<task-slug>/runs/`):
+- **Master Spec (`01_` đến `06_`)**: Là kho tài liệu thiết kế kiểm thử gốc (ví dụ: 100 test cases). Cố định và không bị bẩn.
+- **Tầng Thực Thi (`runs/`)**: Khi cần chạy test cho 1 Ticket cụ thể (ví dụ: chỉ chạy 20/100 cases), tạo session riêng:
+  `OUTPUT/<task-slug>/runs/RUN-01_<ticket-name>/`
+  gồm: `run_plan.md` (lọc 20 cases), `run_result.md` (kết quả), `evidence/` (ảnh chụp màn hình), và `run_defects.md` (lỗi phát hiện).
+
+### 1.3. Nguyên Tắc "System Map First" (Tuyệt Đối Chống Đọc Dò File & Tiết Kiệm Token):
 - **CẤM** các Agent coding hay QA chạy lệnh quét/tìm kiếm mò mẫm (`list_dir`, `grep_search` toàn dự án) khi vào việc.
 - **BẮT BUỘC**: Mọi Agent trước khi thực thi việc gì phải đọc ngay file:
   ```
@@ -25,9 +40,9 @@ Dự án được phân định rạch ròi thành 4 khu vực chức năng. Age
 - File này chứa đầy đủ: Bảng định tuyến (`routing_table`), vị trí chính xác của từng feature, và trạng thái hiện tại. Đọc xong là mở **ĐÚNG FILE ĐÍCH**, tiết kiệm 80% token tìm kiếm.
 - Lệnh đồng bộ bản đồ: `npm run map:sync`.
 
-### 1.2. Vai Trò Tổng Chỉ Huy Của QA Leader (`agents/qa-lead/`):
+### 1.4. Vai Trò Tổng Chỉ Huy Của QA Leader (`agents/qa-lead/`):
 - User **CHỈ CẦN GIAO TIẾP VỚI QA LEADER**. Không cần nhớ hay gọi trực tiếp từng sub-agent con.
-- QA Leader tự động nắm bắt ý định của User, tra cứu `_system_map.json`, lập `00_plan.md` và giao việc cho đúng chuyên gia (`qa-analyst`, `qa-test-design`, `qa-test-data`...).
+- QA Leader tự động nắm bắt ý định của User, tra cứu `_system_map.json`, lập `00_plan.md` và giao việc cho đúng chuyên gia (`qa-analyst`, `qa-test-design`, `qa-automation`...).
 
 ---
 
