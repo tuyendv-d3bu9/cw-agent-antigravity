@@ -15,8 +15,8 @@ agents/
     qa-ui-review/
     qa-reporter/
 
-shared/
-    QA_STANDARD.md
+agents/
+    core/QA_STANDARD.md
 
 knowledge/
     _project.md

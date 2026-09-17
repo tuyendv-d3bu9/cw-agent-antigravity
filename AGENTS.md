@@ -5,51 +5,16 @@
 
 ---
 
-## 1. Cấu Trúc Thư Mục Chuẩn (Gọn Gàng & Trực Quan)
+## 1. Bản Đồ Không Gian Làm Việc (Workspace Boundaries)
 
-Dự án được tổ chức thành các khu vực chức năng rạch ròi. Người dùng chỉ cần quan sát `INPUT/` và `OUTPUT/`:
+Dự án được phân định rạch ròi thành 4 khu vực chức năng. Agent chỉ được đọc/ghi đúng phân vùng:
 
-```
-📁 <Project-Root>/
-│
-├── 📄 AGENTS.md                  # [Hiến pháp tối cao] Mọi Agent tự động đọc đầu tiên
-├── 📄 README.md                  # Hướng dẫn nhanh cho người dùng
-│
-├── 📁 INPUT/                     # Nơi DUY NHẤT chứa tài liệu yêu cầu từ BA/PO (.docx, .md)
-├── 📁 OUTPUT/                    # Nơi DUY NHẤT chứa kết quả phân tích & deliverables
-│   └── 📁 <task-slug>/
-│       ├── 00_plan.md            # [BẮT BUỘC] Kế hoạch thực thi chống tràn context
-│       ├── 01_requirement_risk_summary.md
-│       ├── 02_missing_rule_report.md
-│       ├── 03_viewpoint_report.md
-│       ├── 04_test_idea_report.md
-│       ├── 05_test_case_spec.md
-│       ├── 06_coverage_review.md
-│       ├── 09_* -> 12_*          # Dataset và Traceability (nếu có)
-│       └── _index.md             # Mục lục kết quả & Verdict từng bước
-│
-├── 📁 knowledge/                 # BỘ NÃO TRI THỨC VĨNH VIỄN CỦA DỰ ÁN (SSOT)
-│   ├── 📄 _system_map.json       # [BẢN ĐỒ VỆ TINH] Radar hệ thống — MỌI Agent đọc file này đầu tiên
-│   ├── 📄 _project.md            # Quy ước toàn dự án (mã, tiền tệ, timezone, auth, error code)
-│   ├── 📄 _glossary.md           # Từ điển thuật ngữ nghiệp vụ thống nhất
-│   ├── 📄 _template.md           # Mẫu chuẩn tạo tri thức tính năng mới
-│   └── 📁 features/              # Tri thức tích luỹ của từng tính năng (<feature-slug>.md)
-│
-├── 📁 agents/                    # Hệ thống chuyên gia QA & công cụ thực thi nội bộ
-│   ├── 📁 qa-lead/               # [TỔNG CHỈ HUY] Cửa ngõ duy nhất tiếp nhận lệnh & giao việc
-│   ├── 📁 qa-analyst/            # 01 -> 04: Tóm tắt yêu cầu, 06W kẽ hở, viewpoint, test idea
-│   ├── 📁 qa-test-design/        # 05 -> 06: Test case 8 trường, rà soát độ phủ
-│   ├── 📁 qa-test-data/          # 09 -> 12: Data class, dataset, validation & traceability
-│   ├── 📁 qa-exploratory/        # 07: Thăm dò theo charter
-│   ├── 📁 qa-ui-review/          # 08: Phân tích ảnh màn hình giao diện
-│   ├── 📁 qa-reporter/           # 13: Chuẩn hóa bug notes thành bug report 7 trường (Jira-ready)
-│   ├── 📁 core/                  # QA_STANDARD.md (Luật bất biến & FACT standard)
-│   ├── 📁 workflows/             # Runbooks điều phối quy trình (run-testcase.md...)
-│   ├── 📁 templates/             # Mẫu khung định dạng Agent và Skill
-│   └── 📁 tools/                 # Tiện ích: convert docx, map sync, testcase merge, status
-│
-└── 📁 .agents/                   # Nơi cài đặt các external skills bổ trợ (caveman, ponytail...)
-```
+| Khu vực | Chức năng duy nhất | Nguyên tắc hoạt động của Agent |
+|---|---|---|
+| `INPUT/` | Chứa tài liệu yêu cầu nguồn từ BA/PO (.docx, .md) | **Chỉ ĐỌC** (trừ tiện ích chuyển đổi file tự động). |
+| `OUTPUT/<task-slug>/` | Lưu kế hoạch (`00_plan.md`) & toàn bộ deliverables | **Nơi DUY NHẤT được phép xuất file kết quả**. Tuyệt đối không sinh file rác ở thư mục gốc. |
+| `knowledge/` | Bộ não tri thức vĩnh viễn của dự án (SSOT) | Bắt buộc đọc `_system_map.json` đầu tiên để định tuyến vị trí tính năng và conventions. |
+| `agents/` | Hệ thống chuyên gia QA & công cụ thực thi nội bộ | Giao tiếp qua QA Leader (`agents/qa-lead/`), không gọi rời rạc. |
 
 ### 1.1. Nguyên Tắc "System Map First" (Tuyệt Đối Chống Đọc Dò File & Tiết Kiệm Token):
 - **CẤM** các Agent coding hay QA chạy lệnh quét/tìm kiếm mò mẫm (`list_dir`, `grep_search` toàn dự án) khi vào việc.
@@ -89,14 +54,15 @@ Ngày tạo: YYYY-MM-DD · Người lập: <Agent/Tool> · Trạng thái: IN-PRO
 - Tri thức dự án: knowledge/_project.md, knowledge/_glossary.md
 - Tri thức tính năng: knowledge/features/<task-slug>.md
 
-## 2. Lộ Trình Từng Chặng (Milestones)
-- [ ] **Chặng 1**: Đọc yêu cầu thô & Phân tích rủi ro (`01`) ➔ Ra `01_requirement_risk_summary.md`
-- [ ] **Chặng 2**: Quét kẽ hở 06W & Câu hỏi cho BA (`02`) ➔ Ra `02_missing_rule_report.md`
+## 2. Lộ Trình Từng Chặng (Milestones & Explicit Skills)
+- [ ] **Chặng 1**: Đọc yêu cầu thô & Phân tích rủi ro [qa-analyst/skills/requirement-risk-summary.md] ➔ Ra `01_requirement_risk_summary.md`
+- [ ] **Chặng 2**: Quét kẽ hở 06W & Câu hỏi cho BA [qa-analyst/skills/missing-rule-06w.md] ➔ Ra `02_missing_rule_report.md`
       *(Nếu Verdict là ASK -> DỪNG để người dùng chốt với BA)*
-- [ ] **Chặng 3**: Chọn Risk Area & Viewpoints (`03`) ➔ Ra `03_viewpoint_report.md`
-- [ ] **Chặng 4**: Thiết kế Test Idea & Lọc Giữ/Bỏ (`04`) ➔ Ra `04_test_idea_report.md`
-- [ ] **Chặng 5**: Sinh Test Case chi tiết 8 trường (`05`) ➔ Ra `05_test_case_spec.md`
-- [ ] **Chặng 6**: Rà soát độ phủ 3 góc nhìn & Nghiệm thu (`06`) ➔ Ra `06_coverage_review.md`
+- [ ] **Chặng 3**: Chọn Risk Area & Viewpoints [qa-analyst/skills/viewpoint-selection.md] ➔ Ra `03_viewpoint_report.md`
+- [ ] **Chặng 4**: Thiết kế Test Idea & Lọc Giữ/Bỏ [qa-analyst/skills/test-idea-design.md] ➔ Ra `04_test_idea_report.md`
+- [ ] **Chặng 5**: Sinh Test Case chi tiết 8 trường [qa-test-design/skills/test-case-generation.md] ➔ Ra `05_test_case_spec.md`
+- [ ] **Chặng 6**: Rà soát độ phủ 3 góc nhìn & Nghiệm thu [qa-test-design/skills/coverage-review.md] ➔ Ra `06_coverage_review.md`
+- [ ] **Bổ trợ Dữ liệu (Nếu cần)**: Data Class [qa-test-data/skills/data-class-map.md] · Dataset [qa-test-data/skills/dataset-generation.md] · Boundary [qa-test-data/skills/boundary-negative-dataset.md] · Traceability [qa-test-data/skills/data-validation-traceability.md]
 
 ### 2.4. Cơ Chế "QA Leader Tự Nắm Tiến Độ" (Zero-Path Typing):
 Người dùng **KHÔNG CẦN** nhớ đường dẫn hay gõ lại `OUTPUT/.../00_plan.md`.
@@ -202,7 +168,7 @@ Khi số lượng Test Case dự tính vượt quá **50 test cases** (hoặc l�
 
 ## 7. Nguyên Tắc Trải Nghiệm: 100% Lời Nói Tự Nhiên (Zero-CLI)
 
-> ⚠️ **ĐIỀU KHOẢN TỐI CAO CHO MỌI AI AGENT**:
+> **ĐIỀU KHOẢN TỐI CAO CHO MỌI AI AGENT**:
 > - Người dùng của dự án là Tester, BA, Product Owner, Quản lý — **KHÔNG BIẾT VÀ KHÔNG PHẢI GÕ CÁC LỆNH TERMINAL (`npm run...`)**.
 > - **CẤM** AI Agent bảo người dùng: *"Bạn hãy mở terminal gõ npm run..."*.
 > - Toàn bộ các script trong dự án là **CÔNG CỤ NỘI BỘ DÀNH RIÊNG CHO AI AGENT**.
