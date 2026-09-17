@@ -14,10 +14,10 @@ Nguyên tắc nền: **"Garbage data → Garbage testing"**.
 > *dữ liệu* cho các test case đó chạy được.
 
 ## Skill sở hữu
-- `09-data-class-map` — Requirement → Field List → Data Class Map (5 lớp dữ liệu)
-- `10-dataset-generation` — sinh dataset sát nghiệp vụ + xuất CSV/SQL/JSON
-- `11-boundary-negative-dataset` — dataset biên & âm tính, mỗi record có `Test Purpose`
-- `12-data-validation-traceability` — validate dataset + Traceability Matrix data ↔ test case
+- `data-class-map` — Requirement → Field List → Data Class Map (5 lớp dữ liệu)
+- `dataset-generation` — sinh dataset sát nghiệp vụ + xuất CSV/SQL/JSON
+- `boundary-negative-dataset` — dataset biên & âm tính, mỗi record có `Test Purpose`
+- `data-validation-traceability` — validate dataset + Traceability Matrix data ↔ test case
 
 Chuỗi chạy: `09 → 10 → 11 → 12`.
 
@@ -61,4 +61,4 @@ Theo `shared/QA_STANDARD.md` §1. Sai format/logic → `FIX`. Thiếu rule để
 
 ## Cách gọi
 - Theo agent: "QA Test Data, sinh dataset cho test suite ở output 05."
-- Theo skill: "Chạy `11-boundary-negative-dataset` với Field Map ở output 09."
+- Theo skill: "Chạy `boundary-negative-dataset` với Field Map ở output 09."

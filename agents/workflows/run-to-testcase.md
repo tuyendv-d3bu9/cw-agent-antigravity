@@ -40,26 +40,26 @@ Chạy tuần tự 5 bước sau. Sau MỖI bước: ghi file output, cập nh�
 OUTPUT/function-d/_index.md, in verdict ra màn hình rồi mới sang bước kế.
 Nếu verdict là FIX hoặc ASK → DỪNG toàn bộ, báo tôi, không chạy tiếp.
 
-B1  agents/qa-analyst/AGENT.md + skills/01-requirement-risk-summary.md
+B1  agents/qa-analyst/AGENT.md + skills/requirement-risk-summary.md
     Vào : INPUT/Function D.md, INPUT/OVERVIEW.md
     Ra  : OUTPUT/function-d/01_requirement_risk_summary.md
     Ghi thêm: cập nhật knowledge/function-d.md
 
-B2  agents/qa-analyst/skills/02-missing-rule-06w.md
+B2  agents/qa-analyst/skills/missing-rule-06w.md
     Vào : OUTPUT/function-d/01_requirement_risk_summary.md, knowledge/function-d.md
     Ra  : OUTPUT/function-d/02_missing_rule_report.md
     Ghi thêm: cập nhật knowledge/function-d.md mục 7
     Lưu ý: gap nào trong knowledge đã Confirmed/Rejected thì KHÔNG báo lại là missing rule mới.
 
-B3  agents/qa-analyst/skills/03-viewpoint-selection.md
+B3  agents/qa-analyst/skills/viewpoint-selection.md
     Vào : output 01 + 02
     Ra  : OUTPUT/function-d/03_viewpoint_report.md
 
-B4  agents/qa-analyst/skills/04-test-idea-design.md
+B4  agents/qa-analyst/skills/test-idea-design.md
     Vào : output 01 + 03
     Ra  : OUTPUT/function-d/04_test_idea_report.md
 
-B5  agents/qa-test-design/AGENT.md + skills/05-test-case-generation.md
+B5  agents/qa-test-design/AGENT.md + skills/test-case-generation.md
     Vào : output 01 + 03 + 04
     Ra  : OUTPUT/function-d/05_test_case_spec.md
 

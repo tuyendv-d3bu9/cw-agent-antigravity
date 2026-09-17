@@ -1,4 +1,4 @@
-# Skill: <NN>-<ten-skill>
+# Skill: <ten-skill>
 
 > Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT · <thêm §4 06W / §5 risk matrix / §6 chuỗi biên nếu skill dùng tới>).
 >

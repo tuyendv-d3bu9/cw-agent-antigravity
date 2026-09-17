@@ -1,4 +1,4 @@
-# Skill: 01-requirement-risk-summary
+# Skill: requirement-risk-summary
 
 > Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT · 06W · risk matrix 3x3).
 

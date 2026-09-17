@@ -19,9 +19,9 @@
 
 ## 2. Danh sách các bước trong Pipeline
 
-### 🟢 Bước 1: Phân tích đầu bài (`01-requirement-risk-summary`) — [ĐANG XÂY DỰNG / KÍCH HOẠT]
+### 🟢 Bước 1: Phân tích đầu bài (`requirement-risk-summary`) — [ĐANG XÂY DỰNG / KÍCH HOẠT]
 * **Agent thực thi**: `agents/qa-analyst/AGENT.md`
-* **Skill sử dụng**: `agents/qa-analyst/skills/01-requirement-risk-summary.md`
+* **Skill sử dụng**: `agents/qa-analyst/skills/requirement-risk-summary.md`
 * **Tài liệu nạp trước**:
   * `shared/QA_STANDARD.md`
   * `knowledge/_project.md`
@@ -50,23 +50,23 @@
 
 ---
 
-### ⚪ Bước 2: Truy vết quy tắc còn thiếu (`02-missing-rule-06w`) — [Dự kiến]
-* **Agent**: `qa-analyst` | **Skill**: `02-missing-rule-06w.md`
+### ⚪ Bước 2: Truy vết quy tắc còn thiếu (`missing-rule-06w`) — [Dự kiến]
+* **Agent**: `qa-analyst` | **Skill**: `missing-rule-06w.md`
 * **Vào**: `OUTPUT/<task-slug>/01_requirement_risk_summary.md` + `knowledge/<task-slug>.md`
 * **Ra**: `OUTPUT/<task-slug>/02_missing_rule_report.md`
 
-### ⚪ Bước 3: Lựa chọn góc nhìn kiểm thử (`03-viewpoint-selection`) — [Dự kiến]
-* **Agent**: `qa-analyst` | **Skill**: `03-viewpoint-selection.md`
+### ⚪ Bước 3: Lựa chọn góc nhìn kiểm thử (`viewpoint-selection`) — [Dự kiến]
+* **Agent**: `qa-analyst` | **Skill**: `viewpoint-selection.md`
 * **Vào**: Output `01` + `02`
 * **Ra**: `OUTPUT/<task-slug>/03_viewpoint_report.md`
 
-### ⚪ Bước 4: Thiết kế ý tưởng kiểm thử (`04-test-idea-design`) — [Dự kiến]
-* **Agent**: `qa-analyst` | **Skill**: `04-test-idea-design.md`
+### ⚪ Bước 4: Thiết kế ý tưởng kiểm thử (`test-idea-design`) — [Dự kiến]
+* **Agent**: `qa-analyst` | **Skill**: `test-idea-design.md`
 * **Vào**: Output `01` + `03`
 * **Ra**: `OUTPUT/<task-slug>/04_test_idea_report.md`
 
-### ⚪ Bước 5: Sinh kịch bản Test Case chi tiết (`05-test-case-generation`) — [Dự kiến]
-* **Agent**: `qa-test-design` | **Skill**: `05-test-case-generation.md`
+### ⚪ Bước 5: Sinh kịch bản Test Case chi tiết (`test-case-generation`) — [Dự kiến]
+* **Agent**: `qa-test-design` | **Skill**: `test-case-generation.md`
 * **Vào**: Output `01` + `03` + `04`
 * **Ra**: `OUTPUT/<task-slug>/05_test_case_spec.md`
 
@@ -82,7 +82,7 @@
    - knowledge/_project.md
    - knowledge/<task-slug>.md (nếu có)
    - agents/qa-analyst/AGENT.md
-   - agents/qa-analyst/skills/01-requirement-risk-summary.md
+   - agents/qa-analyst/skills/requirement-risk-summary.md
 
 2. Phân tích các tài liệu trong INPUT/ theo đúng 10 bước của skill 01.
 

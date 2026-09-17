@@ -1,7 +1,7 @@
 {
   "system_name": "CW QA Agent Ecosystem",
   "version": "2.0.0",
-  "last_updated": "2026-09-16",
+  "last_updated": "2026-09-17",
   "ssot_policy": "Tri thức trong knowledge/ là tối cao. CẤM đọc dò từng file, tra cứu bảng routing_table để mở đúng file đích.",
   "project_conventions": {
     "project_name": "ShopGo",
@@ -22,8 +22,8 @@
     "create_feature_knowledge_command": "npm run knowledge:new <slug>",
     "merge_testcases_command": "npm run testcases:merge <slug>",
     "sync_system_map_command": "npm run map:sync",
-    "generate_bug_report": "agents/qa-reporter/skills/13-gen-bug-report.md",
-    "generate_daily_summary": "agents/qa-reporter/skills/14-gen-daily-summary.md"
+    "generate_bug_report": "agents/qa-reporter/skills/gen-bug-report.md",
+    "generate_daily_summary": "agents/qa-reporter/skills/gen-daily-summary.md"
   },
   "specialized_agents": {
     "qa_lead": {
@@ -58,7 +58,7 @@
     "qa_reporter": {
       "path": "agents/qa-reporter/AGENT.md",
       "skills_path": "agents/qa-reporter/skills/",
-      "role": "13->14: Chuẩn hóa bug notes (13) & sinh Daily QA Summary chuẩn hóa 4 section cho Dev/PM (14)"
+      "role": "13->14 & Jira/Redmine Defect Sync: Quản lý vòng đời Defect, đồng bộ 2 chiều Jira/Redmine, chuẩn hóa bug notes (13) & sinh Daily QA Summary (14)"
     }
   },
   "features_inventory": {
@@ -71,6 +71,16 @@
       "status": "COMPLETED (PASS)",
       "total_testcases": 41,
       "last_verdict": "PASS"
+    },
+    "reports": {
+      "name": "reports",
+      "input_file": "INPUT/reports.md",
+      "knowledge_file": "knowledge/features/reports.md",
+      "output_dir": "OUTPUT/reports/",
+      "plan_file": "OUTPUT/reports/00_plan.md",
+      "status": "IN-PROGRESS",
+      "total_testcases": 0,
+      "last_verdict": "UNKNOWN"
     }
   }
 }

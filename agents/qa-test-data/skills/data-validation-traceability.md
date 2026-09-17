@@ -1,4 +1,4 @@
-# Skill: 12-data-validation-traceability  `[MỚI]`
+# Skill: data-validation-traceability
 
 > Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT).
 

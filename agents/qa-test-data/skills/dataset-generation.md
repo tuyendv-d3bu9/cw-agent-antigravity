@@ -1,4 +1,4 @@
-# Skill: 10-dataset-generation  `[MỚI]`
+# Skill: dataset-generation
 
 > Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT).
 

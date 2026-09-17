@@ -1,4 +1,4 @@
-# Skill: 13-gen-bug-report
+# Skill: gen-bug-report
 
 > Tuân thủ `agents/core/QA_STANDARD.md` (verdict · guard · FACT standard · ma trận rủi ro §5).
 >
@@ -102,7 +102,7 @@ Ghi ra `OUTPUT/reports/bug-report-<slug>.md`:
 
 ````markdown
 # BUG REPORT: <Title>
-Owner: agents/qa-reporter/13-gen-bug-report · Nguồn Bug Notes: <path/to/bug_notes> · Rules: <path/to/rules> · Verdict: <PASS/ASK>
+Owner: agents/qa-reporter/gen-bug-report · Nguồn Bug Notes: <path/to/bug_notes> · Rules: <path/to/rules> · Verdict: <PASS/ASK>
 
 ---
 

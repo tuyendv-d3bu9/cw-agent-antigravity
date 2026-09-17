@@ -13,10 +13,10 @@ trên output của agent này.
 > **Phân biệt với QA Leader**: QA Leader review chất lượng *prompt*, không làm nghiệp vụ QA.
 
 ## Skill sở hữu
-- `01-requirement-risk-summary` — bóc tách requirement thô → báo cáo 10 phần + phân tích rủi ro
-- `02-missing-rule-06w` — truy vấn 06W tìm quy tắc nghiệp vụ còn thiếu
-- `03-viewpoint-selection` — chọn & đặc tả viewpoint theo rủi ro, kiểm chéo zero-overlap
-- `04-test-idea-design` — sinh Test Idea từ viewpoint + sàng lọc Giữ/Bỏ
+- `requirement-risk-summary` — bóc tách requirement thô → báo cáo 10 phần + phân tích rủi ro
+- `missing-rule-06w` — truy vấn 06W tìm quy tắc nghiệp vụ còn thiếu
+- `viewpoint-selection` — chọn & đặc tả viewpoint theo rủi ro, kiểm chéo zero-overlap
+- `test-idea-design` — sinh Test Idea từ viewpoint + sàng lọc Giữ/Bỏ
 
 Chuỗi chạy: `01 → 02 → 03 → 04`. Mỗi skill chỉ chạy khi output của skill trước đã có.
 
@@ -56,11 +56,11 @@ Theo `shared/QA_STANDARD.md` §1.
 - **Ra**: `OUTPUT/<task-slug>/01_*.md` → `04_*.md` · `01_conflict_warning.md` + cập nhật `_index.md`
 
 ## Bàn giao
-- `01` (Business Rules, Risk Matrix) → `02`, `03`, và `agents/qa-test-design/06-coverage-review`
+- `01` (Business Rules, Risk Matrix) → `02`, `03`, và `agents/qa-test-design/coverage-review`
 - `02` (Missing Rules) → `03`
-- `03` (Risk Area + Viewpoints) → `04`, `agents/qa-exploratory`, `agents/qa-test-design/06-coverage-review`
-- `04` (Test Idea "Giữ") → `agents/qa-test-design/05-test-case-generation`
+- `03` (Risk Area + Viewpoints) → `04`, `agents/qa-exploratory`, `agents/qa-test-design/coverage-review`
+- `04` (Test Idea "Giữ") → `agents/qa-test-design/test-case-generation`
 
 ## Cách gọi
 - Theo agent: "QA Analyst, phân tích `INPUT/Function D.md`."
-- Theo skill: "Chạy `03-viewpoint-selection` với output 01 + 02."
+- Theo skill: "Chạy `viewpoint-selection` với output 01 + 02."

@@ -1,4 +1,4 @@
-# Skill: 05-test-case-generation
+# Skill: test-case-generation
 
 > Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT · chuỗi biên §6).
 

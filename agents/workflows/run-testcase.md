@@ -48,50 +48,50 @@ Nếu verdict là FIX hoặc ASK → DỪNG toàn bộ, báo tôi, không chạy
 
 --- NHÁNH A: pipeline chính ---
 
-B1  agents/qa-analyst/AGENT.md + skills/01-requirement-risk-summary.md
+B1  agents/qa-analyst/AGENT.md + skills/requirement-risk-summary.md
     Vào : INPUT/Function D.md, INPUT/OVERVIEW.md
     Ra  : OUTPUT/function-d/01_requirement_risk_summary.md
     Ghi thêm: cập nhật knowledge/function-d.md
 
-B2  agents/qa-analyst/skills/02-missing-rule-06w.md
+B2  agents/qa-analyst/skills/missing-rule-06w.md
     Vào : OUTPUT/function-d/01_requirement_risk_summary.md, knowledge/function-d.md
     Ra  : OUTPUT/function-d/02_missing_rule_report.md
     Ghi thêm: cập nhật knowledge/function-d.md mục 7
     Lưu ý: gap nào trong knowledge đã Confirmed/Rejected thì KHÔNG báo lại là missing rule mới.
 
-B3  agents/qa-analyst/skills/03-viewpoint-selection.md
+B3  agents/qa-analyst/skills/viewpoint-selection.md
     Vào : output 01 + 02
     Ra  : OUTPUT/function-d/03_viewpoint_report.md
 
-B4  agents/qa-analyst/skills/04-test-idea-design.md
+B4  agents/qa-analyst/skills/test-idea-design.md
     Vào : output 01 + 03
     Ra  : OUTPUT/function-d/04_test_idea_report.md
 
-B5  agents/qa-test-design/AGENT.md + skills/05-test-case-generation.md
+B5  agents/qa-test-design/AGENT.md + skills/test-case-generation.md
     Vào : output 01 + 03 + 04
     Ra  : OUTPUT/function-d/05_test_case_spec.md
 
 --- NHÁNH B: dữ liệu (chạy sau B5) ---
 
-B9  agents/qa-test-data/AGENT.md + skills/09-data-class-map.md
+B9  agents/qa-test-data/AGENT.md + skills/data-class-map.md
     Vào : output 01
     Ra  : OUTPUT/function-d/09_data_class_map.md
 
-B10 agents/qa-test-data/skills/10-dataset-generation.md
+B10 agents/qa-test-data/skills/dataset-generation.md
     Vào : output 09, format = sql
     Ra  : OUTPUT/function-d/10_dataset.md
 
-B11 agents/qa-test-data/skills/11-boundary-negative-dataset.md
+B11 agents/qa-test-data/skills/boundary-negative-dataset.md
     Vào : output 09
     Ra  : OUTPUT/function-d/11_boundary_negative_dataset.md
 
-B12 agents/qa-test-data/skills/12-data-validation-traceability.md
+B12 agents/qa-test-data/skills/data-validation-traceability.md
     Vào : output 10 + 11 + 05
     Ra  : OUTPUT/function-d/12_data_validation_traceability.md
 
 --- CHỐT CHẶN: chạy CUỐI CÙNG ---
 
-B6  agents/qa-test-design/skills/06-coverage-review.md
+B6  agents/qa-test-design/skills/coverage-review.md
     Vào : output 01 + 03 + 05
     Ra  : OUTPUT/function-d/06_coverage_review.md
     Lưu ý: rà đủ 3 góc nhìn mà KHÔNG thấy gap nào thì verdict là ASK, KHÔNG phải PASS.

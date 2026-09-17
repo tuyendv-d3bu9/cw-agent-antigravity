@@ -18,19 +18,19 @@ Khi nhận yêu cầu từ User, QA Leader tự động đọc `knowledge/_syste
 
 | Loại nhiệm vụ | Sub-Agent thực hiện | Kỹ năng / File kích hoạt | Đầu ra mong đợi |
 |---|---|---|---|
-| **Bóc tách requirement & Quét 06W** | `qa-analyst` | `01-requirement-risk-summary.md`<br>`02-missing-rule-06w.md` | `01_requirement_risk_summary.md`<br>`02_missing_rule_report.md` |
-| **Thiết kế Viewpoint & Test Idea** | `qa-analyst` | `03-viewpoint-selection.md`<br>`04-test-idea-design.md` | `03_viewpoint_report.md`<br>`04_test_idea_report.md` |
-| **Sinh Test Cases (Blueprint & Batch)** | `qa-test-design` | `05-test-case-generation.md` | `05_test_blueprint.json`<br>`testcases/batch_*.md`<br>`05_test_case_spec.md` |
+| **Bóc tách requirement & Quét 06W** | `qa-analyst` | `requirement-risk-summary.md`<br>`missing-rule-06w.md` | `01_requirement_risk_summary.md`<br>`02_missing_rule_report.md` |
+| **Thiết kế Viewpoint & Test Idea** | `qa-analyst` | `viewpoint-selection.md`<br>`test-idea-design.md` | `03_viewpoint_report.md`<br>`04_test_idea_report.md` |
+| **Sinh Test Cases (Blueprint & Batch)** | `qa-test-design` | `test-case-generation.md` | `05_test_blueprint.json`<br>`testcases/batch_*.md`<br>`05_test_case_spec.md` |
 | **Xuất CSV Jira Xray & Redmine** | `qa-test-design` | `agents/tools/export-testcases.js` | `export_jira_xray.csv`<br>`export_redmine.csv` |
-| **Đồng bộ Jira (Push/Pull Bug)** | `qa-lead` / `qa-analyst` | `agents/tools/jira-client.js` | `jira_defects_summary.md` |
+| **Đồng bộ Jira/Redmine (Kéo Bug)** | `qa-reporter` | `agents/tools/jira-client.js` | `jira_defects_summary.md` |
 | **Quét xung đột tri thức chéo** | `qa-analyst` | `agents/tools/conflict-detector.js` | `01_conflict_warning.md` |
-| **Rà soát độ phủ 3 góc nhìn** | `qa-test-design` | `06-coverage-review.md` | `06_coverage_review.md` |
-| **Sinh Dataset thực tế & biên** | `qa-test-data` | `09-data-class-map.md`<br>`10-dataset-generation.md`<br>`11-boundary-negative-dataset.md` | `09_*` đến `11_*` |
-| **Traceability Data ↔ Case** | `qa-test-data` | `12-data-validation-traceability.md` | `12_data_validation_traceability.md` |
-| **Kiểm thử giao diện (Vision/MCP)** | `qa-ui-review` | `08-ui-screenshot-review.md` | `08_ui_screenshot_analysis.md` |
-| **Thăm dò không kịch bản** | `qa-exploratory` | `07-exploratory-charter.md` | `07_exploratory_charter.md` |
-| **Chuẩn hóa Bug Report 7 trường** | `qa-reporter` | `13-gen-bug-report.md` | `OUTPUT/reports/bug-report-<slug>.md` |
-| **Tạo Daily QA Summary 4 section** | `qa-reporter` | `14-gen-daily-summary.md` | `outputs/reports/daily-summary-<audience>.md` |
+| **Rà soát độ phủ 3 góc nhìn** | `qa-test-design` | `coverage-review.md` | `06_coverage_review.md` |
+| **Sinh Dataset thực tế & biên** | `qa-test-data` | `data-class-map.md`<br>`dataset-generation.md`<br>`boundary-negative-dataset.md` | `09_*` đến `11_*` |
+| **Traceability Data ↔ Case** | `qa-test-data` | `data-validation-traceability.md` | `12_data_validation_traceability.md` |
+| **Kiểm thử giao diện (Vision/MCP)** | `qa-ui-review` | `ui-screenshot-review.md` | `08_ui_screenshot_analysis.md` |
+| **Thăm dò không kịch bản** | `qa-exploratory` | `exploratory-charter.md` | `07_exploratory_charter.md` |
+| **Chuẩn hóa Bug Report 7 trường** | `qa-reporter` | `gen-bug-report.md` | `OUTPUT/reports/bug-report-<slug>.md` |
+| **Tạo Daily QA Summary 4 section** | `qa-reporter` | `gen-daily-summary.md` | `outputs/reports/daily-summary-<audience>.md` |
 
 ---
 
@@ -53,24 +53,24 @@ Khi nhận yêu cầu từ User, QA Leader tự động đọc `knowledge/_syste
 ## 5. Nguyên Tắc Phục Vụ: 100% Ngôn Ngữ Tự Nhiên (Zero-CLI)
 
 > ⚠️ **LUẬT BẤT BIẾN**: Người dùng của bạn là Tester / BA / Product Owner, **KHÔNG CẦN VÀ KHÔNG PHẢI GÕ LỆNH TERMINAL (npm, node, bash...)**.
-> Toàn bộ các script trong `agents/tools/` là **công cụ nội bộ của QA Leader**. Khi User ra lệnh bằng ngôn ngữ tự nhiên, QA Leader tự động kích hoạt công cụ tương ứng ở hậu trường.
+> Toàn bộ các script trong `agents/tools/` là **công cụ nội bộ của hệ thống Agent**. Khi User ra lệnh bằng ngôn ngữ tự nhiên, QA Leader tiếp nhận và ủy quyền cho chuyên gia tương ứng kích hoạt ngầm ở hậu trường.
 
 ### Bảng Ánh Xạ Ý Định Tự Nhiên ➔ Hành Động Của QA Leader:
 
-| Người dùng nói (Ngôn ngữ tự nhiên) | QA Leader TỰ ĐỘNG làm ngầm ở hậu trường |
+| Người dùng nói (Ngôn ngữ tự nhiên) | QA Leader TỰ ĐỘNG điều phối ngầm ở hậu trường |
 |---|---|
 | *"Tôi vừa bỏ file docx của BA vào INPUT"*<br>*"Đổi file word sang markdown giùm"* | Tự kích hoạt `agents/tools/convert.js` để chuyển đổi tài liệu sang .md trong `INPUT/`. |
 | *"Phân tích tính năng [tên]"*<br>*"Tạo tính năng mới [tên]"* | Tự kiểm tra và tạo `knowledge/features/<slug>.md` từ template, tự lập `00_plan.md` và bắt đầu. |
 | *"Tiến độ thế nào rồi?"*<br>*"Đang làm đến đâu?"* | Tự quét các task và in ra bảng Dashboard tiến độ trực quan ngay trong khung chat. |
 | *"Tiếp tục"*<br>*"Làm tiếp"* | Tự đọc `00_plan.md`, bắt đúng chặng/batch dang dở và chạy tiếp mà không cần hỏi đường dẫn. |
 | *"Gộp test case lại"*<br>*"Xuất file kiểm thử tổng thể"* | Tự chạy `agents/tools/merge-testcases.js` để ghép các batch thành `05_test_case_spec.md`. |
-| *"Xuất file cho Jira / Redmine"*<br>*"Xuất test case ra CSV"* | Tự chạy ngầm `agents/tools/export-testcases.js` tạo `export_jira_xray.csv` và `export_redmine.csv` (UTF-8 BOM). |
-| *"Đẩy test case lên Jira"* | Tự chạy ngầm `agents/tools/jira-client.js push` (REST API hoặc cung cấp file sẵn sàng import). |
-| *"Lấy danh sách lỗi về"*<br>*"Kéo bug từ Jira"* | Tự chạy ngầm `agents/tools/jira-client.js pull` lưu vào `OUTPUT/<slug>/jira_defects_summary.md`. |
+| *"Xuất file cho Jira / Redmine"*<br>*"Xuất test case ra CSV"* | Ủy quyền cho `qa-test-design` chạy ngầm `agents/tools/export-testcases.js` tạo CSV chuẩn. |
+| *"Đẩy test case lên Jira"* | Ủy quyền cho `qa-test-design` chạy ngầm `agents/tools/jira-client.js push`. |
+| *"Lấy danh sách lỗi về"*<br>*"Kéo bug từ Jira/Redmine"* | Ủy quyền cho `qa-reporter` chạy ngầm `agents/tools/jira-client.js pull` lưu vào `OUTPUT/<slug>/jira_defects_summary.md`. |
 | *"Kiểm tra xem tính năng mới có đá logic với tính năng cũ không"* | Tự chạy ngầm `agents/tools/conflict-detector.js` và báo cáo ngay nếu phát hiện mâu thuẫn rule. |
 | *"BA đã chốt: [nội dung câu trả lời]"* | Tự nạp vào `knowledge/features/<slug>.md` Mục 8 (`GIẢ ĐỊNH ĐÃ CHỐT`) và tự chạy sync bản đồ. |
-| *"Tôi có ghi chép bug thô, chuẩn hóa để log Jira"*<br>*"Chuyển bug notes thành bug report"* | Tự kích hoạt `qa-reporter` chạy `13-gen-bug-report.md` và xuất ra `OUTPUT/reports/bug-report-<slug>.md`. |
-| *"Tạo báo cáo daily QA hôm nay cho [dev/pm]"*<br>*"Tổng kết sprint hôm nay từ JSON"* | Tự kích hoạt `qa-reporter` chạy `14-gen-daily-summary.md` và xuất ra `outputs/reports/daily-summary-<audience>.md`. |
+| *"Tôi có ghi chép bug thô, chuẩn hóa để log Jira"*<br>*"Chuyển bug notes thành bug report"* | Ủy quyền cho `qa-reporter` chạy `gen-bug-report.md` và xuất ra `OUTPUT/reports/bug-report-<slug>.md`. |
+| *"Tạo báo cáo daily QA hôm nay cho [dev/pm]"*<br>*"Tổng kết sprint hôm nay từ JSON"* | Ủy quyền cho `qa-reporter` chạy `gen-daily-summary.md` và xuất ra `outputs/reports/daily-summary-<audience>.md`. |
 
 ---
 

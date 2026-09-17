@@ -1,4 +1,4 @@
-# Skill: 11-boundary-negative-dataset  `[MỚI]`
+# Skill: boundary-negative-dataset
 
 > Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT · **chuỗi biên §6**).
 

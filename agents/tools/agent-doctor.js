@@ -23,56 +23,56 @@ const targetImpact = impactIndex !== -1 ? args[impactIndex + 1] : null;
 // Bản đồ phụ thuộc (Dependency Graph) giữa các Deliverables và Skills
 const PIPELINE_DEPENDENCIES = {
   '01': {
-    skill: 'agents/qa-analyst/skills/01-requirement-risk-summary.md',
+    skill: 'agents/qa-analyst/skills/requirement-risk-summary.md',
     produces: '01_requirement_risk_summary.md',
     consumed_by: [
-      { step: '02', name: 'qa-analyst/02-missing-rule-06w', reason: 'Đọc Business Rules để tìm kẽ hở' },
-      { step: '03', name: 'qa-analyst/03-viewpoint-selection', reason: 'Đọc Risk Matrix và bối cảnh nghiệp vụ' },
-      { step: '04', name: 'qa-analyst/04-test-idea-design', reason: 'Đọc Business Rules để thiết kế test idea' },
-      { step: '05', name: 'qa-test-design/05-test-case-generation', reason: 'Trace mã BR-xx vào Tags' },
-      { step: '06', name: 'qa-test-design/06-coverage-review', reason: 'Rà soát độ phủ 100% BR-xx' },
-      { step: '09', name: 'qa-test-data/09-data-class-map', reason: 'Đọc trường dữ liệu để phân loại Data Class' }
+      { step: '02', name: 'qa-analyst/missing-rule-06w', reason: 'Đọc Business Rules để tìm kẽ hở' },
+      { step: '03', name: 'qa-analyst/viewpoint-selection', reason: 'Đọc Risk Matrix và bối cảnh nghiệp vụ' },
+      { step: '04', name: 'qa-analyst/test-idea-design', reason: 'Đọc Business Rules để thiết kế test idea' },
+      { step: '05', name: 'qa-test-design/test-case-generation', reason: 'Trace mã BR-xx vào Tags' },
+      { step: '06', name: 'qa-test-design/coverage-review', reason: 'Rà soát độ phủ 100% BR-xx' },
+      { step: '09', name: 'qa-test-data/data-class-map', reason: 'Đọc trường dữ liệu để phân loại Data Class' }
     ]
   },
   '02': {
-    skill: 'agents/qa-analyst/skills/02-missing-rule-06w.md',
+    skill: 'agents/qa-analyst/skills/missing-rule-06w.md',
     produces: '02_missing_rule_report.md',
     consumed_by: [
-      { step: '03', name: 'qa-analyst/03-viewpoint-selection', reason: 'Kết hợp kẽ hở 06W để chọn góc nhìn rủi ro' },
+      { step: '03', name: 'qa-analyst/viewpoint-selection', reason: 'Kết hợp kẽ hở 06W để chọn góc nhìn rủi ro' },
       { step: 'knowledge', name: 'knowledge/features/<slug>.md', reason: 'Nạp kẽ hở vào Mục 7 và Q&A BA vào Mục 8' }
     ]
   },
   '03': {
-    skill: 'agents/qa-analyst/skills/03-viewpoint-selection.md',
+    skill: 'agents/qa-analyst/skills/viewpoint-selection.md',
     produces: '03_viewpoint_report.md',
     consumed_by: [
-      { step: '04', name: 'qa-analyst/04-test-idea-design', reason: 'Phân bổ Test Idea theo từng Viewpoint' },
-      { step: '05', name: 'qa-test-design/05-test-case-generation', reason: 'Trace mã VP-xx vào Tags của Test Case' },
-      { step: '06', name: 'qa-test-design/06-coverage-review', reason: 'Rà soát độ phủ góc nhìn' },
-      { step: '07', name: 'qa-exploratory/07-exploratory-charter', reason: 'Lấy Risk Area làm charter thăm dò' }
+      { step: '04', name: 'qa-analyst/test-idea-design', reason: 'Phân bổ Test Idea theo từng Viewpoint' },
+      { step: '05', name: 'qa-test-design/test-case-generation', reason: 'Trace mã VP-xx vào Tags của Test Case' },
+      { step: '06', name: 'qa-test-design/coverage-review', reason: 'Rà soát độ phủ góc nhìn' },
+      { step: '07', name: 'qa-exploratory/exploratory-charter', reason: 'Lấy Risk Area làm charter thăm dò' }
     ]
   },
   '04': {
-    skill: 'agents/qa-analyst/skills/04-test-idea-design.md',
+    skill: 'agents/qa-analyst/skills/test-idea-design.md',
     produces: '04_test_idea_report.md',
     consumed_by: [
-      { step: '05', name: 'qa-test-design/05-test-case-generation', reason: 'Expand toàn bộ Test Idea "Giữ" thành Test Case 8 trường' }
+      { step: '05', name: 'qa-test-design/test-case-generation', reason: 'Expand toàn bộ Test Idea "Giữ" thành Test Case 8 trường' }
     ]
   },
   '05': {
-    skill: 'agents/qa-test-design/skills/05-test-case-generation.md',
+    skill: 'agents/qa-test-design/skills/test-case-generation.md',
     produces: '05_test_case_spec.md & 05_test_blueprint.json',
     consumed_by: [
-      { step: '06', name: 'qa-test-design/06-coverage-review', reason: 'Đánh giá độ phủ thực tế của từng Test Case' },
-      { step: '12', name: 'qa-test-data/12-data-validation-traceability', reason: 'Ánh xạ dữ liệu test vào từng mã TC_ID' }
+      { step: '06', name: 'qa-test-design/coverage-review', reason: 'Đánh giá độ phủ thực tế của từng Test Case' },
+      { step: '12', name: 'qa-test-data/data-validation-traceability', reason: 'Ánh xạ dữ liệu test vào từng mã TC_ID' }
     ]
   },
   '09': {
-    skill: 'agents/qa-test-data/skills/09-data-class-map.md',
+    skill: 'agents/qa-test-data/skills/data-class-map.md',
     produces: '09_data_class_map.md',
     consumed_by: [
-      { step: '10', name: 'qa-test-data/10-dataset-generation', reason: 'Lấy field map để sinh dataset thực tế' },
-      { step: '11', name: 'qa-test-data/11-boundary-negative-dataset', reason: 'Lấy mốc min/max để sinh dataset biên' }
+      { step: '10', name: 'qa-test-data/dataset-generation', reason: 'Lấy field map để sinh dataset thực tế' },
+      { step: '11', name: 'qa-test-data/boundary-negative-dataset', reason: 'Lấy mốc min/max để sinh dataset biên' }
     ]
   }
 };

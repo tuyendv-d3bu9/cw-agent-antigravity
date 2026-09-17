@@ -12,10 +12,10 @@
 > **Phân biệt với `<agent dễ nhầm>`**: <agent này làm X> khác <agent kia làm Y>.
 
 ## Skill sở hữu
-- `<NN>-<ten-skill>` — <một dòng: vào gì → ra gì>
-- `<NN>-<ten-skill>` — <một dòng>
+- `<ten-skill>` — <một dòng: vào gì → ra gì>
+- `<ten-skill>` — <một dòng>
 
-Chuỗi chạy: `<NN> → <NN>`. Mỗi skill chỉ chạy khi output của skill trước đã có.
+Chuỗi chạy: `<skill-1> → <skill-2>`. Mỗi skill chỉ chạy khi output của skill trước đã có.
 
 ## Knowledge
 - **Đọc**: `knowledge/_project.md` · `knowledge/<feature-slug>.md` (nếu có)

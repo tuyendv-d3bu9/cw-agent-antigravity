@@ -1,4 +1,4 @@
-# Skill: 06-coverage-review
+# Skill: coverage-review
 
 > Tuân thủ `shared/QA_STANDARD.md` (verdict + **ngoại lệ §1** · guard · FACT · chuỗi biên §6).
 

@@ -1,4 +1,4 @@
-# Skill: 07-exploratory-charter
+# Skill: exploratory-charter
 
 > Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT · risk matrix 3x3 §5).
 

@@ -1,4 +1,4 @@
-# Skill: 04-test-idea-design
+# Skill: test-idea-design
 
 > Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT).
 

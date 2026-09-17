@@ -12,7 +12,7 @@ Chỉ nhận xét **những gì NHÌN THẤY** trên ảnh tĩnh. Không suy đo
 chuyển màn, phản hồi sau khi bấm) vì ảnh tĩnh không thể hiện được.
 
 ## Skill sở hữu
-- `08-ui-screenshot-review` — quét ảnh → 3 nhóm vấn đề (UI Inconsistency / Accessibility / UX Problem)
+- `ui-screenshot-review` — quét ảnh → 3 nhóm vấn đề (UI Inconsistency / Accessibility / UX Problem)
 
 ## Knowledge
 - **Đọc**: `knowledge/<feature-slug>.md` (nếu có) — để biết màn hình đang review thuộc luồng nào.
@@ -41,7 +41,7 @@ Theo `shared/QA_STANDARD.md` §1. Không có ảnh → `ASK`.
 - **Ra**: `OUTPUT/<task-slug>/08_ui_screenshot_analysis.md`
 
 ## Bàn giao
-Phát hiện UX/A11y → có thể vòng lại `agents/qa-analyst/skills/03-viewpoint-selection.md` để bổ sung viewpoint
+Phát hiện UX/A11y → có thể vòng lại `agents/qa-analyst/skills/viewpoint-selection.md` để bổ sung viewpoint
 UX/Usability hoặc Accessibility nếu lộ ra vùng chưa được phủ.
 
 ## Cách gọi

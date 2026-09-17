@@ -42,7 +42,7 @@ task-slug = function-d
 
 Chạy skill 06 để nghiệm thu:
 
-B6  agents/qa-test-design/AGENT.md + skills/06-coverage-review.md
+B6  agents/qa-test-design/AGENT.md + skills/coverage-review.md
     Vào : OUTPUT/function-d/01_requirement_risk_summary.md
           OUTPUT/function-d/03_viewpoint_report.md
           OUTPUT/function-d/05_test_case_spec.md
@@ -105,7 +105,7 @@ bàn giao, đừng để trống:
 3. **Cross-system Impact** — tác động tích hợp liên hệ thống ngoài phạm vi tài liệu
 4. **Exploratory Insights** — góc thăm dò sâu theo kinh nghiệm thực chiến
 
-Cần thăm dò thêm → chạy `agents/qa-exploratory/skills/07-exploratory-charter.md`, không nhồi
+Cần thăm dò thêm → chạy `agents/qa-exploratory/skills/exploratory-charter.md`, không nhồi
 vào test suite scripted.
 
 ---

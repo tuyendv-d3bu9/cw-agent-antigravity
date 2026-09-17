@@ -1,4 +1,4 @@
-# Skill: 08-ui-screenshot-review
+# Skill: ui-screenshot-review
 
 > Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT).
 > **Cần ảnh đính kèm (Vision). Không có ảnh → DỪNG, yêu cầu cung cấp ảnh.**

@@ -1,4 +1,4 @@
-# Skill: 09-data-class-map  `[MỚI]`
+# Skill: data-class-map
 
 > Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT · chuỗi biên §6).
 

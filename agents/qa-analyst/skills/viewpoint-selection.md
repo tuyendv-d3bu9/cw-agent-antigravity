@@ -1,4 +1,4 @@
-# Skill: 03-viewpoint-selection
+# Skill: viewpoint-selection
 
 > Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT · risk matrix 3x3).
 

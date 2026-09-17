@@ -1,4 +1,4 @@
-# Skill: 14-gen-daily-summary
+# Skill: gen-daily-summary
 
 > Tuân thủ `agents/core/QA_STANDARD.md` (verdict · guard · FACT standard).
 >
@@ -133,7 +133,7 @@ Ghi ra file `outputs/reports/daily-summary-<audience>.md`:
 
 ````markdown
 # DAILY QA SUMMARY · <Tên Sprint / Ngày>
-Owner: agents/qa-reporter/14-gen-daily-summary · Audience: <dev | pm> · Nguồn: <sprint_data_path> · Verdict: <PASS | ASK>
+Owner: agents/qa-reporter/gen-daily-summary · Audience: <dev | pm> · Nguồn: <sprint_data_path> · Verdict: <PASS | ASK>
 
 ---
 

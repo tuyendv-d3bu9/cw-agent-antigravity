@@ -9,12 +9,12 @@ Agent thiết kế và tự kiểm định test suite. Nhận Test Idea "Giữ" 
 
 > **Phân biệt với `agents/qa-analyst`**: agent kia dừng ở Test Idea (1 câu). Agent này mới sinh Test Case đầy đủ.
 >
-> **Phân biệt skill `06-coverage-review` với QA Leader**: `06` review *test suite*; QA Leader
+> **Phân biệt skill `coverage-review` với QA Leader**: `coverage-review` review *test suite*; QA Leader
 > review *prompt*. Không nhầm lẫn hai vai.
 
 ## Skill sở hữu
-- `05-test-case-generation` — expand Test Idea "Giữ" → Test Case 8 trường
-- `06-coverage-review` — đối soát độ phủ 3 góc nhìn, phát hiện gap, ra verdict
+- `test-case-generation` — expand Test Idea "Giữ" → Test Case 8 trường
+- `coverage-review` — đối soát độ phủ 3 góc nhìn, phát hiện gap, ra verdict
 
 Chuỗi chạy: `05 → 06`. `06` là chốt chặn cuối trước khi bàn giao test suite.
 
@@ -59,4 +59,4 @@ Theo `shared/QA_STANDARD.md` §1, kèm ngoại lệ của skill `06`.
 
 ## Cách gọi
 - Theo agent: "QA Test Design, dựng test suite từ output 04."
-- Theo skill: "Chạy `06-coverage-review` với output 01 + 03 + 05."
+- Theo skill: "Chạy `coverage-review` với output 01 + 03 + 05."

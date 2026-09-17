@@ -1,4 +1,4 @@
-# Skill: 02-missing-rule-06w
+# Skill: missing-rule-06w
 
 > Tuân thủ `shared/QA_STANDARD.md` (verdict · guard · FACT · 06W).
 

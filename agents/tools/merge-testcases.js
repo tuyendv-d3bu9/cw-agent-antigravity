@@ -40,7 +40,7 @@ if (files.length === 0) {
 console.log(`Tìm thấy ${files.length} file batch. Đang tiến hành gộp...`);
 
 let combinedContent = `# TEST CASE SPECIFICATION · ${slug}\n`;
-combinedContent += `Owner: agents/qa-test-design/05-test-case-generation · Nguồn: OUTPUT/${slug}/05_test_blueprint.json · Verdict: PASS\n\n`;
+combinedContent += `Owner: agents/qa-test-design/test-case-generation · Nguồn: OUTPUT/${slug}/05_test_blueprint.json · Verdict: PASS\n\n`;
 combinedContent += `> Tổng hợp tự động từ ${files.length} batch kiểm thử chi tiết.\n\n---\n\n`;
 
 let totalCases = 0;

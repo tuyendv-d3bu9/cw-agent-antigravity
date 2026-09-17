@@ -11,7 +11,7 @@ thực hiện**.
 > Charter đặt ra sứ mệnh và phạm vi, **không** liệt kê bước cứng.
 
 ## Skill sở hữu
-- `07-exploratory-charter` — Risk Area → Charter 5 trường (Mission/Area/Risk/Time-box/Notes)
+- `exploratory-charter` — Risk Area → Charter 5 trường (Mission/Area/Risk/Time-box/Notes)
 
 ## Knowledge
 - **Đọc**: `knowledge/_project.md` · `knowledge/<feature-slug>.md` (nếu có)
@@ -40,7 +40,7 @@ Theo `shared/QA_STANDARD.md` §1.
 
 ## Bàn giao
 Charter set → người test thực thi phiên session-based. Phát hiện từ phiên có thể vòng lại
-`agents/qa-analyst/skills/02-missing-rule-06w.md` nếu lộ ra rule thiếu.
+`agents/qa-analyst/skills/missing-rule-06w.md` nếu lộ ra rule thiếu.
 
 ## Cách gọi
 - "QA Exploratory, dựng charter set từ Risk Area của output 03."

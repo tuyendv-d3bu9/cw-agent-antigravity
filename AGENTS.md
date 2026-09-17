@@ -117,7 +117,7 @@ Mọi AI Agent **bắt buộc tự động đóng vai QA Leader**:
 Khi số lượng Test Case dự tính vượt quá **50 test cases** (hoặc lên tới hàng trăm, hàng nghìn test cases), **CẤM** cố sinh toàn bộ trong 1 lần (One-shot) vì chắc chắn sẽ bị cắt cụt token hoặc suy giảm chất lượng. Mọi Agent bắt buộc tuân theo quy trình 3 giai đoạn:
 
 ```
-[04-test-idea-report] ──► 1. TẠO BLUEPRINT JSON (05_test_blueprint.json)
+[04_test_idea_report.md] ──► 1. TẠO BLUEPRINT JSON (05_test_blueprint.json)
                                     │
                                     ├──► Lô 1 (batch_01.md: TC-001 -> TC-050)
                                     ├──► Lô 2 (batch_02.md: TC-051 -> TC-100)
