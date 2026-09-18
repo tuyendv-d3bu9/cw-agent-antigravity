@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 /**
- * intake.js — Cổng tiếp nhận số 0 của QA Leader:
- *   1. Chuyển đổi mọi định dạng thô (.docx, .pdf, .txt) sang Markdown (.md) sạch
- *   2. Tự động phân tích nội dung để xếp vào đúng 1 trong 5 ngăn của INPUT/<slug>/
+ * intake.js — QA Leader Intake Gate (Gate 0):
+ *   1. Converts raw document formats (.docx, .pdf, .txt) to clean Markdown (.md)
+ *   2. Intelligently classifies content into 1 of 5 categories under INPUT/<slug>/
  *      (01_business, 02_ba, 03_dev, 04_design, 05_communication)
  *
- * Dùng:
- *   npm run intake -- <file-hoặc-thư-mục> [--slug <task-slug>]
- * Ví dụ:
+ * Usage:
+ *   npm run intake -- <file-or-dir> [--slug <task-slug>]
+ * Examples:
  *   node agents/tools/intake.js "SRS_Auth.docx" --slug auth-login
  *   node agents/tools/intake.js "doc.pdf" --slug qa-standard-guide
  */
@@ -30,9 +30,9 @@ const positional = args.filter((a, idx) => !a.startsWith('--') && idx !== slugIn
 const targetInput = positional[0];
 
 if (!targetInput) {
-  console.log('Cách dùng:');
-  console.log('  node agents/tools/intake.js <file-hoặc-thư-mục> [--slug <task-slug>]\n');
-  console.log('Ví dụ:');
+  console.log('Usage:');
+  console.log('  node agents/tools/intake.js <file-or-directory> [--slug <task-slug>]\n');
+  console.log('Example:');
   console.log('  node agents/tools/intake.js "SRS_Auth.docx" --slug auth-login');
   process.exit(0);
 }
@@ -56,27 +56,27 @@ function cleanupMarkdown(md) {
     .trim();
 }
 
-// Chuyển đổi file docx sang markdown
+// Convert docx to markdown
 async function convertDocx(filePath) {
   if (!mammoth) {
-    throw new Error('Chưa cài đặt mammoth. Vui lòng chạy: npm install');
+    throw new Error('Mammoth dependency not installed. Please run: npm install');
   }
   const result = await mammoth.convertToMarkdown({ path: filePath });
   return cleanupMarkdown(result.value);
 }
 
-// Chuyển đổi file pdf sang markdown qua pypdf
+// Extract PDF text to markdown via python pypdf
 function convertPdf(filePath) {
   try {
     const pythonCmd = `python -c "import sys, pypdf; sys.stdout.reconfigure(encoding='utf-8'); r = pypdf.PdfReader(sys.argv[1]); print('\\n\\n'.join(p.extract_text() or '' for p in r.pages))" "${filePath}"`;
     const output = execSync(pythonCmd, { encoding: 'utf-8', maxBuffer: 10 * 1024 * 1024 });
     return cleanupMarkdown(output);
   } catch (err) {
-    throw new Error(`Không thể trích xuất PDF: ${err.message}`);
+    throw new Error(`Unable to extract PDF: ${err.message}`);
   }
 }
 
-// Phân loại nội dung vào 1 trong 5 ngăn
+// Classify document content into 1 of 5 intake buckets
 function classifyDocument(content, filename) {
   const lowerContent = (content + ' ' + filename).toLowerCase();
 
@@ -131,13 +131,13 @@ function classifyDocument(content, filename) {
     return '01_business';
   }
 
-  // Mặc định: 02_ba (PRD, SRS, User Stories, Acceptance Criteria)
+  // Default: 02_ba (PRD, SRS, User Stories, Acceptance Criteria)
   return '02_ba';
 }
 
 async function processFile(filePath, userSlug) {
   if (!fs.existsSync(filePath)) {
-    console.error(`❌ Không tìm thấy file: ${filePath}`);
+    console.error(`❌ File not found: ${filePath}`);
     return;
   }
 
@@ -145,34 +145,34 @@ async function processFile(filePath, userSlug) {
   const baseName = path.basename(filePath, ext);
   const slug = userSlug || slugify(baseName);
 
-  console.log(`\n📥 [CỔNG 0 - QA LEADER] Tiếp nhận tài liệu: "${path.basename(filePath)}"`);
-  console.log(`   -> Gán tính năng (Slug): [ ${slug} ]`);
+  console.log(`\n📥 [GATE 0 - QA LEADER] Ingesting document: "${path.basename(filePath)}"`);
+  console.log(`   -> Target feature slug: [ ${slug} ]`);
 
   let markdownContent = '';
 
   if (ext === '.docx') {
-    console.log('   -> Định dạng .docx: Đang chuyển đổi ngầm sang Markdown...');
+    console.log('   -> Format .docx: Converting to clean Markdown...');
     markdownContent = await convertDocx(filePath);
   } else if (ext === '.pdf') {
-    console.log('   -> Định dạng .pdf: Đang trích xuất văn bản sang Markdown...');
+    console.log('   -> Format .pdf: Extracting text to Markdown...');
     markdownContent = convertPdf(filePath);
   } else if (ext === '.md' || ext === '.txt') {
-    console.log('   -> Định dạng văn bản thuần: Đang nạp nội dung...');
+    console.log('   -> Plain text format: Loading content...');
     markdownContent = fs.readFileSync(filePath, 'utf8');
   } else {
-    console.error(`❌ Định dạng ${ext} chưa được hỗ trợ chuyển đổi tự động.`);
+    console.error(`❌ Format ${ext} is not supported for automated conversion.`);
     return;
   }
 
-  // Phân loại vào 5 ngăn
+  // Classify into 5 categories
   const category = classifyDocument(markdownContent, path.basename(filePath));
-  console.log(`   -> Phân loại nội dung thông minh: Thuộc ngăn [ ${category} ]`);
+  console.log(`   -> Categorized into: [ ${category} ]`);
 
-  // Tạo thư mục đích
+  // Create destination directory
   const targetDir = path.join(process.cwd(), 'INPUT', slug, category);
   fs.mkdirSync(targetDir, { recursive: true });
 
-  // Đảm bảo đủ cả 5 ngăn rỗng để chuẩn hóa cấu trúc
+  // Ensure all 5 categories exist for structure consistency
   const allCategories = ['01_business', '02_ba', '03_dev', '04_design', '05_communication'];
   allCategories.forEach(cat => {
     fs.mkdirSync(path.join(process.cwd(), 'INPUT', slug, cat), { recursive: true });
@@ -181,9 +181,9 @@ async function processFile(filePath, userSlug) {
   const destPath = path.join(targetDir, `${slugify(baseName)}.md`);
   fs.writeFileSync(destPath, markdownContent, 'utf8');
 
-  console.log(`   ✅ ĐÃ XUẤT BẢN MARKDOWN SẠCH VÀO:`);
+  console.log(`   ✅ Exported clean Markdown to:`);
   console.log(`      ${path.relative(process.cwd(), destPath)}`);
-  console.log(`   💡 QA Leader đã sẵn sàng lập 00_plan.md cho tính năng "${slug}".\n`);
+  console.log(`   💡 QA Leader is ready to generate 00_plan.md for "${slug}".\n`);
 }
 
 async function main() {
@@ -202,6 +202,6 @@ async function main() {
 }
 
 main().catch(err => {
-  console.error('❌ Lỗi:', err.message);
+  console.error('❌ Error:', err.message);
   process.exit(1);
 });

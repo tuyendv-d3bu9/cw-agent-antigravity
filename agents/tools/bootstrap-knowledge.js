@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 /**
- * bootstrap-knowledge.js — Tự động khởi tạo tri thức ban đầu cho dự án mới
+ * bootstrap-knowledge.js — Automatically seeds initial knowledge base for a new project
  *
- * Dùng:
+ * Usage:
  *   node agents/tools/bootstrap-knowledge.js
  *   npm run knowledge:init
  *
- * Nguyên tắc:
- *   Khi dự án mới tinh chưa có thư mục knowledge/, script này tự động sao chép
- *   bộ hạt giống chuẩn (Seed Templates) từ agents/templates/knowledge/ sang.
+ * Rule:
+ *   When starting a clean repository without knowledge/, this script copies
+ *   seed templates from agents/templates/knowledge/ to knowledge/.
  */
 
 const fs = require('fs');
@@ -20,20 +20,20 @@ const featuresDir = path.join(knowledgeDir, 'features');
 const seedDir = path.join(rootDir, 'agents', 'templates', 'knowledge');
 
 function bootstrapKnowledge() {
-  console.log('🌱 Đang kiểm tra trạng thái bộ não tri thức (knowledge/)...');
+  console.log('🌱 Checking knowledge base status (knowledge/)...');
 
   if (!fs.existsSync(knowledgeDir)) {
     fs.mkdirSync(knowledgeDir, { recursive: true });
-    console.log(' -> Đã tạo mới thư mục: knowledge/');
+    console.log(' -> Created directory: knowledge/');
   }
 
   if (!fs.existsSync(featuresDir)) {
     fs.mkdirSync(featuresDir, { recursive: true });
-    console.log(' -> Đã tạo mới thư mục: knowledge/features/');
+    console.log(' -> Created directory: knowledge/features/');
   }
 
   if (!fs.existsSync(seedDir)) {
-    console.error(`❌ LỖI: Không tìm thấy thư mục hạt giống chuẩn tại: ${seedDir}`);
+    console.error(`❌ ERROR: Seed template directory not found at: ${seedDir}`);
     process.exit(1);
   }
 
@@ -45,15 +45,15 @@ function bootstrapKnowledge() {
     if (!fs.existsSync(destFile)) {
       const srcFile = path.join(seedDir, file);
       fs.copyFileSync(srcFile, destFile);
-      console.log(` -> Đã khởi tạo hạt giống: knowledge/${file}`);
+      console.log(` -> Initialized seed file: knowledge/${file}`);
       initializedCount++;
     }
   });
 
   if (initializedCount > 0) {
-    console.log(`🎉 Khởi tạo tri thức dự án thành công (${initializedCount} file nền tảng).`);
+    console.log(`🎉 Knowledge base bootstrap complete (${initializedCount} foundational file(s) initialized).`);
   } else {
-    console.log('✅ Bộ não tri thức knowledge/ đã đầy đủ các file nền tảng.');
+    console.log('✅ Knowledge base knowledge/ already contains all foundational files.');
   }
 }
 

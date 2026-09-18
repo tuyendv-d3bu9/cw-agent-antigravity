@@ -1,19 +1,12 @@
 #!/usr/bin/env node
 /**
- * convert.js — đổi tài liệu .docx thành .md để nạp vào INPUT/
+ * convert.js — Converts .docx documents to clean markdown (.md) for INPUT/
  *
- * Dùng:
- *   npm run convert                          # mọi .docx trong ./docx  ->  INPUT/
- *   npm run convert -- <file.docx>           # 1 file                  ->  INPUT/
- *   npm run convert -- <thư-mục> <đích>      # thư mục khác            ->  đích khác
- *   npm run convert -- <file.docx> --clean   # dọn rác mammoth (xem bên dưới)
- *
- * Vì sao cần: skill 01 đọc tài liệu yêu cầu ở INPUT/*.md. Tài liệu gốc từ BA
- * thường là .docx, phải đổi sang .md trước khi chạy pipeline.
- *
- * --clean làm gì: bỏ anchor rác `<a id="_xxx"></a>` và bỏ dấu escape thừa
- * (`\(` -> `(`, `\.` -> `.`) mà mammoth sinh ra. Mặc định TẮT để giữ nguyên
- * bản chuyển đổi — bật khi muốn bản .md dễ đọc hơn.
+ * Usage:
+ *   npm run convert                          # All .docx files in ./docx -> INPUT/
+ *   npm run convert -- <file.docx>           # Single file               -> INPUT/
+ *   npm run convert -- <src_dir> <out_dir>   # Custom directory          -> Custom output
+ *   npm run convert -- <file.docx> --clean   # Clean mammoth artifacts (anchors, escape characters)
  */
 
 const fs = require("fs");
@@ -23,7 +16,7 @@ let mammoth;
 try {
   mammoth = require("mammoth");
 } catch (e) {
-  console.error("Chưa cài dependency. Chạy: npm install");
+  console.error("Missing dependency. Please run: npm install");
   process.exit(1);
 }
 
@@ -62,16 +55,16 @@ async function convertOne(file) {
   const outFile = path.join(outDir, path.basename(file, path.extname(file)) + ".md");
 
   if (fs.existsSync(outFile)) {
-    console.error(`  BỎ QUA  ${outFile} — đã tồn tại, không ghi đè. Xoá hoặc đổi tên trước.`);
+    console.error(`  SKIPPED  ${outFile} — already exists, will not overwrite. Delete or rename first.`);
     return { skipped: true };
   }
 
   fs.writeFileSync(outFile, md, "utf8");
-  console.log(`  OK      ${file}  ->  ${outFile}`);
+  console.log(`  OK       ${file}  ->  ${outFile}`);
   result.messages
     .filter((m) => m.type === "warning")
     .slice(0, 5)
-    .forEach((m) => console.log(`          ! ${m.message}`));
+    .forEach((m) => console.log(`           ! ${m.message}`));
   return { skipped: false };
 }
 
@@ -79,20 +72,20 @@ async function convertOne(file) {
   const files = listDocx(src);
 
   if (files === null) {
-    console.error(`Không tìm thấy: ${src}`);
-    console.error(`Tạo thư mục ./${DEFAULT_SRC}/ rồi bỏ file .docx vào, hoặc truyền đường dẫn:`);
-    console.error(`  npm run convert -- duong/dan/file.docx`);
+    console.error(`Source not found: ${src}`);
+    console.error(`Create directory ./${DEFAULT_SRC}/ and add .docx files, or provide path:`);
+    console.error(`  npm run convert -- path/to/file.docx`);
     process.exit(1);
   }
 
   if (files.length === 0) {
-    console.error(`Không có file .docx nào trong: ${src}`);
+    console.error(`No .docx files found in: ${src}`);
     process.exit(1);
   }
 
   if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
 
-  console.log(`Đổi ${files.length} file .docx  ->  ${outDir}/${clean ? "  (--clean)" : ""}`);
+  console.log(`Converting ${files.length} .docx file(s) -> ${outDir}/${clean ? "  (--clean)" : ""}`);
 
   let ok = 0;
   let skipped = 0;
@@ -101,12 +94,12 @@ async function convertOne(file) {
       const r = await convertOne(f);
       r.skipped ? skipped++ : ok++;
     } catch (err) {
-      console.error(`  LỖI    ${f} — ${err.message}`);
+      console.error(`  ERROR    ${f} — ${err.message}`);
     }
   }
 
-  console.log(`Xong: ${ok} file mới, ${skipped} bỏ qua.`);
+  console.log(`Finished: ${ok} converted, ${skipped} skipped.`);
   if (ok > 0) {
-    console.log(`Bước tiếp: kiểm nội dung trong ${outDir}/ rồi chạy workflows/run-to-testcase.md`);
+    console.log(`Next step: Verify markdown in ${outDir}/ and run test analysis workflows.`);
   }
 })();

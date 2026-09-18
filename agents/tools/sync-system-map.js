@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * sync-system-map.js — Tự động đồng bộ bản đồ hệ thống knowledge/_system_map.json
+ * sync-system-map.js — Automatically synchronizes knowledge/_system_map.json
  *
- * Dùng:
+ * Usage:
  *   npm run map:sync
  */
 
@@ -15,7 +15,7 @@ const inputDir = path.join(process.cwd(), 'INPUT');
 const featuresDir = path.join(process.cwd(), 'knowledge', 'features');
 
 if (!fs.existsSync(mapPath)) {
-  console.error(`Không tìm thấy file: ${mapPath}`);
+  console.error(`Error: File not found: ${mapPath}`);
   process.exit(1);
 }
 
@@ -23,7 +23,7 @@ let mapData = JSON.parse(fs.readFileSync(mapPath, 'utf8'));
 mapData.last_updated = new Date().toISOString().split('T')[0];
 mapData.features_inventory = {};
 
-// Quét các feature hiện có trong OUTPUT/
+// Scan existing features in OUTPUT/
 if (fs.existsSync(outputDir)) {
   const tasks = fs.readdirSync(outputDir).filter(f => {
     const fullPath = path.join(outputDir, f);
@@ -35,8 +35,8 @@ if (fs.existsSync(outputDir)) {
     const planFile = path.join(taskDir, '00_plan.md');
     const specFile = path.join(taskDir, '05_test_case_spec.md');
     const featureKnowledge = `knowledge/features/${slug}.md`;
-    
-    // Tìm file input tương ứng
+
+    // Find corresponding input file
     let inputFile = `INPUT/${slug}.md`;
     if (fs.existsSync(inputDir)) {
       const inputs = fs.readdirSync(inputDir);
@@ -79,6 +79,6 @@ if (fs.existsSync(outputDir)) {
 }
 
 fs.writeFileSync(mapPath, JSON.stringify(mapData, null, 2), 'utf8');
-console.log(' Đã đồng bộ thành công bản đồ hệ thống:');
+console.log('✅ Successfully synchronized system map:');
 console.log(`  -> ${mapPath}`);
-console.log(`  -> Đã cập nhật ${Object.keys(mapData.features_inventory).length} tính năng vào bản đồ.`);
+console.log(`  -> Updated ${Object.keys(mapData.features_inventory).length} feature(s) in system inventory.`);

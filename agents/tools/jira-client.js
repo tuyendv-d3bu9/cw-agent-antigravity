@@ -1,10 +1,10 @@
 /**
  * jira-client.js
- * REST API Client tương tác hai chiều với Jira & Redmine:
- * 1. PUSH: Đẩy bulk test cases lên Jira/Redmine.
- * 2. PULL: Kéo danh sách Bugs / Defects từ Jira về lưu vào OUTPUT/<task-slug>/jira_defects_summary.md
+ * Bi-directional REST API client for Jira & Redmine:
+ * 1. PUSH: Push bulk test cases to Jira/Redmine.
+ * 2. PULL: Pull bugs/defects from Jira and save to OUTPUT/<task-slug>/jira_defects_summary.md
  * 
- * Cách dùng:
+ * Usage:
  *   node agents/tools/jira-client.js pull [task-slug]
  *   node agents/tools/jira-client.js push [task-slug]
  */
@@ -18,7 +18,6 @@ const ROOT_DIR = path.resolve(__dirname, '../..');
 const OUTPUT_DIR = path.join(ROOT_DIR, 'OUTPUT');
 const ENV_PATH = path.join(ROOT_DIR, '.env');
 
-// Đọc cấu hình từ .env thủ công (không bắt buộc cài thêm dotenv)
 function loadEnv() {
   const env = {};
   if (fs.existsSync(ENV_PATH)) {
@@ -56,7 +55,7 @@ function makeRequest(options, postData) {
     req.on('error', (err) => reject(err));
     req.setTimeout(10000, () => {
       req.destroy();
-      reject(new Error('Request timeout sau 10s'));
+      reject(new Error('Request timeout after 10s'));
     });
 
     if (postData) {
@@ -75,28 +74,28 @@ async function pullDefects(taskSlug, env) {
   const jiraToken = env.JIRA_API_TOKEN;
   const projectKey = env.JIRA_PROJECT_KEY || 'PROJECT';
 
-  console.log(`\n🔍 [JIRA PULL] Đang lấy danh sách Defects/Bugs cho dự án [${projectKey}]...`);
+  console.log(`\n🔍 [JIRA PULL] Fetching Defects/Bugs for project [${projectKey}]...`);
 
   if (!jiraHost || !jiraToken) {
-    console.warn(`⚠️ Chưa cấu hình JIRA_HOST / JIRA_API_TOKEN trong file .env.`);
-    console.log(`ℹ️ Tạo mẫu báo cáo giả lập (Mock Summary) để Agent vẫn có dữ liệu mẫu phân tích rủi ro...`);
+    console.warn(`⚠️ JIRA_HOST or JIRA_API_TOKEN not configured in .env.`);
+    console.log(`ℹ️ Generating mock defects summary for testing and risk analysis...`);
 
     const mockSummary = [
-      `# TỔNG HỢP DANH SÁCH DEFECTS TỪ JIRA · ${projectKey}`,
-      `Thời gian đồng bộ: ${new Date().toISOString()} · Nguồn: Jira Cloud / Staging`,
+      `# DEFECTS SUMMARY FROM JIRA · ${projectKey}`,
+      `Sync Timestamp: ${new Date().toISOString()} · Source: Jira Cloud / Staging`,
       ``,
       `> [!NOTE]`,
-      `> Đây là dữ liệu mẫu đồng bộ tự động khi chưa nạp thông tin kết nối thực tế tại \`.env\`.`,
+      `> This is automated mock data used when .env connection credentials are not provided.`,
       ``,
-      `| Issue Key | Summary | Severity | Status | Component | Ghi chú cho QA |`,
+      `| Issue Key | Summary | Severity | Status | Component | QA Notes |`,
       `|---|---|---|---|---|---|`,
-      `| \`${projectKey}-102\` | Lỗi không trim khoảng trắng input khi paste từ clipboard | Medium | Closed | CORE | Cần test kỹ case space đầu/cuối |`,
-      `| \`${projectKey}-145\` | Lỗi giá trị vượt quá trần tối đa vẫn tính nguyên giá trị | High | Resolved | LOGIC | Chú ý kiểm thử biên giáp trần tối đa |`,
-      `| \`${projectKey}-208\` | Khách chưa login bấm thực hiện thao tác bị crash màn hình | High | Closed | AUTH | Kiểm tra tiền điều kiện xác thực người dùng |`,
-      `| \`${projectKey}-256\` | Thao tác thất bại nhưng trạng thái không rollback an toàn | Critical | Reopened | TRANSACTION | Kiểm thử kỹ luồng rollback trạng thái |`,
+      `| \`${projectKey}-102\` | Leading/trailing whitespace not trimmed when pasted from clipboard | Medium | Closed | CORE | Test whitespace boundary cases |`,
+      `| \`${projectKey}-145\` | Value exceeding max threshold still computes at face value | High | Resolved | LOGIC | Verify upper boundary limits |`,
+      `| \`${projectKey}-208\` | Unauthenticated user action triggers frontend crash | High | Closed | AUTH | Verify user authentication preconditions |`,
+      `| \`${projectKey}-256\` | Failed transaction does not rollback state cleanly | Critical | Reopened | TRANSACTION | Test rollback and failure paths |`,
       ``,
-      `### Hướng dẫn cấu hình kết nối thật:`,
-      `Tạo file \`.env\` ở thư mục gốc với các thông số:`,
+      `### Real connection configuration guide:`,
+      `Create a \`.env\` file in the root directory with:`,
       `\`\`\`env`,
       `JIRA_HOST=https://your-company.atlassian.net`,
       `JIRA_EMAIL=qa-lead@example.com`,
@@ -106,7 +105,7 @@ async function pullDefects(taskSlug, env) {
     ].join('\n');
 
     fs.writeFileSync(outPath, mockSummary, 'utf-8');
-    console.log(`✅ Đã xuất báo cáo lỗi tại: ${outPath}`);
+    console.log(`✅ Saved defect report to: ${outPath}`);
     return;
   }
 
@@ -129,11 +128,11 @@ async function pullDefects(taskSlug, env) {
 
     const res = await makeRequest(options);
     if (res.statusCode !== 200) {
-      throw new Error(`Jira trả về lỗi HTTP ${res.statusCode}: ${res.raw}`);
+      throw new Error(`Jira returned HTTP ${res.statusCode}: ${res.raw}`);
     }
 
     const issues = res.data.issues || [];
-    console.log(`✅ Kéo thành công ${issues.length} defects từ Jira.`);
+    console.log(`✅ Successfully pulled ${issues.length} defect(s) from Jira.`);
 
     const rows = issues.map(iss => {
       const key = iss.key;
@@ -141,24 +140,24 @@ async function pullDefects(taskSlug, env) {
       const stat = iss.fields.status?.name || 'Open';
       const prio = iss.fields.priority?.name || 'Medium';
       const comp = (iss.fields.components || []).map(c => c.name).join(', ') || 'General';
-      return `| \`${key}\` | ${sum} | ${prio} | ${stat} | ${comp} | Đồng bộ từ Jira |`;
+      return `| \`${key}\` | ${sum} | ${prio} | ${stat} | ${comp} | Synced from Jira |`;
     });
 
     const reportContent = [
-      `# TỔNG HỢP DANH SÁCH DEFECTS TỪ JIRA · ${projectKey}`,
-      `Thời gian đồng bộ: ${new Date().toISOString()} · Nguồn: ${jiraHost}`,
+      `# DEFECTS SUMMARY FROM JIRA · ${projectKey}`,
+      `Sync Timestamp: ${new Date().toISOString()} · Source: ${jiraHost}`,
       ``,
-      `| Issue Key | Summary | Severity | Status | Component | Ghi chú |`,
+      `| Issue Key | Summary | Severity | Status | Component | Notes |`,
       `|---|---|---|---|---|---|`,
       ...rows,
       ``
     ].join('\n');
 
     fs.writeFileSync(outPath, reportContent, 'utf-8');
-    console.log(`✅ Đã lưu danh sách lỗi thực tế tại: ${outPath}`);
+    console.log(`✅ Saved live defect list to: ${outPath}`);
 
   } catch (err) {
-    console.error(`❌ Lỗi khi kết nối Jira API: ${err.message}`);
+    console.error(`❌ Jira API connection error: ${err.message}`);
   }
 }
 
@@ -167,11 +166,10 @@ async function pushTestCases(taskSlug, env) {
   const jiraCsvPath = path.join(taskDir, 'export_jira_xray.csv');
   const redmineCsvPath = path.join(taskDir, 'export_redmine.csv');
 
-  console.log(`\n🚀 [TEST CASE PUSH] Chuẩn bị đẩy test case cho task [${taskSlug}]...`);
+  console.log(`\n🚀 [TEST CASE PUSH] Preparing test cases for task [${taskSlug}]...`);
 
-  // Đảm bảo file CSV đã được xuất
   if (!fs.existsSync(jiraCsvPath)) {
-    console.log(`ℹ️ Chưa có file CSV, tự động gọi export-testcases.js...`);
+    console.log(`ℹ️ CSV not found, invoking export-testcases.js...`);
     require('./export-testcases');
   }
 
@@ -179,18 +177,17 @@ async function pushTestCases(taskSlug, env) {
   const jiraToken = env.JIRA_API_TOKEN;
 
   if (!jiraHost || !jiraToken) {
-    console.log(`\n📌 CHẾ ĐỘ FILE IMPORT (Khuyến nghị cho số lượng lớn test cases):`);
-    console.log(`- File Jira Xray sẵn sàng tại : ${jiraCsvPath}`);
-    console.log(`- File Redmine sẵn sàng tại   : ${redmineCsvPath}`);
-    console.log(`\n👉 Cách import nhanh không cần token:`);
-    console.log(`  1. Trên Jira: Vào Project > Xray Settings > Test Case Importer > Chọn file export_jira_xray.csv.`);
-    console.log(`  2. Trên Redmine: Vào Issues > Import > Chọn file export_redmine.csv.`);
-    console.log(`\n👉 Để kích hoạt Push trực tiếp qua API: Điền thông tin vào file .env.`);
+    console.log(`\n📌 FILE IMPORT MODE (Recommended for bulk test cases):`);
+    console.log(`- Jira Xray file ready at : ${jiraCsvPath}`);
+    console.log(`- Redmine file ready at   : ${redmineCsvPath}`);
+    console.log(`\n👉 Quick import instructions:`);
+    console.log(`  1. In Jira: Go to Project > Xray Settings > Test Case Importer > Select export_jira_xray.csv.`);
+    console.log(`  2. In Redmine: Go to Issues > Import > Select export_redmine.csv.`);
+    console.log(`\n👉 To enable direct API push: Configure credentials in .env file.`);
     return;
   }
 
-  console.log(`Đang kết nối tới ${jiraHost} để đẩy dữ liệu qua API...`);
-  // Gọi endpoint REST API tương ứng (hoặc Xray GraphQL/REST)
+  console.log(`Connecting to ${jiraHost} to push data via API...`);
 }
 
 function main() {
@@ -200,14 +197,14 @@ function main() {
   if (!taskSlug) {
     if (fs.existsSync(OUTPUT_DIR)) {
       const dirs = fs.readdirSync(OUTPUT_DIR).filter(f => {
-        return fs.statSync(path.join(OUTPUT_DIR, f)).isDirectory() && !f.startsWith('.');
+        return fs.statSync(path.join(OUTPUT_DIR, f)).isDirectory() && !f.startsWith('.') && !f.startsWith('_');
       });
       if (dirs.length > 0) taskSlug = dirs[0];
     }
   }
 
   if (!taskSlug) {
-    console.error('❌ Lỗi: Không tìm thấy thư mục task nào trong OUTPUT/.');
+    console.error('❌ Error: No task directory found in OUTPUT/.');
     process.exit(1);
   }
 
@@ -218,7 +215,7 @@ function main() {
   } else if (action === 'push') {
     pushTestCases(taskSlug, env);
   } else {
-    console.log(`Lệnh không hợp lệ. Sử dụng: node jira-client.js [pull|push] [task-slug]`);
+    console.log(`Invalid command. Usage: node jira-client.js [pull|push] [task-slug]`);
   }
 }
 
