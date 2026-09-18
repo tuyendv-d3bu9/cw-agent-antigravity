@@ -21,12 +21,13 @@ if (!fs.existsSync(mapPath)) {
 
 let mapData = JSON.parse(fs.readFileSync(mapPath, 'utf8'));
 mapData.last_updated = new Date().toISOString().split('T')[0];
+mapData.features_inventory = {};
 
 // Quét các feature hiện có trong OUTPUT/
 if (fs.existsSync(outputDir)) {
   const tasks = fs.readdirSync(outputDir).filter(f => {
     const fullPath = path.join(outputDir, f);
-    return fs.statSync(fullPath).isDirectory() && !f.endsWith('.bak');
+    return fs.statSync(fullPath).isDirectory() && !f.endsWith('.bak') && !f.startsWith('_');
   });
 
   tasks.forEach(slug => {

@@ -20,7 +20,7 @@ if (!fs.existsSync(outputDir)) {
 
 const tasks = fs.readdirSync(outputDir).filter(f => {
   const fullPath = path.join(outputDir, f);
-  return fs.statSync(fullPath).isDirectory() && !f.endsWith('.bak');
+  return fs.statSync(fullPath).isDirectory() && !f.endsWith('.bak') && !f.startsWith('_');
 });
 
 if (tasks.length === 0) {
