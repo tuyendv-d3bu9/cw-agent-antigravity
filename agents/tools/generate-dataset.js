@@ -151,18 +151,18 @@ function main() {
 
   // Chế độ demo
   if (args.includes('--demo') || args.length === 0) {
-    console.log('--- [DEMO MODE] Sinh Dữ Liệu Kiểm Thử Voucher ShopGO ---');
+    console.log('--- [DEMO MODE] Sinh Dữ Liệu Kiểm Thử Mẫu (E-Commerce / Retail) ---');
     const demoSchema = {
       user_name: { type: 'vietnamese_name' },
       phone_number: { type: 'phone_vn' },
-      voucher_code: { type: 'voucher_code', prefixes: ['GIAM', 'SALE', 'VIP'], values: ['20K', '50K', '100K'] },
+      discount_code: { type: 'voucher_code', prefixes: ['PROMO', 'SALE', 'VIP'], values: ['20K', '50K', '100K'] },
       order_amount: { type: 'currency_vnd', min: 100000, max: 1000000, step: 50000, formatted: true },
       order_quantity: { type: 'boundary', min: 1, max: 10, includeLabel: true },
-      payment_method: { type: 'enum', values: ['COD', 'Ví MoMo', 'VNPay', 'Chuyển khoản'] }
+      payment_method: { type: 'enum', values: ['COD', 'Ví Điện Tử', 'Thẻ Ngân Hàng', 'Chuyển khoản'] }
     };
 
     const dataset = generateDataset(demoSchema, 7);
-    const mdTable = exportToMarkdownTable(dataset, 'Bộ Dữ Liệu Mẫu Voucher & Giỏ Hàng (7 Cases Biên & Nominal)');
+    const mdTable = exportToMarkdownTable(dataset, 'Bộ Dữ Liệu Kiểm Thử Mẫu (7 Cases Biên & Nominal)');
     console.log(mdTable);
     console.log('\n[Xong] Chạy thành công trong 0.003s với 0 token LLM!');
     return;

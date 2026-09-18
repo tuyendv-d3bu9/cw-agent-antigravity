@@ -1,10 +1,10 @@
 {
   "system_name": "CW QA Agent Ecosystem",
   "version": "2.0.0",
-  "last_updated": "2026-09-17",
+  "last_updated": "2026-09-18",
   "ssot_policy": "Tri thức trong knowledge/ là tối cao. CẤM đọc dò từng file, tra cứu bảng routing_table để mở đúng file đích.",
   "project_conventions": {
-    "project_name": "ShopGo",
+    "project_name": "<Tên Dự Án>",
     "currency": "VNĐ",
     "timezone": "Asia/Ho_Chi_Minh (GMT+7)",
     "rule_file": "knowledge/_project.md",
@@ -72,36 +72,5 @@
       "role": "Gom cụm luồng hành trình, sinh POM và thực thi Playwright E2E bắt evidence"
     }
   },
-  "features_inventory": {
-    "function-d": {
-      "name": "function-d",
-      "input_file": "INPUT/Function D.md",
-      "knowledge_file": "knowledge/features/function-d.md",
-      "output_dir": "OUTPUT/function-d/",
-      "plan_file": "OUTPUT/function-d/00_plan.md",
-      "status": "COMPLETED (PASS)",
-      "total_testcases": 41,
-      "last_verdict": "PASS"
-    },
-    "reports": {
-      "name": "reports",
-      "input_file": "INPUT/reports.md",
-      "knowledge_file": "knowledge/features/reports.md",
-      "output_dir": "OUTPUT/reports/",
-      "plan_file": "OUTPUT/reports/00_plan.md",
-      "status": "IN-PROGRESS",
-      "total_testcases": 0,
-      "last_verdict": "UNKNOWN"
-    },
-    "_template_run": {
-      "name": "_template_run",
-      "input_file": "INPUT/_template_run.md",
-      "knowledge_file": "knowledge/features/_template_run.md",
-      "output_dir": "OUTPUT/_template_run/",
-      "plan_file": "OUTPUT/_template_run/00_plan.md",
-      "status": "IN-PROGRESS",
-      "total_testcases": 0,
-      "last_verdict": "UNKNOWN"
-    }
-  }
+  "features_inventory": {}
 }

@@ -8,10 +8,10 @@
 
 **Tham số**
 
-| Tham số | Giá trị mặc định |
+| Tham số | Giá trị mẫu |
 |---|---|
-| `task-slug` | `function-d` |
-| `feature knowledge` | `knowledge/function-d.md` |
+| `task-slug` | `<task-slug>` |
+| `feature knowledge` | `knowledge/features/<task-slug>.md` |
 | `bước bắt đầu lại` | bước thấp nhất bị ảnh hưởng (xác định ở §2) |
 
 ---
@@ -21,7 +21,7 @@
 Đây là bước **của con người**, agent không làm thay. Không làm bước này thì chạy lại vô nghĩa —
 agent sẽ hỏi lại đúng câu cũ.
 
-Mở `knowledge/<task-slug>.md`:
+Mở `knowledge/features/<task-slug>.md`:
 
 - [ ] **Mục 7** — với mỗi `MR-xx` BA đã trả lời: điền cột `Trả lời của BA`, đổi `Trạng thái`
       `New` → `Confirmed` (hoặc `TREO` / `Rejected`). **Không xoá dòng cũ.**
@@ -59,18 +59,18 @@ Xác định xong thì mọi bước **sau** bước đó cũng phải chạy l�
 Đọc trước:
   agents/core/QA_STANDARD.md
   knowledge/_project.md
-  knowledge/function-d.md          <-- đã cập nhật ở §1
+  knowledge/features/<task-slug>.md          <-- đã cập nhật ở §1
   workflows/WORKFLOW.md
-  OUTPUT/function-d/_index.md      <-- xem lần trước dừng ở đâu
+  OUTPUT/<task-slug>/_index.md               <-- xem lần trước dừng ở đâu
 
-task-slug = function-d
+task-slug = <task-slug>
 bước bắt đầu lại = <điền theo bảng §2>
 
-Trước khi chạy: backup thư mục OUTPUT/function-d/ hiện có sang OUTPUT/function-d.bak/
+Trước khi chạy: backup thư mục OUTPUT/<task-slug>/ hiện có sang OUTPUT/<task-slug>.bak/
 Không xoá file cũ trước khi backup.
 
 Chạy lại từ bước đã chọn, tuần tự tới hết nhánh A. Sau MỖI bước: ghi file output,
-cập nhật OUTPUT/function-d/_index.md, in verdict.
+cập nhật OUTPUT/<task-slug>/_index.md, in verdict.
 
 BẮT BUỘC ở lần chạy lại:
 - Mọi rule đã Confirmed trong knowledge KHÔNG được đưa lại thành missing rule / open question.
@@ -83,28 +83,13 @@ Cuối cùng: in bảng so sánh lần 1 vs lần 2 (xem §4).
 
 ---
 
-## 4. Bảng so sánh 2 lần chạy — thước đo knowledge có tác dụng
+## 4. Nghiệm thu so sánh (Lần 1 vs Lần 2)
 
-| Chỉ số | Lần 1 | Lần này | Kỳ vọng |
+Sau khi chạy xong, in bảng sau ra màn hình:
+
+| Tiêu chí | Lần 1 | Lần 2 | Đạt khi |
 |---|---|---|---|
-| Số `[GIẢ ĐỊNH]` |  |  | Giảm |
-| Số `[CONTEXT_MISSING]` |  |  | Giảm |
-| Số `[SEVERITY_CONFIDENCE_LOW]` |  |  | Giảm |
-| Số Open Question / Missing Rule còn `New` |  |  | Giảm |
-| Số `BR-xx` đã `Confirmed` |  |  | Tăng |
-| Verdict cuối nhánh A |  |  | Tiến về `PASS` |
-
-Chỉ số **không giảm** → hoặc knowledge chưa được cập nhật đủ (§1), hoặc agent không đọc knowledge.
-Kiểm dòng "Đọc trước" trong khối lệnh trước khi kết luận là lỗi agent.
-
----
-
-## 5. Lỗi hay gặp
-
-| Hiện tượng | Nguyên nhân | Xử lý |
-|---|---|---|
-| Chạy lại nhưng số `ASK` không giảm | Chưa làm §1 — knowledge vẫn còn `New` | Cập nhật knowledge trước, đây là bước của người |
-| Agent hỏi lại đúng câu BA đã trả lời | Không đọc `knowledge/<slug>.md`, hoặc trạng thái vẫn `New` | Kiểm dòng "Đọc trước" + kiểm cột `Trạng thái` |
-| Mất output lần 1 để so sánh | Chạy lại mà không backup | Luôn backup sang `OUTPUT/<slug>.bak/` trước khi chạy |
-| Chạy lại từ `01` cho mọi thay đổi | Không tra bảng §2 | Đổi trạng thái mục 7 thì chỉ cần từ `02` |
-| Rule cũ bị mất khỏi knowledge | Agent hoặc người xoá dòng thay vì đổi trạng thái | `agents/core/QA_STANDARD.md` §8 — luật ghi: không xoá dòng cũ |
+| Số `[GIẢ ĐỊNH]` ở 01 | N | < N | Giảm |
+| Số missing rule `New` ở 02 | M | < M | Giảm |
+| Verdict ở 02 | ASK | PASS | Chuyển PASS |
+| Số test case ở 05 | X | ≥ X | Bao phủ tốt hơn hoặc bằng |

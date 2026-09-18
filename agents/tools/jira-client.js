@@ -73,7 +73,7 @@ async function pullDefects(taskSlug, env) {
   const jiraHost = env.JIRA_HOST;
   const jiraEmail = env.JIRA_EMAIL;
   const jiraToken = env.JIRA_API_TOKEN;
-  const projectKey = env.JIRA_PROJECT_KEY || 'SHOPGO';
+  const projectKey = env.JIRA_PROJECT_KEY || 'PROJECT';
 
   console.log(`\n🔍 [JIRA PULL] Đang lấy danh sách Defects/Bugs cho dự án [${projectKey}]...`);
 
@@ -90,18 +90,18 @@ async function pullDefects(taskSlug, env) {
       ``,
       `| Issue Key | Summary | Severity | Status | Component | Ghi chú cho QA |`,
       `|---|---|---|---|---|---|`,
-      `| \`${projectKey}-102\` | Lỗi không trim khoảng trắng mã giảm giá khi paste từ clipboard | Medium | Closed | VCHR | Cần test kỹ case space đầu/cuối |`,
-      `| \`${projectKey}-145\` | Áp mã % vượt quá trần Max Cap vẫn tính nguyên chiết khấu | High | Resolved | VCHR | Chú ý kiểm thử biên giáp trần Max Cap |`,
-      `| \`${projectKey}-208\` | Khách chưa login bấm áp mã bị crash màn hình checkout | High | Closed | AUTH/VCHR | Kiểm tra tiền điều kiện xác thực người dùng |`,
-      `| \`${projectKey}-256\` | Hủy đơn không thấy voucher hoàn lại về ví người dùng | Critical | Reopened | VCHR/ORDER | Kiểm thử kỹ luồng huỷ và rollback trạng thái mã |`,
+      `| \`${projectKey}-102\` | Lỗi không trim khoảng trắng input khi paste từ clipboard | Medium | Closed | CORE | Cần test kỹ case space đầu/cuối |`,
+      `| \`${projectKey}-145\` | Lỗi giá trị vượt quá trần tối đa vẫn tính nguyên giá trị | High | Resolved | LOGIC | Chú ý kiểm thử biên giáp trần tối đa |`,
+      `| \`${projectKey}-208\` | Khách chưa login bấm thực hiện thao tác bị crash màn hình | High | Closed | AUTH | Kiểm tra tiền điều kiện xác thực người dùng |`,
+      `| \`${projectKey}-256\` | Thao tác thất bại nhưng trạng thái không rollback an toàn | Critical | Reopened | TRANSACTION | Kiểm thử kỹ luồng rollback trạng thái |`,
       ``,
       `### Hướng dẫn cấu hình kết nối thật:`,
       `Tạo file \`.env\` ở thư mục gốc với các thông số:`,
       `\`\`\`env`,
       `JIRA_HOST=https://your-company.atlassian.net`,
-      `JIRA_EMAIL=qa-lead@shopgo.vn`,
+      `JIRA_EMAIL=qa-lead@example.com`,
       `JIRA_API_TOKEN=your_jira_api_token`,
-      `JIRA_PROJECT_KEY=SHOPGO`,
+      `JIRA_PROJECT_KEY=PROJECT`,
       `\`\`\``
     ].join('\n');
 

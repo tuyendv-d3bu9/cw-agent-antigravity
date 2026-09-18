@@ -9,9 +9,9 @@
 
 | Tham số | Giá trị mặc định | Mô tả |
 |---|---|---|
-| `task-slug` | `function-d` | Mã định danh của tính năng (tương ứng thư mục trong `OUTPUT/`) |
-| `input-files` | `INPUT/Function D.md`, `INPUT/OVERVIEW.md` | Tài liệu yêu cầu thô đầu vào |
-| `knowledge-file` | `knowledge/function-d.md` | File tích luỹ tri thức nền của tính năng |
+| `task-slug` | `<task-slug>` | Mã định danh của tính năng (tương ứng thư mục trong `OUTPUT/`) |
+| `input-files` | `INPUT/<task-slug>.md` | Tài liệu yêu cầu thô đầu vào |
+| `knowledge-file` | `knowledge/features/<task-slug>.md` | File tích luỹ tri thức nền của tính năng |
 | `project-knowledge`| `knowledge/_project.md` | Tri thức dùng chung toàn dự án |
 | `standard` | `agents/core/QA_STANDARD.md` | Quy chuẩn kiểm thử & tiêu chí chất lượng (FACT, 06W, Verdict) |
 

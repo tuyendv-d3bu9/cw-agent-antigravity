@@ -3,51 +3,43 @@
 > File này định nghĩa chính xác các thuật ngữ nghiệp vụ xuyên suốt mọi tính năng của dự án.
 > Giúp Agent, Tester, BA và Developer hiểu cùng một nghĩa, tránh nhầm lẫn logic khi phân tích.
 
-Dự án: `ShopGo (Thương Mại Điện Tử Bán Lẻ)` · Cập nhật: `2026-09-16`
+Dự án: `<Tên Dự Án>` · Cập nhật: `<YYYY-MM-DD>`
 
 ---
 
-## 1. Khách Hàng & Tài Khoản (Customer & Auth)
+## 1. Người Dùng & Phân Quyền (Users & Roles)
 
 | Thuật ngữ | Tiếng Anh tương đương | Định nghĩa chính xác | Ranh giới / Lưu ý |
 |---|---|---|---|
-| **Khách vãng lai** | Guest User | Người dùng truy cập web chưa đăng nhập. | Được duyệt hàng, thêm giỏ, nhưng **bắt buộc đăng nhập** khi vào trang Thanh toán áp mã. |
-| **Khách hàng định danh** | Registered Customer | Tài khoản đã xác thực có User ID, Email/SĐT. | Mỗi tài khoản có hạn mức sử dụng mã voucher riêng biệt. |
-| **Tài khoản Active** | Active Account | Tài khoản đang hoạt động bình thường. | Duy nhất trạng thái Active mới được hưởng khuyến mãi. |
-| **Tài khoản Locked / Banned** | Locked / Banned | Tài khoản bị tạm khóa hoặc cấm do vi phạm/gian lận. | Hệ thống chặn ngay tại bước validate mã khuyến mãi. |
+| **Người dùng vãng lai** | Guest User | Người dùng truy cập hệ thống chưa đăng nhập / định danh. | Chỉ được xem thông tin công khai; bị chặn ở các luồng cần xác thực. |
+| **Người dùng định danh** | Registered User | Tài khoản đã đăng ký và xác thực danh tính trong hệ thống. | Có hồ sơ, quyền hạn và lịch sử hoạt động riêng biệt. |
+| **Tài khoản Hoạt động** | Active Account | Tài khoản đang ở trạng thái hoạt động bình thường. | Đủ điều kiện thực hiện các giao dịch và thao tác nghiệp vụ. |
+| **Tài khoản Khóa / Treo** | Locked / Suspended | Tài khoản bị tạm khóa hoặc cấm do vi phạm chính sách / bảo mật. | Bị chặn truy cập các tính năng nghiệp vụ; hiển thị thông báo lỗi phù hợp. |
 
 ---
 
-## 2. Khuyến Mãi & Voucher (Promotion & Voucher)
+## 2. Thực Thể Nghiệp Vụ Cốt Lõi (Core Domain Entities)
 
 | Thuật ngữ | Tiếng Anh tương đương | Định nghĩa chính xác | Ranh giới / Lưu ý |
 |---|---|---|---|
-| **Mã giảm giá cố định** | Fixed Discount Code | Giảm số tiền cụ thể trên tổng đơn hàng (VD: 50.000 VNĐ). | Giảm tối đa về 0 VNĐ, không bao giờ sinh ra số âm. |
-| **Mã giảm giá theo %** | Percentage Discount Code | Giảm theo tỷ lệ % giá trị tiền hàng (VD: 10%, 20%). | Luôn đi kèm quy tắc làm tròn và mức giảm trần (Max Cap). |
-| **Mức giảm tối đa (Max Cap)** | Discount Cap | Số tiền chiết khấu tối đa mà mã % được phép giảm (VD: tối đa 100.000 VNĐ). | Công thức: `Min(TienHang * %, MaxCap)`. |
-| **Đơn tối thiểu (Min Spend)** | Minimum Order Value | Tổng tiền hàng tối thiểu để mã có hiệu lực kích hoạt. | Chỉ tính trên tiền hàng (Subtotal), không tính phí vận chuyển. |
-| **Thời hạn voucher** | Voucher Validity Period | Khoảng thời gian từ `Start Time` đến `End Time`. | Theo múi giờ GMT+7, chốt chính xác đến 23:59:59 của ngày kết thúc. |
-| **Lượt dùng / Hạn mức** | Usage Limit | Số lần tối đa mã được dùng trên toàn hệ thống hoặc mỗi user. | Phải phân biệt: Tổng lượt toàn campaign vs Lượt của mỗi khách hàng. |
+| _[Thực thể 1]_ | _[Entity 1]_ | _[Định nghĩa ý nghĩa nghiệp vụ của thực thể trong hệ thống]_ | _[Các ràng buộc biên hoặc lưu ý đặc biệt]_ |
+| _[Thực thể 2]_ | _[Entity 2]_ | _[Định nghĩa ý nghĩa nghiệp vụ của thực thể trong hệ thống]_ | _[Các ràng buộc biên hoặc lưu ý đặc biệt]_ |
 
 ---
 
-## 3. Giỏ Hàng & Thanh Toán (Cart & Checkout)
-
-| Thuật ngữ | Tiếng Anh tương đương | Định nghĩa chính xác | Ranh giới / Lưu ý |
-|---|---|---|---|
-| **Tiền hàng (Subtotal)** | Subtotal | Tổng giá niêm yết của các sản phẩm trong giỏ hàng. | Đây là căn cứ duy nhất để tính chiết khấu voucher. |
-| **Phí vận chuyển (Shipping Fee)**| Shipping Fee | Cước phí giao vận từ đơn vị logistics. | Voucher thông thường **không** giảm phí vận chuyển trừ khi là mã Freeship. |
-| **Tổng thanh toán (Final Total)**| Final Amount | Số tiền thực tế khách hàng phải trả: `Subtotal - Discount + Shipping`. | Đơn vị tính VNĐ, không có phần thập phân. |
-| **Áp dụng đồng thời** | Stacking Discounts | Áp dụng nhiều mã giảm giá hoặc chương trình cùng lúc. | Mặc định hệ thống ShopGo: **Không áp dụng đồng thời** (chỉ 1 mã/đơn). |
-
----
-
-## 4. Trạng Thái Mã (Voucher Lifecycle States)
+## 3. Trạng Thái Vòng Đời (Lifecycle States)
 
 | Trạng thái | Ý nghĩa | Hành vi hệ thống |
 |---|---|---|
-| **Draft** | Mã đang được Admin tạo nháp. | Khách hàng không thể tìm thấy hoặc áp dụng. |
-| **Active** | Mã đang trong thời gian hiệu lực và còn ngân sách. | Cho phép áp dụng thành công. |
-| **Expired** | Mã đã qua thời gian kết thúc campaign. | Báo lỗi: *"Mã giảm giá đã hết hạn sử dụng"*. |
-| **Depleted** | Mã đã hết tổng lượt sử dụng trên hệ thống. | Báo lỗi: *"Mã giảm giá đã hết lượt sử dụng"*. |
-| **Used by User** | Khách hàng này đã từng dùng mã trước đó. | Báo lỗi: *"Bạn đã sử dụng mã này rồi"*. |
+| **Draft / Nháp** | Dữ liệu đang được khởi tạo, chưa ban hành hoặc chưa kích hoạt. | Chưa có hiệu lực với người dùng cuối; chỉ xem được ở màn quản trị. |
+| **Active / Hiệu lực** | Đang trong thời gian hiệu lực và sẵn sàng sử dụng. | Cho phép tương tác và thực hiện nghiệp vụ bình thường. |
+| **Expired / Hết hạn** | Đã vượt quá thời gian hiệu lực quy định. | Báo lỗi hoặc chặn thao tác khi người dùng cố gắng tương tác. |
+| **Cancelled / Đã hủy** | Bị hủy bỏ bởi người dùng hoặc hệ thống. | Không thể khôi phục lại trạng thái trước đó. |
+
+---
+
+## 4. Tham Số & Công Thức Tính Toán (Parameters & Calculations)
+
+| Thuật ngữ | Tiếng Anh tương đương | Định nghĩa & Công thức | Đơn vị / Định dạng |
+|---|---|---|---|
+| _[Tham số 1]_ | _[Parameter 1]_ | _[Mô tả cách tính toán hoặc công thức logic]_ | _[VNĐ / % / Số nguyên]_ |

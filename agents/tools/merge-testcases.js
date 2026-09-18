@@ -5,7 +5,7 @@
  * Dùng:
  *   npm run testcases:merge <task-slug>
  * Ví dụ:
- *   npm run testcases:merge function-d
+ *   npm run testcases:merge auth-login
  */
 
 const fs = require('fs');
@@ -16,7 +16,7 @@ const slug = process.argv[2];
 if (!slug) {
   console.error('Vui lòng truyền task-slug:');
   console.error('  npm run testcases:merge <task-slug>');
-  console.error('Ví dụ: npm run testcases:merge function-d');
+  console.error('Ví dụ: npm run testcases:merge auth-login');
   process.exit(1);
 }
 

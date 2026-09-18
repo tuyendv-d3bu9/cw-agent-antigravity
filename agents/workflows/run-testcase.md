@@ -9,11 +9,11 @@
 
 **Tham số**
 
-| Tham số | Giá trị mặc định |
+| Tham số | Giá trị mẫu |
 |---|---|
-| `task-slug` | `function-d` |
-| `input` | `INPUT/Function D.md`, `INPUT/OVERVIEW.md` |
-| `feature knowledge` | `knowledge/function-d.md` |
+| `task-slug` | `<task-slug>` (ví dụ: `voucher-checkout`, `order-flow`) |
+| `input` | `INPUT/<task-slug>.md` (hoặc thư mục 5 ngăn `INPUT/<task-slug>/`) |
+| `feature knowledge` | `knowledge/features/<task-slug>.md` |
 | `data format` | `sql` (đổi thành `csv` / `json` nếu cần) |
 
 Đổi feature khác → thay 4 dòng trên, phần còn lại giữ nguyên.
@@ -23,11 +23,8 @@
 ## 1. Chuẩn bị — kiểm trước khi chạy
 
 - [ ] `INPUT/` có tài liệu nguồn
-- [ ] `knowledge/_project.md` đã điền — **quan trọng với nhánh B**: trống thì `09 → 12` sẽ gắn
-      `[GIẢ ĐỊNH]` cho gần như mọi hằng số (format mã, khoảng giá trị, đơn vị tiền, NULL vs rỗng)
-- [ ] `knowledge/<task-slug>.md` đã có câu trả lời BA cho các `MR` rủi ro cao — nếu còn `New`
-      diện rộng thì nên chạy `run-to-testcase.md` trước, hỏi BA, rồi mới chạy file này
-- [ ] `OUTPUT/<task-slug>/` chưa tồn tại, hoặc đã backup
+- [ ] `knowledge/_project.md` đã điền (trống thì agent sẽ gắn nhiều `[GIẢ ĐỊNH]` hơn — chấp nhận được)
+- [ ] Thư mục `OUTPUT/<task-slug>/` chưa tồn tại, hoặc đã backup
 
 ---
 
@@ -37,12 +34,12 @@
 Đọc trước:
   agents/core/QA_STANDARD.md
   knowledge/_project.md
-  knowledge/function-d.md
+  knowledge/features/<task-slug>.md
   workflows/WORKFLOW.md
 
-task-slug = function-d
+task-slug = <task-slug>
 
-Chạy tuần tự. Sau MỖI bước: ghi file output, cập nhật OUTPUT/function-d/_index.md,
+Chạy tuần tự. Sau MỖI bước: ghi file output, cập nhật OUTPUT/<task-slug>/_index.md,
 in verdict ra màn hình rồi mới sang bước kế.
 Nếu verdict là FIX hoặc ASK → DỪNG toàn bộ, báo tôi, không chạy tiếp.
 
@@ -50,50 +47,50 @@ Nếu verdict là FIX hoặc ASK → DỪNG toàn bộ, báo tôi, không chạy
 
 B1  agents/qa-analyst/AGENT.md + skills/requirement-risk-summary.md
     Vào : INPUT/Function D.md, INPUT/OVERVIEW.md
-    Ra  : OUTPUT/function-d/01_requirement_risk_summary.md
-    Ghi thêm: cập nhật knowledge/function-d.md
+    Ra  : OUTPUT/<task-slug>/01_requirement_risk_summary.md
+    Ghi thêm: cập nhật knowledge/features/<task-slug>.md
 
 B2  agents/qa-analyst/skills/missing-rule-06w.md
-    Vào : OUTPUT/function-d/01_requirement_risk_summary.md, knowledge/function-d.md
-    Ra  : OUTPUT/function-d/02_missing_rule_report.md
-    Ghi thêm: cập nhật knowledge/function-d.md mục 7
+    Vào : OUTPUT/<task-slug>/01_requirement_risk_summary.md, knowledge/features/<task-slug>.md
+    Ra  : OUTPUT/<task-slug>/02_missing_rule_report.md
+    Ghi thêm: cập nhật knowledge/features/<task-slug>.md mục 7
     Lưu ý: gap nào trong knowledge đã Confirmed/Rejected thì KHÔNG báo lại là missing rule mới.
 
 B3  agents/qa-analyst/skills/viewpoint-selection.md
     Vào : output 01 + 02
-    Ra  : OUTPUT/function-d/03_viewpoint_report.md
+    Ra  : OUTPUT/<task-slug>/03_viewpoint_report.md
 
 B4  agents/qa-analyst/skills/test-idea-design.md
     Vào : output 01 + 03
-    Ra  : OUTPUT/function-d/04_test_idea_report.md
+    Ra  : OUTPUT/<task-slug>/04_test_idea_report.md
 
 B5  agents/qa-test-design/AGENT.md + skills/test-case-generation.md
     Vào : output 01 + 03 + 04
-    Ra  : OUTPUT/function-d/05_test_case_spec.md
+    Ra  : OUTPUT/<task-slug>/05_test_case_spec.md
 
 --- NHÁNH B: dữ liệu (chạy sau B5) ---
 
 B9  agents/qa-test-data/AGENT.md + skills/data-class-map.md
     Vào : output 01
-    Ra  : OUTPUT/function-d/09_data_class_map.md
+    Ra  : OUTPUT/<task-slug>/09_data_class_map.md
 
 B10 agents/qa-test-data/skills/dataset-generation.md
     Vào : output 09, format = sql
-    Ra  : OUTPUT/function-d/10_dataset.md
+    Ra  : OUTPUT/<task-slug>/10_dataset.md
 
 B11 agents/qa-test-data/skills/boundary-negative-dataset.md
     Vào : output 09
-    Ra  : OUTPUT/function-d/11_boundary_negative_dataset.md
+    Ra  : OUTPUT/<task-slug>/11_boundary_negative_dataset.md
 
 B12 agents/qa-test-data/skills/data-validation-traceability.md
     Vào : output 10 + 11 + 05
-    Ra  : OUTPUT/function-d/12_data_validation_traceability.md
+    Ra  : OUTPUT/<task-slug>/12_data_validation_traceability.md
 
 --- CHỐT CHẶN: chạy CUỐI CÙNG ---
 
 B6  agents/qa-test-design/skills/coverage-review.md
     Vào : output 01 + 03 + 05
-    Ra  : OUTPUT/function-d/06_coverage_review.md
+    Ra  : OUTPUT/<task-slug>/06_coverage_review.md
     Lưu ý: rà đủ 3 góc nhìn mà KHÔNG thấy gap nào thì verdict là ASK, KHÔNG phải PASS.
 ```
 
@@ -121,15 +118,15 @@ mồ côi. Đó là đầu vào thật cho gap analysis của `06`. Chạy `06` 
 
 ## 4. Nghiệm thu — truy vết ngược 5 chặng
 
-Mở `OUTPUT/function-d/05_test_case_spec.md`, chọn **một** test case cần data, đi ngược đủ 5 chặng:
+Mở `OUTPUT/<task-slug>/05_test_case_spec.md`, chọn **một** test case cần data, đi ngược đủ 5 chặng:
 
 ```
 Test Case  →  12_data_validation_traceability.md  (record nào cấp data cho nó)
            →  Tags: Rule#BR-xx, Viewpoint#yy
            →  04_test_idea_report.md   (idea nào sinh ra nó, vì sao "Giữ")
            →  03_viewpoint_report.md   (viewpoint đó thuộc risk area nào)
-           →  knowledge/function-d.md  (BR-xx nội dung gì, ai xác nhận, ngày nào)
-           →  INPUT/Function D.md      (câu chữ gốc)
+           →  knowledge/features/<task-slug>.md  (BR-xx nội dung gì, ai xác nhận, ngày nào)
+           →  INPUT/<task-slug>.md      (câu chữ gốc)
 ```
 
 Đứt ở chặng nào → đó là lỗi traceability, chưa phải test suite dùng được.

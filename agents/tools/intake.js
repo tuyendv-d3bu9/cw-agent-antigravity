@@ -8,7 +8,7 @@
  * Dùng:
  *   npm run intake -- <file-hoặc-thư-mục> [--slug <task-slug>]
  * Ví dụ:
- *   node agents/tools/intake.js "Function D.docx" --slug function-d
+ *   node agents/tools/intake.js "SRS_Auth.docx" --slug auth-login
  *   node agents/tools/intake.js "doc.pdf" --slug qa-standard-guide
  */
 
@@ -33,7 +33,7 @@ if (!targetInput) {
   console.log('Cách dùng:');
   console.log('  node agents/tools/intake.js <file-hoặc-thư-mục> [--slug <task-slug>]\n');
   console.log('Ví dụ:');
-  console.log('  node agents/tools/intake.js "Function D.docx" --slug function-d');
+  console.log('  node agents/tools/intake.js "SRS_Auth.docx" --slug auth-login');
   process.exit(0);
 }
 

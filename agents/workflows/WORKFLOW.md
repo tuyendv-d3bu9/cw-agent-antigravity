@@ -120,7 +120,7 @@ Chạy lần 2  =>  01/02 đọc knowledge trước  =>  ít [GIẢ ĐỊNH] hơ
 
 | Mục | Quy ước |
 |---|---|
-| `task-slug` | Trùng `feature-slug`. Vd `function-d`. Một feature một thư mục output. |
+| `task-slug` | Trùng `feature-slug` (ví dụ: `auth-login`, `order-checkout`). Một feature một thư mục output. |
 | Nạp trước mọi bước | `agents/core/QA_STANDARD.md` · `knowledge/_project.md` · `knowledge/<slug>.md` (nếu có) |
 | Một skill | Ghi **đúng một** file output. Không dồn nhiều bước vào một file. |
 | Sau mỗi bước | Cập nhật `OUTPUT/<task-slug>/_index.md`: tên file + verdict |

@@ -55,7 +55,7 @@ Nhờ đã cấu hình file hiến pháp `AGENTS.md` ở root, bất kỳ AI Age
 
 ### Lệnh chạy đơn giản:
 ```
-Tạo plan và chạy pipeline cho tính năng function-d từ INPUT/Function D.md.
+Tạo plan và chạy pipeline cho tính năng <task-slug> từ INPUT/<task-slug>.md.
 ```
 
 ### Quy trình tự động:

@@ -36,7 +36,7 @@ Xuất thông tin cụm vào bảng kế hoạch chạy hoặc file kịch bản
 ```markdown
 ### Cụm Hành Trình: [Tên Cụm — ví dụ: Checkout & Voucher Flow]
 - **Trang khởi đầu**: `/cart` hoặc `/checkout`
-- **Session State**: Đăng nhập bằng tài khoản test `buyer01@shopgo.vn`
+- **Session State**: Đăng nhập bằng tài khoản test `user@example.com`
 - **Kịch bản Gherkin BDD cụm**:
 ```gherkin
 Feature: Áp dụng mã Voucher trong giỏ hàng
