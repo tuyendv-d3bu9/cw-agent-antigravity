@@ -1,9 +1,9 @@
 /**
  * export-testcases.js
- * Tiện ích chuyển đổi 05_test_case_spec.md sang CSV chuẩn cho Jira Xray & Redmine.
- * Đảm bảo UTF-8 with BOM mở trực tiếp trong Microsoft Excel không bị lỗi font tiếng Việt.
+ * Utility to convert 05_test_case_spec.md to standard CSV for Jira Xray & Redmine.
+ * Includes UTF-8 BOM so Excel opens files correctly without font corruption.
  * 
- * Cách dùng (Agent nội bộ):
+ * Usage (Internal Agent Tool):
  *   node agents/tools/export-testcases.js [task-slug]
  */
 
@@ -16,7 +16,6 @@ const OUTPUT_DIR = path.join(ROOT_DIR, 'OUTPUT');
 function escapeCSV(val) {
   if (val === undefined || val === null) return '""';
   const str = String(val).trim();
-  // Nếu có dấu ngoặc kép, dấu phẩy, hoặc ký tự xuống dòng thì bọc trong ngoặc kép và escape kép
   if (str.includes('"') || str.includes(',') || str.includes('\n') || str.includes('\r')) {
     return `"${str.replace(/"/g, '""')}"`;
   }
@@ -25,7 +24,6 @@ function escapeCSV(val) {
 
 function parseTestCasesFromMarkdown(content) {
   const testCases = [];
-  // Tách theo "### TC_ID:" hoặc "### "
   const rawSections = content.split(/\n(?=###\s+TC_ID:)/g);
 
   for (const sec of rawSections) {
@@ -85,7 +83,6 @@ function parseTestCasesFromMarkdown(content) {
 }
 
 function exportJiraXrayCSV(testCases, outputPath) {
-  // Cột chuẩn của Jira Xray Test Case Importer
   const headers = [
     'Issue Type',
     'Issue Key',
@@ -102,7 +99,6 @@ function exportJiraXrayCSV(testCases, outputPath) {
   const rows = [headers.map(h => `"${h}"`).join(',')];
 
   for (const tc of testCases) {
-    // Labels trong Jira phân tách bằng khoảng trắng hoặc dấu phẩy
     const cleanLabels = tc.tags
       ? tc.tags.split(',').map(t => t.trim().replace(/\s+/g, '_')).join(' ')
       : '';
@@ -122,13 +118,11 @@ function exportJiraXrayCSV(testCases, outputPath) {
     rows.push(row.join(','));
   }
 
-  // Ghi file với BOM UTF-8 (\uFEFF)
   const csvContent = '\uFEFF' + rows.join('\r\n');
   fs.writeFileSync(outputPath, csvContent, 'utf-8');
 }
 
 function exportRedmineCSV(testCases, outputPath) {
-  // Cột chuẩn của Redmine Issues CSV Import
   const headers = [
     'Tracker',
     'Subject',
@@ -141,27 +135,25 @@ function exportRedmineCSV(testCases, outputPath) {
   const rows = [headers.map(h => `"${h}"`).join(',')];
 
   for (const tc of testCases) {
-    // Ánh xạ Priority sang chuẩn Redmine
     let redminePriority = 'Normal';
     const p = tc.priority.toLowerCase();
     if (p.includes('critical') || p.includes('urgent')) redminePriority = 'Urgent';
     else if (p.includes('high')) redminePriority = 'High';
     else if (p.includes('low')) redminePriority = 'Low';
 
-    // Tổng hợp mô tả chi tiết cho Redmine
     const description = [
-      `*Mục tiêu*: ${tc.title}`,
+      `*Objective*: ${tc.title}`,
       '',
-      `h4. Tiền điều kiện (Preconditions):`,
+      `h4. Preconditions:`,
       tc.precondition,
       '',
-      `h4. Các bước thực hiện (Test Steps):`,
+      `h4. Test Steps:`,
       tc.steps,
       '',
-      `h4. Dữ liệu kiểm thử (Test Data):`,
+      `h4. Test Data:`,
       tc.data,
       '',
-      `h4. Kết quả mong đợi (Expected Result):`,
+      `h4. Expected Result:`,
       tc.expected,
       '',
       `*Tags*: ${tc.tags}`
@@ -186,10 +178,9 @@ function main() {
   let taskSlug = process.argv[2];
 
   if (!taskSlug) {
-    // Tự động tìm task gần nhất trong OUTPUT
     if (fs.existsSync(OUTPUT_DIR)) {
       const dirs = fs.readdirSync(OUTPUT_DIR).filter(f => {
-        return fs.statSync(path.join(OUTPUT_DIR, f)).isDirectory() && !f.startsWith('.');
+        return fs.statSync(path.join(OUTPUT_DIR, f)).isDirectory() && !f.startsWith('.') && !f.startsWith('_');
       });
       if (dirs.length > 0) {
         taskSlug = dirs[0];
@@ -198,7 +189,7 @@ function main() {
   }
 
   if (!taskSlug) {
-    console.error('❌ Lỗi: Không tìm thấy task nào trong OUTPUT/. Vui lòng chỉ định slug: node export-testcases.js <task-slug>');
+    console.error('❌ Error: No tasks found in OUTPUT/. Please specify slug: node export-testcases.js <task-slug>');
     process.exit(1);
   }
 
@@ -206,32 +197,32 @@ function main() {
   const specPath = path.join(taskDir, '05_test_case_spec.md');
 
   if (!fs.existsSync(specPath)) {
-    console.error(`❌ Lỗi: Không tìm thấy file ${specPath}. Hãy chắc chắn đã chạy bước sinh test case.`);
+    console.error(`❌ Error: File not found: ${specPath}. Ensure test case generation step has run.`);
     process.exit(1);
   }
 
-  console.log(`📦 Đang đọc test cases từ: ${specPath}`);
+  console.log(`📦 Reading test cases from: ${specPath}`);
   const content = fs.readFileSync(specPath, 'utf-8');
   const testCases = parseTestCasesFromMarkdown(content);
 
   if (testCases.length === 0) {
-    console.warn('⚠️ Cảnh báo: Không phân tích được test case nào theo định dạng chuẩn.');
+    console.warn('⚠️ Warning: No valid test cases parsed matching standard format.');
     process.exit(1);
   }
 
-  console.log(`✅ Đã nhận diện thành công: ${testCases.length} Test Cases.`);
+  console.log(`✅ Successfully parsed: ${testCases.length} Test Cases.`);
 
-  // 1. Xuất file Jira Xray CSV
+  // 1. Export Jira Xray CSV
   const jiraPath = path.join(taskDir, 'export_jira_xray.csv');
   exportJiraXrayCSV(testCases, jiraPath);
-  console.log(`🚀 [JIRA XRAY] Đã xuất file CSV chuẩn: ${jiraPath}`);
+  console.log(`🚀 [JIRA XRAY] Exported CSV: ${jiraPath}`);
 
-  // 2. Xuất file Redmine CSV
+  // 2. Export Redmine CSV
   const redminePath = path.join(taskDir, 'export_redmine.csv');
   exportRedmineCSV(testCases, redminePath);
-  console.log(`🚀 [REDMINE] Đã xuất file CSV chuẩn: ${redminePath}`);
+  console.log(`🚀 [REDMINE] Exported CSV: ${redminePath}`);
 
-  console.log(`\n🎉 Hoàn tất xuất dữ liệu cho task [${taskSlug}]! File hỗ trợ UTF-8 BOM hiển thị chuẩn tiếng Việt.`);
+  console.log(`\n🎉 Data export complete for task [${taskSlug}]!`);
 }
 
 main();

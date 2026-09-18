@@ -1,11 +1,11 @@
 /**
  * conflict-detector.js
- * Module Phát Hiện Xung Đột Tri Thức Chéo (Cross-Feature Conflict Detector)
+ * Cross-Feature Knowledge Conflict Detector Module
  * 
- * Mục tiêu: Tự động đối chiếu các Business Rules giữa các tài liệu tính năng trong knowledge/features/*.md
- * Phát hiện các điểm đá nhau về logic (Stacking khuyến mãi, Guest vs Member, Hoàn huỷ, Hằng số).
+ * Goal: Automatically cross-references Business Rules between feature knowledge bases in knowledge/features/*.md
+ * Identifies logic contradictions (Promotion stacking, Guest vs Member, Cancellation/Refund, Constants).
  * 
- * Cách dùng:
+ * Usage:
  *   node agents/tools/conflict-detector.js [target-feature-slug]
  */
 
@@ -16,27 +16,27 @@ const ROOT_DIR = path.resolve(__dirname, '../..');
 const FEATURES_DIR = path.join(ROOT_DIR, 'knowledge', 'features');
 const OUTPUT_DIR = path.join(ROOT_DIR, 'OUTPUT');
 
-// Từ khóa phát hiện các khía cạnh nghiệp vụ nhạy cảm
+// Sensitive business logic keywords
 const PATTERNS = {
   stacking: {
-    category: 'Cộng dồn khuyến mãi (Promotion Stacking)',
-    allowKeywords: ['cộng dồn', 'kết hợp', 'áp dụng đồng thời', 'stackable', 'dùng chung'],
-    denyKeywords: ['không cộng dồn', 'không áp dụng đồng thời', 'chỉ 1 mã', 'duy nhất 1', 'không dùng chung']
+    category: 'Promotion / Benefit Stacking',
+    allowKeywords: ['cộng dồn', 'kết hợp', 'áp dụng đồng thời', 'stackable', 'dùng chung', 'combine', 'stacking allowed'],
+    denyKeywords: ['không cộng dồn', 'không áp dụng đồng thời', 'chỉ 1 mã', 'duy nhất 1', 'không dùng chung', 'non-stackable', 'cannot combine']
   },
   guestCheckout: {
-    category: 'Điều kiện tài khoản (Guest vs Logged-in)',
-    allowKeywords: ['không cần đăng nhập', 'khách vãng lai', 'guest', 'chưa đăng nhập'],
-    denyKeywords: ['bắt buộc đăng nhập', 'yêu cầu đăng nhập', 'phải đăng nhập', 'chỉ áp dụng thành viên', 'tài khoản kích hoạt']
+    category: 'Account Authentication Precondition (Guest vs Registered)',
+    allowKeywords: ['không cần đăng nhập', 'khách vãng lai', 'guest', 'chưa đăng nhập', 'anonymous'],
+    denyKeywords: ['bắt buộc đăng nhập', 'yêu cầu đăng nhập', 'phải đăng nhập', 'chỉ áp dụng thành viên', 'tài khoản kích hoạt', 'must login', 'authentication required']
   },
   cancellationRefund: {
-    category: 'Chính sách hoàn trả khi huỷ đơn (Cancellation Refund)',
-    allowKeywords: ['hoàn lại mã', 'hoàn voucher', 'phục hồi mã', 'restore voucher', 'hoàn về ví'],
-    denyKeywords: ['không hoàn lại', 'hủy là mất', 'mất quyền sử dụng', 'không phục hồi']
+    category: 'Cancellation & Refund Policy',
+    allowKeywords: ['hoàn lại mã', 'hoàn voucher', 'phục hồi mã', 'restore voucher', 'hoàn về ví', 'refund', 'restore'],
+    denyKeywords: ['không hoàn lại', 'hủy là mất', 'mất quyền sử dụng', 'không phục hồi', 'non-refundable', 'forfeited']
   },
   shippingDiscount: {
-    category: 'Phạm vi giảm giá (Phí ship vs Tiền hàng)',
-    allowKeywords: ['giảm cả phí ship', 'áp dụng phí vận chuyển', 'freeship kết hợp'],
-    denyKeywords: ['chỉ áp dụng tiền hàng', 'không giảm phí vận chuyển', 'không bao gồm ship']
+    category: 'Discount Scope (Shipping Fee vs Subtotal)',
+    allowKeywords: ['giảm cả phí ship', 'áp dụng phí vận chuyển', 'freeship kết hợp', 'applies to shipping'],
+    denyKeywords: ['chỉ áp dụng tiền hàng', 'không giảm phí vận chuyển', 'không bao gồm ship', 'subtotal only']
   }
 };
 
@@ -44,14 +44,14 @@ function parseFeatureFile(filePath) {
   const content = fs.readFileSync(filePath, 'utf-8');
   const slug = path.basename(filePath, '.md');
 
-  // Trích xuất tên tính năng
+  // Extract title
   const titleMatch = content.match(/^#\s+(?:Tính năng:\s*)?([^\n]+)/m);
   const title = titleMatch ? titleMatch[1].trim() : slug;
 
-  // Trích xuất các Business Rules (cả dạng bảng và dạng header)
+  // Extract Business Rules
   const rules = [];
   
-  // Dạng bảng: | BR-01 | Nội dung quy tắc | Nguồn | Trạng thái |
+  // Table format: | BR-01 | Rule content | Source | Status |
   const tableRowRegex = /\|\s*(BR-[0-9]+)\s*\|\s*([^|]+)\s*\|/gi;
   let match;
   while ((match = tableRowRegex.exec(content)) !== null) {
@@ -62,7 +62,7 @@ function parseFeatureFile(filePath) {
     });
   }
 
-  // Dạng header nếu có: ### BR-01: ...
+  // Header format: ### BR-01: ...
   const headerRegex = /###\s+(BR-[0-9]+)[:\s]+([^\n]+)/gi;
   while ((match = headerRegex.exec(content)) !== null) {
     if (!rules.some(r => r.id === match[1].toUpperCase())) {
@@ -100,24 +100,24 @@ function detectConflicts(features) {
         const bAllows = ruleDef.allowKeywords.some(kw => textB.includes(kw));
         const bDenies = ruleDef.denyKeywords.some(kw => textB.includes(kw));
 
-        // Trường hợp 1: A cho phép, B cấm
+        // Case 1: A allows, B denies
         if (aAllows && bDenies) {
           conflicts.push({
             type: ruleDef.category,
             featureA: `${featA.slug} (${featA.title})`,
             featureB: `${featB.slug} (${featB.title})`,
-            description: `Tính năng [${featA.slug}] cho phép / hỗ trợ nhưng [${featB.slug}] lại cấm hoặc loại trừ.`,
-            recommendation: `Cần chốt lại với BA xem khi khách hàng thực hiện đồng thời cả hai tính năng thì ưu tiên quy tắc nào.`
+            description: `Feature [${featA.slug}] permits this behavior while [${featB.slug}] restricts or forbids it.`,
+            recommendation: `Clarify with BA/PO regarding rule precedence when both features are engaged.`
           });
         }
-        // Trường hợp 2: A cấm, B cho phép
+        // Case 2: A denies, B allows
         else if (aDenies && bAllows) {
           conflicts.push({
             type: ruleDef.category,
             featureA: `${featA.slug} (${featA.title})`,
             featureB: `${featB.slug} (${featB.title})`,
-            description: `Tính năng [${featA.slug}] cấm / loại trừ nhưng [${featB.slug}] lại cho phép.`,
-            recommendation: `Cần chốt lại với BA về thứ tự ưu tiên (Precedence Order) giữa 2 nghiệp vụ.`
+            description: `Feature [${featA.slug}] forbids this behavior while [${featB.slug}] permits it.`,
+            recommendation: `Clarify with BA/PO regarding precedence order between the two operations.`
           });
         }
       }
@@ -130,58 +130,57 @@ function detectConflicts(features) {
 function main() {
   const targetSlug = process.argv[2];
 
-  console.log('🔍 [CONFLICT DETECTOR] Đang quét tri thức tính năng tại knowledge/features/...\n');
+  console.log('🔍 [CONFLICT DETECTOR] Scanning feature knowledge bases in knowledge/features/...\n');
 
   if (!fs.existsSync(FEATURES_DIR)) {
-    console.error('❌ Thư mục knowledge/features/ không tồn tại.');
+    console.error('❌ Error: Directory knowledge/features/ does not exist.');
     process.exit(1);
   }
 
   const files = fs.readdirSync(FEATURES_DIR).filter(f => f.endsWith('.md') && f !== 'README.md');
 
   if (files.length === 0) {
-    console.log('ℹ️ Chưa có file tri thức tính năng nào để đối chiếu.');
+    console.log('ℹ️ No feature knowledge files found for cross-comparison.');
     return;
   }
 
   const features = files.map(f => parseFeatureFile(path.join(FEATURES_DIR, f)));
-  console.log(`📚 Đã nạp ${features.length} tính năng:`);
+  console.log(`📚 Loaded ${features.length} feature(s):`);
   features.forEach(f => console.log(`  - [${f.slug}] ${f.title} (${f.rules.length} rules)`));
 
   const conflicts = detectConflicts(features);
 
   let reportLines = [
-    `# BÁO CÁO RÀ SOÁT XUNG ĐỘT TRI THỨC CHÉO (CROSS-FEATURE CONFLICT REPORT)`,
-    `Thời gian quét: ${new Date().toISOString()} · Phạm vi: ${features.length} tính năng`,
+    `# CROSS-FEATURE KNOWLEDGE CONFLICT REPORT`,
+    `Scan Timestamp: ${new Date().toISOString()} · Scope: ${features.length} feature(s)`,
     ``
   ];
 
   if (conflicts.length === 0) {
-    console.log('\n✅ TUYỆT VỜI: Không phát hiện xung đột mâu thuẫn logic nào giữa các tính năng hiện tại!');
+    console.log('\n✅ PASS: No cross-feature logical conflicts detected.');
     reportLines.push(`> [!NOTE]`);
-    reportLines.push(`> **KẾT QUẢ: PASS** — Các tính năng trong \`knowledge/features/\` hoàn toàn nhất quán về chính sách người dùng, cộng dồn khuyến mãi và hoàn huỷ.`);
+    reportLines.push(`> **VERDICT: PASS** — Features in \`knowledge/features/\` are logically consistent across policies.`);
   } else {
-    console.warn(`\n⚠️ PHÁT HIỆN ${conflicts.length} ĐIỂM XUNG ĐỘT LOGIC CẦN XÁC MINH VỚI BA:`);
+    console.warn(`\n⚠️ Detected ${conflicts.length} potential conflict(s) requiring BA verification:`);
     reportLines.push(`> [!WARNING]`);
-    reportLines.push(`> Phát hiện **${conflicts.length} xung đột logic nghiệp vụ** giữa các tính năng. Đề xuất QA Analyst đưa vào \`02_missing_rule_report.md\` với Verdict **ASK** để chốt lại với PO/BA.`);
+    reportLines.push(`> Detected **${conflicts.length} cross-feature logical contradiction(s)**. Recommend including in \`02_missing_rule_report.md\` with Verdict **ASK**.`);
     reportLines.push(``);
-    reportLines.push(`| STT | Khía cạnh xung đột | Tính năng A | Tính năng B | Chi tiết mâu thuẫn | Đề xuất xử lý |`);
+    reportLines.push(`| # | Conflict Aspect | Feature A | Feature B | Contradiction Details | Recommendation |`);
     reportLines.push(`|---|---|---|---|---|---|`);
 
     conflicts.forEach((c, idx) => {
       console.warn(`  [${idx + 1}] ${c.type}:`);
       console.warn(`      ${c.featureA} ⚡ ${c.featureB}`);
-      console.warn(`      Chi tiết: ${c.description}`);
+      console.warn(`      Detail: ${c.description}`);
 
       reportLines.push(`| ${idx + 1} | **${c.type}** | ${c.featureA} | ${c.featureB} | ${c.description} | ${c.recommendation} |`);
     });
   }
 
-  // Nếu có chỉ định target slug trong OUTPUT, ghi file vào OUTPUT
   if (targetSlug && fs.existsSync(path.join(OUTPUT_DIR, targetSlug))) {
     const reportPath = path.join(OUTPUT_DIR, targetSlug, '01_conflict_warning.md');
     fs.writeFileSync(reportPath, reportLines.join('\n'), 'utf-8');
-    console.log(`\n📄 Đã lưu báo cáo xung đột tại: ${reportPath}`);
+    console.log(`\n📄 Saved conflict report to: ${reportPath}`);
   }
 }
 

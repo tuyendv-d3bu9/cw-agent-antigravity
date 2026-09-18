@@ -1,6 +1,6 @@
 # Agent: QA Exploratory  (Exploratory Testing Coach)
 
-> Tuân thủ `shared/QA_STANDARD.md`.
+> Tuân thủ `agents/core/QA_STANDARD.md`.
 
 ## Là ai
 Công cụ **độc lập** — KHÔNG thuộc pipeline tuyến tính `01→06`. Chuyên thiết kế Exploratory
@@ -11,7 +11,8 @@ thực hiện**.
 > Charter đặt ra sứ mệnh và phạm vi, **không** liệt kê bước cứng.
 
 ## Skill sở hữu
-- `07-exploratory-charter` — Risk Area → Charter 5 trường (Mission/Area/Risk/Time-box/Notes)
+- `exploratory-charter` — Risk Area → Charter 5 trường (Mission/Area/Risk/Time-box/Notes)
+- `web-journey-discovery` — Sử dụng Playwright MCP "mò web", quét DOM & Accessibility Snapshot phục vụ sinh POM
 
 ## Knowledge
 - **Đọc**: `knowledge/_project.md` · `knowledge/<feature-slug>.md` (nếu có)
@@ -28,7 +29,7 @@ thực hiện**.
 - Đặt time-box phi thực tế cho một phiên do con người thực hiện.
 
 ## Verdict
-Theo `shared/QA_STANDARD.md` §1.
+Theo `agents/core/QA_STANDARD.md` §1.
 
 ## Human-Final — không tự quyết
 - **Phạm vi thăm dò thực tế, độ sâu và thời lượng cuối cùng** do người test chốt.
@@ -40,7 +41,7 @@ Theo `shared/QA_STANDARD.md` §1.
 
 ## Bàn giao
 Charter set → người test thực thi phiên session-based. Phát hiện từ phiên có thể vòng lại
-`agents/qa-analyst/skills/02-missing-rule-06w.md` nếu lộ ra rule thiếu.
+`agents/qa-analyst/skills/missing-rule-06w.md` nếu lộ ra rule thiếu.
 
 ## Cách gọi
 - "QA Exploratory, dựng charter set từ Risk Area của output 03."

@@ -2,7 +2,7 @@
 
 > File này để **ĐỌC**: hệ thống có gì, chạy theo thứ tự nào, dừng ở đâu.
 > Muốn **CHẠY** một chuỗi cụ thể => dùng runbook trong `workflows/run-*.md`.
-> Ràng buộc chung nằm ở `shared/QA_STANDARD.md` — file này không nhắc lại.
+> Ràng buộc chung nằm ở `agents/core/QA_STANDARD.md` — file này không nhắc lại.
 
 Cấu trúc thư mục file (sau khi đã gom agent):
 
@@ -13,9 +13,10 @@ agents/
     qa-test-data/
     qa-exploratory/
     qa-ui-review/
+    qa-reporter/
 
-shared/
-    QA_STANDARD.md
+agents/
+    core/QA_STANDARD.md
 
 knowledge/
     _project.md
@@ -29,15 +30,16 @@ workflows/
 
 ---
 
-## 1. Ba nhánh
+## 1. Các nhánh
 
 | Nhánh | Gồm | Khi nào chạy |
 |---|---|---|
 | **A · Pipeline chính** | `01 => 02 => 03 => 04 => 05 => 06` | Luôn chạy. Đây là xương sống requirement => test case. |
 | **B · Nhánh dữ liệu** | `09 => 10 => 11 => 12` | Chạy **sau** `05`, khi cần dataset để execute. |
 | **C · Độc lập** | `07` (exploratory) · `08` (UI screenshot) | Gọi bất cứ lúc nào, không chặn nhánh A/B. |
+| **D · Báo cáo lỗi** | `13` (gen-bug-report) | Chạy khi Tester có bug notes thô cần chuẩn hóa thành Jira Bug Report. |
 
-`07` cần risk area từ `03`. `08` cần ảnh đính kèm, không cần bước nào trước.
+`07` cần risk area từ `03`. `08` cần ảnh đính kèm, không cần bước nào trước. `13` cần file bug notes thô và file rules.
 
 ---
 
@@ -47,48 +49,56 @@ workflows/
 
 | # | Agent | Skill | Vào | Ra |
 |---|---|---|---|---|
-| 1 | `qa-analyst` | `01-requirement-risk-summary` | `INPUT/*.md` | `01_requirement_risk_summary.md` |
-| 2 | `qa-analyst` | `02-missing-rule-06w` | `01` + `knowledge/<slug>.md` | `02_missing_rule_report.md` |
-| 3 | `qa-analyst` | `03-viewpoint-selection` | `01` + `02` | `03_viewpoint_report.md` |
-| 4 | `qa-analyst` | `04-test-idea-design` | `01` + `03` | `04_test_idea_report.md` |
-| 5 | `qa-test-design` | `05-test-case-generation` | `01` + `03` + `04` | `05_test_case_spec.md` |
-| 6 | `qa-test-design` | `06-coverage-review` | `01` + `03` + `05` | `06_coverage_review.md` |
+| 1 | `qa-analyst` | `requirement-risk-summary` | `INPUT/*.md` | `01_requirement_risk_summary.md` |
+| 2 | `qa-analyst` | `missing-rule-06w` | `01` + `knowledge/<slug>.md` | `02_missing_rule_report.md` |
+| 3 | `qa-analyst` | `viewpoint-selection` | `01` + `02` | `03_viewpoint_report.md` |
+| 4 | `qa-analyst` | `test-idea-design` | `01` + `03` | `04_test_idea_report.md` |
+| 5 | `qa-test-design` | `test-case-generation` | `01` + `03` + `04` | `05_test_case_spec.md` |
+| 6 | `qa-test-design` | `coverage-review` | `01` + `03` + `05` | `06_coverage_review.md` |
 
 ### Nhánh B — Dữ liệu
 
 | # | Agent | Skill | Vào | Ra |
 |---|---|---|---|---|
-| 9 | `qa-test-data` | `09-data-class-map` | `01` | `09_data_class_map.md` |
-| 10 | `qa-test-data` | `10-dataset-generation` | `09` | `10_dataset.md` |
-| 11 | `qa-test-data` | `11-boundary-negative-dataset` | `09` | `11_boundary_negative_dataset.md` |
-| 12 | `qa-test-data` | `12-data-validation-traceability` | `10` + `11` + `05` | `12_data_validation_traceability.md` |
+| 9 | `qa-test-data` | `data-class-map` | `01` | `09_data_class_map.md` |
+| 10 | `qa-test-data` | `dataset-generation` | `09` | `10_dataset.md` |
+| 11 | `qa-test-data` | `boundary-negative-dataset` | `09` | `11_boundary_negative_dataset.md` |
+| 12 | `qa-test-data` | `data-validation-traceability` | `10` + `11` + `05` | `12_data_validation_traceability.md` |
 
 ### Nhánh C — Độc lập
 
 | # | Agent | Skill | Vào | Ra |
 |---|---|---|---|---|
-| 7 | `qa-exploratory` | `07-exploratory-charter` | Risk area ở `03` | `07_exploratory_charter.md` |
-| 8 | `qa-ui-review` | `08-ui-screenshot-review` | Ảnh đính kèm | `08_ui_screenshot_analysis.md` |
+| 7 | `qa-exploratory` | `exploratory-charter` | Risk area ở `03` | `07_exploratory_charter.md` |
+| 8 | `qa-ui-review` | `ui-screenshot-review` | Ảnh đính kèm | `08_ui_screenshot_analysis.md` |
 
-Mọi output nằm trong `OUTPUT/<task-slug>/`, kèm `_index.md`.
+### Nhánh D — Báo cáo lỗi & Tổng kết Sprint (Defect Reporting & Summary)
+
+| # | Agent | Skill | Vào | Ra |
+|---|---|---|---|---|
+| 13 | `qa-reporter` | `gen-bug-report` | File bug notes + `knowledge/` | `OUTPUT/reports/bug-report-<slug>.md` |
+| 14 | `qa-reporter` | `gen-daily-summary` | Sprint data JSON + audience | `outputs/reports/daily-summary-<audience>.md` |
+
+Mọi output nhánh A-C nằm trong `OUTPUT/<task-slug>/`, kèm `_index.md`. Nhánh D ghi tại `OUTPUT/reports/` hoặc `outputs/reports/`.
 
 ---
 
 ## 3. Luật khi nào dừng
 
-Mỗi output có `Verdict` ở dòng meta.
+Mỗi bước đều ra một **Verdict**:
+- `PASS` → chạy tiếp bước sau (hoặc người test nhận output).
+- `FIX`  → agent tự sửa lại deliverable theo format chuẩn, không gọi bước tiếp cho tới khi đạt.
+- `ASK`  → **DỪNG PIPELINE**. Đây là chủ ý, không phải bug. Thường vì:
+  - Thiếu tài liệu nguồn (bước 1).
+  - Lộ ra kẽ hở logic / quy tắc mâu thuẫn cần BA/PO chốt (bước 2).
+  - Thiếu ảnh màn hình (bước 8).
+  - Người dùng hỏi ngoài phạm vi.
 
-| Verdict | Workflow làm gì | Ai xử lý |
-|---|---|---|
-| `PASS` | Chạy bước tiếp | — |
-| `FIX` | **Dừng**. Đọc bảng FIX cuối file, sửa, chạy lại đúng bước đó | Tester |
-| `ASK` | **Dừng**. Đọc bảng ASK, hỏi BA/PO, ghi câu trả lời vào `knowledge/<slug>.md` mục 7–8, chạy lại | BA / PO |
-
-**Ngoại lệ có chủ ý** — skill `06`: rà đủ 3 góc nhìn mà không thấy gap nào thì kết luận `ASK`,
+**Ngoại lệ có chủ ý** — skill `coverage-review`: rà đủ 3 góc nhìn mà không thấy gap nào thì kết luận `ASK`,
 không phải `PASS`. `PASS` chỉ khi có người phụ trách ký chấp nhận rủi ro. Đây không phải lỗi.
 
 Các nhãn khác cũng là điểm dừng cần người: `[GIẢ ĐỊNH]` · `[CONTEXT_MISSING]` ·
-`[SEVERITY_CONFIDENCE_LOW]` · `CHƯA COVER` · `CHƯA CÓ DATA` · `[GAP — chuyển 06-coverage-review bổ sung]`.
+`[SEVERITY_CONFIDENCE_LOW]` · `CHƯA COVER` · `CHƯA CÓ DATA` · `[GAP — chuyển coverage-review bổ sung]`.
 
 ---
 
@@ -110,8 +120,8 @@ Chạy lần 2  =>  01/02 đọc knowledge trước  =>  ít [GIẢ ĐỊNH] hơ
 
 | Mục | Quy ước |
 |---|---|
-| `task-slug` | Trùng `feature-slug`. Vd `function-d`. Một feature một thư mục output. |
-| Nạp trước mọi bước | `shared/QA_STANDARD.md` · `knowledge/_project.md` · `knowledge/<slug>.md` (nếu có) |
+| `task-slug` | Trùng `feature-slug` (ví dụ: `auth-login`, `order-checkout`). Một feature một thư mục output. |
+| Nạp trước mọi bước | `agents/core/QA_STANDARD.md` · `knowledge/_project.md` · `knowledge/<slug>.md` (nếu có) |
 | Một skill | Ghi **đúng một** file output. Không dồn nhiều bước vào một file. |
 | Sau mỗi bước | Cập nhật `OUTPUT/<task-slug>/_index.md`: tên file + verdict |
 | Không được | Ghi đè `INPUT/` · sửa deliverable của agent khác · chạy bước sau khi bước trước chưa có output |

@@ -14,7 +14,7 @@
 | **FIX** | Đủ thông tin nhưng sai format / trace / consistency | Viết bản sửa cụ thể |
 | **ASK** | Thiếu thông tin / cần nghiệp vụ / rule treo | Chuyển người quyết, ghi rõ cần ai + cần thông tin gì |
 
-**Ngoại lệ** — skill `06-coverage-review`: rà đủ 3 góc nhìn mà KHÔNG thấy gap nào thì kết luận
+**Ngoại lệ** — skill `coverage-review`: rà đủ 3 góc nhìn mà KHÔNG thấy gap nào thì kết luận
 `ASK` (bắt buộc nghi ngờ bỏ sót, không tự quyết `PASS`). `PASS` chỉ xuất hiện khi có xác nhận
 chính thức chấp nhận rủi ro từ người phụ trách kèm lý do kinh doanh.
 

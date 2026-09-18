@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * status.js — QA Leader Dashboard: Quét tiến độ toàn bộ task trong OUTPUT/
+ * status.js — QA Leader Dashboard: Scans task progress in OUTPUT/
  *
- * Dùng:
- *   npm run status               # Xem dashboard tiến độ mọi task
- *   npm run status -- <slug>     # Xem chi tiết 1 task cụ thể
+ * Usage:
+ *   npm run status               # View dashboard for all tasks
+ *   npm run status -- <slug>     # View details for a specific task
  */
 
 const fs = require('fs');
@@ -14,22 +14,22 @@ const outputDir = path.join(process.cwd(), 'OUTPUT');
 const targetSlug = process.argv[2];
 
 if (!fs.existsSync(outputDir)) {
-  console.log('Thư mục OUTPUT/ chưa tồn tại. Chưa có task nào được thực thi.');
+  console.log('OUTPUT directory does not exist. No tasks executed yet.');
   process.exit(0);
 }
 
 const tasks = fs.readdirSync(outputDir).filter(f => {
   const fullPath = path.join(outputDir, f);
-  return fs.statSync(fullPath).isDirectory() && !f.endsWith('.bak');
+  return fs.statSync(fullPath).isDirectory() && !f.endsWith('.bak') && !f.startsWith('_');
 });
 
 if (tasks.length === 0) {
-  console.log('Chưa có task nào trong OUTPUT/.');
+  console.log('No active tasks found in OUTPUT/.');
   process.exit(0);
 }
 
 console.log('===============================================================');
-console.log('         BẢNG ĐIỀU PHỐI TIẾN ĐỘ QA LEADER (DASHBOARD)          ');
+console.log('             QA LEADER TASK DASHBOARD                          ');
 console.log('===============================================================\n');
 
 tasks.forEach(slug => {
@@ -40,10 +40,10 @@ tasks.forEach(slug => {
   const indexFile = path.join(taskDir, '_index.md');
   const batchDir = path.join(taskDir, 'testcases');
 
-  let status = 'CHƯA RÕ';
+  let status = 'UNKNOWN';
   let completedMilestones = 0;
   let totalMilestones = 6;
-  let nextAction = 'Cần tạo 00_plan.md';
+  let nextAction = 'Plan file 00_plan.md needs to be generated';
   let stopReason = '';
 
   if (fs.existsSync(planFile)) {
@@ -54,37 +54,37 @@ tasks.forEach(slug => {
     totalMilestones = checked + unchecked;
 
     if (planText.includes('Verdict: ASK') || planText.includes('| ASK |')) {
-      status = ' ĐANG CHỜ BA (BLOCKED - ASK)';
-      stopReason = 'Phát hiện kẽ hở nghiệp vụ, cần BA/PO trả lời.';
-      nextAction = `Hỏi BA và cập nhật knowledge/features/${slug}.md`;
+      status = 'WAITING_FOR_BA (BLOCKED - ASK)';
+      stopReason = 'Ambiguity detected in business logic; pending clarification from BA/PO.';
+      nextAction = `Clarify with BA and update knowledge/features/${slug}.md`;
     } else if (unchecked === 0 && totalMilestones > 0) {
-      status = ' HOÀN THÀNH (PASS)';
-      nextAction = 'Bộ test suite đã sẵn sàng nghiệm thu.';
+      status = 'COMPLETED (PASS)';
+      nextAction = 'Test suite ready for review/acceptance.';
     } else {
-      status = ' ĐANG THỰC HIỆN DỞ (IN-PROGRESS)';
-      nextAction = `Chạy tiếp Chặng ${completedMilestones + 1}`;
+      status = 'IN-PROGRESS';
+      nextAction = `Execute Milestone ${completedMilestones + 1}`;
     }
   }
 
-  // Kiểm tra nếu có batch testcase
+  // Check if batch test cases exist
   let batchInfo = '';
   if (fs.existsSync(batchDir)) {
     const batches = fs.readdirSync(batchDir).filter(f => f.startsWith('batch_') && f.endsWith('.md'));
     if (batches.length > 0) {
-      batchInfo = ` (Đã sinh ${batches.length} batch testcase)`;
+      batchInfo = ` (${batches.length} test case batch(es) generated)`;
     }
   }
 
   console.log(`📌 Task: [ ${slug} ]`);
-  console.log(`   - Trạng thái: ${status}`);
-  console.log(`   - Tiến độ:    ${completedMilestones}/${totalMilestones} chặng hoàn thành${batchInfo}`);
+  console.log(`   - Status:      ${status}`);
+  console.log(`   - Progress:    ${completedMilestones}/${totalMilestones} milestones completed${batchInfo}`);
   if (stopReason) {
-    console.log(`   - Lý do dừng: ${stopReason}`);
+    console.log(`   - Blocker:     ${stopReason}`);
   }
-  console.log(`   👉 Đề xuất hành động tiếp theo: ${nextAction}`);
+  console.log(`   👉 Next Step:  ${nextAction}`);
   console.log('---------------------------------------------------------------');
 });
 
-console.log('\n💡 Để tiếp tục một task bất kỳ, bạn chỉ cần nói trong chat:');
-console.log('   "Tiếp tục task <task-slug>" hoặc "Làm tiếp"');
+console.log('\n💡 To resume or run any task, prompt the agent:');
+console.log('   "Resume task <task-slug>" or "Proceed"');
 console.log('===============================================================\n');

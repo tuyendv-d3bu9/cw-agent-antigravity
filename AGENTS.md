@@ -5,52 +5,36 @@
 
 ---
 
-## 1. Cấu Trúc Thư Mục Chuẩn (Gọn Gàng & Trực Quan)
+## 1. Bản Đồ Không Gian Làm Việc (Workspace Boundaries)
 
-Dự án được tổ chức thành các khu vực chức năng rạch ròi. Người dùng chỉ cần quan sát `INPUT/` và `OUTPUT/`:
+Dự án được phân định rạch ròi thành 4 khu vực chức năng. Agent chỉ được đọc/ghi đúng phân vùng:
 
-```
-📁 <Project-Root>/
-│
-├── 📄 AGENTS.md                  # [Hiến pháp tối cao] Mọi Agent tự động đọc đầu tiên
-├── 📄 README.md                  # Hướng dẫn nhanh cho người dùng
-│
-├── 📁 INPUT/                     # Nơi DUY NHẤT chứa tài liệu yêu cầu từ BA/PO (.docx, .md)
-├── 📁 OUTPUT/                    # Nơi DUY NHẤT chứa kết quả phân tích & deliverables
-│   └── 📁 <task-slug>/
-│       ├── 00_plan.md            # [BẮT BUỘC] Kế hoạch thực thi chống tràn context
-│       ├── 01_requirement_risk_summary.md
-│       ├── 02_missing_rule_report.md
-│       ├── 03_viewpoint_report.md
-│       ├── 04_test_idea_report.md
-│       ├── 05_test_case_spec.md
-│       ├── 06_coverage_review.md
-│       ├── 09_* -> 12_*          # Dataset và Traceability (nếu có)
-│       └── _index.md             # Mục lục kết quả & Verdict từng bước
-│
-├── 📁 knowledge/                 # BỘ NÃO TRI THỨC VĨNH VIỄN CỦA DỰ ÁN (SSOT)
-│   ├── 📄 _system_map.json       # [BẢN ĐỒ VỆ TINH] Radar hệ thống — MỌI Agent đọc file này đầu tiên
-│   ├── 📄 _project.md            # Quy ước toàn dự án (mã, tiền tệ, timezone, auth, error code)
-│   ├── 📄 _glossary.md           # Từ điển thuật ngữ nghiệp vụ thống nhất
-│   ├── 📄 _template.md           # Mẫu chuẩn tạo tri thức tính năng mới
-│   └── 📁 features/              # Tri thức tích luỹ của từng tính năng (<feature-slug>.md)
-│
-├── 📁 agents/                    # Hệ thống chuyên gia QA & công cụ thực thi nội bộ
-│   ├── 📁 qa-lead/               # [TỔNG CHỈ HUY] Cửa ngõ duy nhất tiếp nhận lệnh & giao việc
-│   ├── 📁 qa-analyst/            # 01 -> 04: Tóm tắt yêu cầu, 06W kẽ hở, viewpoint, test idea
-│   ├── 📁 qa-test-design/        # 05 -> 06: Test case 8 trường, rà soát độ phủ
-│   ├── 📁 qa-test-data/          # 09 -> 12: Data class, dataset, validation & traceability
-│   ├── 📁 qa-exploratory/        # 07: Thăm dò theo charter
-│   ├── 📁 qa-ui-review/          # 08: Phân tích ảnh màn hình giao diện
-│   ├── 📁 core/                  # QA_STANDARD.md (Luật bất biến & FACT standard)
-│   ├── 📁 workflows/             # Runbooks điều phối quy trình (run-testcase.md...)
-│   ├── 📁 templates/             # Mẫu khung định dạng Agent và Skill
-│   └── 📁 tools/                 # Tiện ích: convert docx, map sync, testcase merge, status
-│
-└── 📁 .agents/                   # Nơi cài đặt các external skills bổ trợ (caveman, ponytail...)
-```
+| Khu vực | Chức năng duy nhất | Nguyên tắc hoạt động của Agent |
+|---|---|---|
+| `INPUT/<task-slug>/` | Chứa tài liệu nguồn 5 đối tác: `01_business`, `02_ba`, `03_dev`, `04_design`, `05_communication` | **Chỉ ĐỌC** (trừ tiện ích chuyển đổi file tự động). |
+| `OUTPUT/<task-slug>/` | Lưu Master Spec (`00`->`06`) và Tầng thực thi các đợt chạy (`runs/`) | **Nơi DUY NHẤT được phép xuất kết quả**. Tuyệt đối không sinh file rác ở root. |
+| `knowledge/` | Bộ não tri thức vĩnh viễn của dự án (SSOT) | Bắt buộc đọc `_system_map.json` đầu tiên để định tuyến vị trí tính năng và conventions. |
+| `agents/` | Hệ thống chuyên gia QA & công cụ thực thi nội bộ | Giao tiếp qua QA Leader (`agents/qa-lead/`), không gọi rời rạc. |
 
-### 1.1. Nguyên Tắc "System Map First" (Tuyệt Đối Chống Đọc Dò File & Tiết Kiệm Token):
+### 1.1. Cổng Tiếp Nhận Số 0 (QA Leader Intake Gate & Outcome Alignment):
+- Mọi tài liệu đầu vào được tổ chức theo 5 đối tác:
+  1. `01_business/`: Định hướng, bài toán kinh doanh, chính sách cấp cao.
+  2. `02_ba/`: [BẮT BUỘC] PRD, SRS, User Stories, Use Cases (.docx, .md).
+  3. `03_dev/`: API Swagger/OpenAPI, DB Schema, Technical specs.
+  4. `04_design/`: Figma links, wireframes, screenshots giao diện.
+  5. `05_communication/`: Q&A log, biên bản họp, Change Requests (CR).
+- **QA Leader gác cổng số 0**:
+  + Tự động kích hoạt `agents/tools/intake.js` phân loại và convert docx/pdf sang `.md` sạch.
+  + Đánh giá sự thiếu hụt tài liệu (**Gap Assessment**): Kiểm tra bắt buộc phải có `02_ba/`. Nếu thiếu tài liệu các ngăn khác, ghi nhận rủi ro và các giả định tương ứng.
+  + Căn chỉnh mục tiêu đầu ra (**Outcome Alignment**): Xác nhận Mode làm việc (Mode 1: Manual Test Cases Only; Mode 2: Manual + Test Data; Mode 3: Web Journey & Gherkin; Mode 4: Full Automation E2E).
+
+### 1.2. Phân Tầng Thực Thi Độc Lập (`OUTPUT/<task-slug>/runs/`):
+- **Master Spec (`01_` đến `06_`)**: Là kho tài liệu thiết kế kiểm thử gốc (ví dụ: 100 test cases). Cố định và không bị bẩn.
+- **Tầng Thực Thi (`runs/`)**: Khi cần chạy test cho 1 Ticket cụ thể (ví dụ: chỉ chạy 20/100 cases), tạo session riêng:
+  `OUTPUT/<task-slug>/runs/RUN-01_<ticket-name>/`
+  gồm: `run_plan.md` (lọc 20 cases), `run_result.md` (kết quả), `evidence/` (ảnh chụp màn hình), và `run_defects.md` (lỗi phát hiện).
+
+### 1.3. Nguyên Tắc "System Map First" (Tuyệt Đối Chống Đọc Dò File & Tiết Kiệm Token):
 - **CẤM** các Agent coding hay QA chạy lệnh quét/tìm kiếm mò mẫm (`list_dir`, `grep_search` toàn dự án) khi vào việc.
 - **BẮT BUỘC**: Mọi Agent trước khi thực thi việc gì phải đọc ngay file:
   ```
@@ -59,9 +43,14 @@ Dự án được tổ chức thành các khu vực chức năng rạch ròi. Ng
 - File này chứa đầy đủ: Bảng định tuyến (`routing_table`), vị trí chính xác của từng feature, và trạng thái hiện tại. Đọc xong là mở **ĐÚNG FILE ĐÍCH**, tiết kiệm 80% token tìm kiếm.
 - Lệnh đồng bộ bản đồ: `npm run map:sync`.
 
-### 1.2. Vai Trò Tổng Chỉ Huy Của QA Leader (`agents/qa-lead/`):
+### 1.4. Vai Trò Tổng Chỉ Huy Của QA Leader (`agents/qa-lead/`):
 - User **CHỈ CẦN GIAO TIẾP VỚI QA LEADER**. Không cần nhớ hay gọi trực tiếp từng sub-agent con.
-- QA Leader tự động nắm bắt ý định của User, tra cứu `_system_map.json`, lập `00_plan.md` và giao việc cho đúng chuyên gia (`qa-analyst`, `qa-test-design`, `qa-test-data`...).
+- QA Leader tự động nắm bắt ý định của User, tra cứu `_system_map.json`, lập `00_plan.md` và giao việc cho đúng chuyên gia (`qa-analyst`, `qa-test-design`, `qa-automation`...).
+
+### 1.5. Quy Tắc Biên Giới Nghiêm Ngặt (Boundary Gate — Không Tự Ý Sinh Automation):
+- **CẤM** tự ý chạy một mạch từ thiết kế Test Cases sang viết script Automation Playwright nếu ứng dụng web chưa sẵn sàng hoặc người dùng chỉ yêu cầu thiết kế Test Case Manual.
+- **Điểm Dừng Chuẩn**: Chặng 6 (`06_coverage_review.md`) là điểm hoàn tất tự nhiên của quy trình thiết kế kiểm thử.
+- Chỉ kích hoạt Tầng Thực Thi (`runs/`) hoặc Automation khi có yêu cầu rõ ràng từ người dùng kèm URL môi trường cụ thể.
 
 ---
 
@@ -88,14 +77,15 @@ Ngày tạo: YYYY-MM-DD · Người lập: <Agent/Tool> · Trạng thái: IN-PRO
 - Tri thức dự án: knowledge/_project.md, knowledge/_glossary.md
 - Tri thức tính năng: knowledge/features/<task-slug>.md
 
-## 2. Lộ Trình Từng Chặng (Milestones)
-- [ ] **Chặng 1**: Đọc yêu cầu thô & Phân tích rủi ro (`01`) ➔ Ra `01_requirement_risk_summary.md`
-- [ ] **Chặng 2**: Quét kẽ hở 06W & Câu hỏi cho BA (`02`) ➔ Ra `02_missing_rule_report.md`
+## 2. Lộ Trình Từng Chặng (Milestones & Explicit Skills)
+- [ ] **Chặng 1**: Đọc yêu cầu thô & Phân tích rủi ro [qa-analyst/skills/requirement-risk-summary.md] ➔ Ra `01_requirement_risk_summary.md`
+- [ ] **Chặng 2**: Quét kẽ hở 06W & Câu hỏi cho BA [qa-analyst/skills/missing-rule-06w.md] ➔ Ra `02_missing_rule_report.md`
       *(Nếu Verdict là ASK -> DỪNG để người dùng chốt với BA)*
-- [ ] **Chặng 3**: Chọn Risk Area & Viewpoints (`03`) ➔ Ra `03_viewpoint_report.md`
-- [ ] **Chặng 4**: Thiết kế Test Idea & Lọc Giữ/Bỏ (`04`) ➔ Ra `04_test_idea_report.md`
-- [ ] **Chặng 5**: Sinh Test Case chi tiết 8 trường (`05`) ➔ Ra `05_test_case_spec.md`
-- [ ] **Chặng 6**: Rà soát độ phủ 3 góc nhìn & Nghiệm thu (`06`) ➔ Ra `06_coverage_review.md`
+- [ ] **Chặng 3**: Chọn Risk Area & Viewpoints [qa-analyst/skills/viewpoint-selection.md] ➔ Ra `03_viewpoint_report.md`
+- [ ] **Chặng 4**: Thiết kế Test Idea & Lọc Giữ/Bỏ [qa-analyst/skills/test-idea-design.md] ➔ Ra `04_test_idea_report.md`
+- [ ] **Chặng 5**: Sinh Test Case chi tiết 8 trường [qa-test-design/skills/test-case-generation.md] ➔ Ra `05_test_case_spec.md`
+- [ ] **Chặng 6**: Rà soát độ phủ 3 góc nhìn & Nghiệm thu [qa-test-design/skills/coverage-review.md] ➔ Ra `06_coverage_review.md`
+- [ ] **Bổ trợ Dữ liệu (Nếu cần)**: Data Class [qa-test-data/skills/data-class-map.md] · Dataset [qa-test-data/skills/dataset-generation.md] · Boundary [qa-test-data/skills/boundary-negative-dataset.md] · Traceability [qa-test-data/skills/data-validation-traceability.md]
 
 ### 2.4. Cơ Chế "QA Leader Tự Nắm Tiến Độ" (Zero-Path Typing):
 Người dùng **KHÔNG CẦN** nhớ đường dẫn hay gõ lại `OUTPUT/.../00_plan.md`.
@@ -116,7 +106,7 @@ Mọi AI Agent **bắt buộc tự động đóng vai QA Leader**:
 Khi số lượng Test Case dự tính vượt quá **50 test cases** (hoặc lên tới hàng trăm, hàng nghìn test cases), **CẤM** cố sinh toàn bộ trong 1 lần (One-shot) vì chắc chắn sẽ bị cắt cụt token hoặc suy giảm chất lượng. Mọi Agent bắt buộc tuân theo quy trình 3 giai đoạn:
 
 ```
-[04-test-idea-report] ──► 1. TẠO BLUEPRINT JSON (05_test_blueprint.json)
+[04_test_idea_report.md] ──► 1. TẠO BLUEPRINT JSON (05_test_blueprint.json)
                                     │
                                     ├──► Lô 1 (batch_01.md: TC-001 -> TC-050)
                                     ├──► Lô 2 (batch_02.md: TC-051 -> TC-100)
@@ -138,6 +128,21 @@ Khi số lượng Test Case dự tính vượt quá **50 test cases** (hoặc l�
      ```bash
      npm run testcases:merge <task-slug>
      ```
+
+### 3.1. Engine Sinh Dữ Liệu Tự Động (Data Generator Engine — 0 Token LLM):
+- **CẤM** AI gõ tay từng dòng dữ liệu test khi số lượng lớn (> 10 records) vì gây lãng phí token và hallucinate.
+- **Quy trình chuẩn**:
+  1. AI chỉ định nghĩa `dataset_schema.json` siêu nhẹ (~30 token) chứa các loại generator: `vietnamese_name`, `phone_vn`, `email`, `voucher_code`, `currency_vnd`, `date_vn`, `boundary`, `enum`, `negative`.
+  2. Kích hoạt engine nội bộ `agents/tools/generate-dataset.js` (`npm run data:gen`) sinh hàng trăm/nghìn dòng trong 0.05s với 0 token LLM.
+  3. Xuất bảng dữ liệu chuẩn markdown hoặc CSV/JSON vào `OUTPUT/<task-slug>/10_dataset.md`.
+
+### 3.2. Chuẩn Hóa Gherkin BDD (`Given - When - Then`) Cho Luồng Mò Web:
+- Khi Agent thực hiện khám phá ứng dụng web (`qa-exploratory` với skill `web-journey-discovery`), toàn bộ hành trình người dùng **BẮT BUỘC** được chuẩn hóa thành kịch bản **Gherkin BDD** (`.feature`).
+- **Cấu trúc chuẩn**:
+  + `Given`: Tiền điều kiện môi trường, trạng thái đăng nhập, dữ liệu giỏ hàng.
+  + `When`: Hành động của người dùng (click nút, nhập mã voucher, chuyển trang).
+  + `Then`: Kỳ vọng kiểm chứng được (hiển thị toast thành công, cập nhật số tiền, báo lỗi đỏ).
+- Kèm theo bảng **Metadata Ánh Xạ Step ➔ Playwright Locator** (`getByRole`, `getByTestId`, `getByPlaceholder`) để phục vụ sinh Page Object Model (POM) cho tầng Automation.
 
 ---
 
@@ -180,6 +185,14 @@ Khi số lượng Test Case dự tính vượt quá **50 test cases** (hoặc l�
 
 ## 6. Lệnh Tiện Ích
 
+- Cổng tiếp nhận và phân loại thông minh tài liệu đầu vào:
+  ```bash
+  npm run intake
+  ```
+- Sinh dữ liệu kiểm thử tốc độ cao (0 token LLM):
+  ```bash
+  npm run data:gen -- --slug <slug> --schema <schema.json> --count 50
+  ```
 - Đổi file `.docx` từ BA sang `.md`:
   ```bash
   npm run convert
@@ -201,14 +214,16 @@ Khi số lượng Test Case dự tính vượt quá **50 test cases** (hoặc l�
 
 ## 7. Nguyên Tắc Trải Nghiệm: 100% Lời Nói Tự Nhiên (Zero-CLI)
 
-> ⚠️ **ĐIỀU KHOẢN TỐI CAO CHO MỌI AI AGENT**:
+> **ĐIỀU KHOẢN TỐI CAO CHO MỌI AI AGENT**:
 > - Người dùng của dự án là Tester, BA, Product Owner, Quản lý — **KHÔNG BIẾT VÀ KHÔNG PHẢI GÕ CÁC LỆNH TERMINAL (`npm run...`)**.
 > - **CẤM** AI Agent bảo người dùng: *"Bạn hãy mở terminal gõ npm run..."*.
 > - Toàn bộ các script trong dự án là **CÔNG CỤ NỘI BỘ DÀNH RIÊNG CHO AI AGENT**.
 > - Khi người dùng yêu cầu bằng tiếng Việt tự nhiên, **AI Agent tự động kích hoạt công cụ chạy ngầm ở hậu trường** và chỉ báo cáo kết quả thân thiện cho người dùng.
 
 ### Ví Dụ Thực Tế:
-- User nói: *"Có tài liệu mới trong INPUT, xử lý giúp"* ➔ Agent **tự chạy** `convert.js` ngầm.
+- User nói: *"Có tài liệu mới trong INPUT, xử lý giúp"* ➔ Agent **tự chạy** `intake.js` ngầm.
+- User nói: *"Sinh cho tôi 50 bộ dữ liệu test"* ➔ Agent **tự chạy** `generate-dataset.js` ngầm.
 - User nói: *"Gộp test case lại đi"* ➔ Agent **tự chạy** `merge-testcases.js` ngầm.
 - User nói: *"Tiến độ thế nào rồi?"* ➔ Agent **tự chạy** `status.js` ngầm và in bảng tiến độ ra chat.
 - User nói: *"Đã chốt xong"* ➔ Agent **tự chạy** `sync-system-map.js` ngầm để cập nhật bản đồ vệ tinh.
+
