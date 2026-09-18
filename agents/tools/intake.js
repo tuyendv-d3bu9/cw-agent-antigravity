@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * intake.js — QA Leader Intake Gate (Gate 0):
- *   1. Converts raw document formats (.docx, .pdf, .txt) to clean Markdown (.md)
+ *   1. Converts raw document formats (.docx, .xlsx, .xls, .csv, .pdf, .json, .yaml, .txt) to clean Markdown (.md)
  *   2. Intelligently classifies content into 1 of 5 categories under INPUT/<slug>/
  *      (01_business, 02_ba, 03_dev, 04_design, 05_communication)
  *
@@ -10,18 +10,12 @@
  * Examples:
  *   node agents/tools/intake.js "SRS_Auth.docx" --slug auth-login
  *   node agents/tools/intake.js "doc.pdf" --slug qa-standard-guide
+ *   node agents/tools/intake.js "rules.xlsx" --slug order-mgmt
  */
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
-
-let mammoth;
-try {
-  mammoth = require('mammoth');
-} catch (e) {
-  // Mammoth optional if only parsing txt/pdf
-}
+const { convertDocumentToMarkdown } = require('./doc-converter');
 
 const args = process.argv.slice(2);
 const slugIndex = args.indexOf('--slug');
@@ -32,8 +26,10 @@ const targetInput = positional[0];
 if (!targetInput) {
   console.log('Usage:');
   console.log('  node agents/tools/intake.js <file-or-directory> [--slug <task-slug>]\n');
-  console.log('Example:');
+  console.log('Examples:');
   console.log('  node agents/tools/intake.js "SRS_Auth.docx" --slug auth-login');
+  console.log('  node agents/tools/intake.js "requirements.xlsx" --slug cart-flow');
+  console.log('  node agents/tools/intake.js "specs.pdf" --slug qa-guide');
   process.exit(0);
 }
 
@@ -47,40 +43,11 @@ function slugify(text) {
     .replace(/^-+|-+$/g, '');
 }
 
-function cleanupMarkdown(md) {
-  return md
-    .replace(/<a id="[^"]*"><\/a>/g, '')
-    .replace(/\\([()[\]*_.\-#!])/g, '$1')
-    .replace(/[ \t]+$/gm, '')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-}
-
-// Convert docx to markdown
-async function convertDocx(filePath) {
-  if (!mammoth) {
-    throw new Error('Mammoth dependency not installed. Please run: npm install');
-  }
-  const result = await mammoth.convertToMarkdown({ path: filePath });
-  return cleanupMarkdown(result.value);
-}
-
-// Extract PDF text to markdown via python pypdf
-function convertPdf(filePath) {
-  try {
-    const pythonCmd = `python -c "import sys, pypdf; sys.stdout.reconfigure(encoding='utf-8'); r = pypdf.PdfReader(sys.argv[1]); print('\\n\\n'.join(p.extract_text() or '' for p in r.pages))" "${filePath}"`;
-    const output = execSync(pythonCmd, { encoding: 'utf-8', maxBuffer: 10 * 1024 * 1024 });
-    return cleanupMarkdown(output);
-  } catch (err) {
-    throw new Error(`Unable to extract PDF: ${err.message}`);
-  }
-}
-
 // Classify document content into 1 of 5 intake buckets
 function classifyDocument(content, filename) {
   const lowerContent = (content + ' ' + filename).toLowerCase();
 
-  // 03_dev
+  // 03_dev (Technical specs, APIs, DB Schemas)
   if (
     lowerContent.includes('swagger') ||
     lowerContent.includes('openapi') ||
@@ -89,12 +56,14 @@ function classifyDocument(content, filename) {
     lowerContent.includes('endpoint') ||
     lowerContent.includes('postman') ||
     filename.endsWith('.json') ||
-    filename.endsWith('.yaml')
+    filename.endsWith('.yaml') ||
+    filename.endsWith('.yml') ||
+    filename.endsWith('.sql')
   ) {
     return '03_dev';
   }
 
-  // 04_design
+  // 04_design (UI/UX, wireframes, mockups)
   if (
     lowerContent.includes('figma') ||
     lowerContent.includes('wireframe') ||
@@ -106,7 +75,7 @@ function classifyDocument(content, filename) {
     return '04_design';
   }
 
-  // 05_communication
+  // 05_communication (Meetings, Q&A, change requests, chat logs)
   if (
     lowerContent.includes('biên bản họp') ||
     lowerContent.includes('meeting minutes') ||
@@ -119,7 +88,7 @@ function classifyDocument(content, filename) {
     return '05_communication';
   }
 
-  // 01_business
+  // 01_business (High-level policies, vision, business models)
   if (
     lowerContent.includes('chính sách cấp cao') ||
     lowerContent.includes('mục tiêu kinh doanh') ||
@@ -131,7 +100,7 @@ function classifyDocument(content, filename) {
     return '01_business';
   }
 
-  // Default: 02_ba (PRD, SRS, User Stories, Acceptance Criteria)
+  // Default: 02_ba (PRD, SRS, User Stories, Acceptance Criteria, Requirements sheets)
   return '02_ba';
 }
 
@@ -149,18 +118,10 @@ async function processFile(filePath, userSlug) {
   console.log(`   -> Target feature slug: [ ${slug} ]`);
 
   let markdownContent = '';
-
-  if (ext === '.docx') {
-    console.log('   -> Format .docx: Converting to clean Markdown...');
-    markdownContent = await convertDocx(filePath);
-  } else if (ext === '.pdf') {
-    console.log('   -> Format .pdf: Extracting text to Markdown...');
-    markdownContent = convertPdf(filePath);
-  } else if (ext === '.md' || ext === '.txt') {
-    console.log('   -> Plain text format: Loading content...');
-    markdownContent = fs.readFileSync(filePath, 'utf8');
-  } else {
-    console.error(`❌ Format ${ext} is not supported for automated conversion.`);
+  try {
+    markdownContent = await convertDocumentToMarkdown(filePath);
+  } catch (err) {
+    console.error(`❌ Conversion failed: ${err.message}`);
     return;
   }
 
@@ -194,7 +155,7 @@ async function main() {
     const files = fs.readdirSync(targetInput);
     for (const file of files) {
       const full = path.join(targetInput, file);
-      if (fs.statSync(full).isFile() && !file.startsWith('~$')) {
+      if (fs.statSync(full).isFile() && !file.startsWith('~$') && !file.startsWith('.')) {
         await processFile(full, targetSlug);
       }
     }
